@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Base application theme. -->
+  <style name="Theme.PMDb" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <!-- Primary brand color. -->
+    <item name="colorPrimary">@color/white</item>
+    <item name="colorPrimaryVariant">@color/blue_grey_800</item>
+    <item name="colorOnPrimary">@color/amber_600</item>
+    <!-- Status bar color. -->
+    <item name="android:statusBarColor" tools:targetApi="l">@color/blue_grey_300</item>
+    <!-- Customize your theme here. -->
+    <item name="colorBottomNavigationItemSelected">@color/amber_600</item>
+    <item name="colorBottomNavigationItemUnSelected">@color/white</item>
+  </style>
+</resources>
