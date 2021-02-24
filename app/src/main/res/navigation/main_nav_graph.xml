@@ -3,10 +3,10 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/main_nav_graph"
-  app:startDestination="@id/home">
+  app:startDestination="@id/homeFragment">
 
   <fragment
-    android:id="@+id/home"
+    android:id="@+id/homeFragment"
     android:name="com.mstf.basekotlinmvvm.ui.main.home.HomeFragment"
     android:label="Home"
     tools:layout="@layout/fragment_home">
@@ -14,7 +14,7 @@
   </fragment>
 
   <fragment
-    android:id="@+id/archive"
+    android:id="@+id/archiveFragment"
     android:name="com.mstf.basekotlinmvvm.ui.main.archive.ArchiveFragment"
     android:label="Archive"
     tools:layout="@layout/fragment_archive">
@@ -22,11 +22,29 @@
   </fragment>
 
   <fragment
-    android:id="@+id/settings"
+    android:id="@+id/settingsFragment"
     android:name="com.mstf.basekotlinmvvm.ui.main.settings.SettingsFragment"
     android:label="Settings"
     tools:layout="@layout/fragment_settings">
 
   </fragment>
+
+  <dialog
+    android:id="@+id/sampleBottomSheetDialog"
+    android:name="com.mstf.basekotlinmvvm.ui.sample.dialog.SampleBottomSheetDialog"
+    android:label="SampleDialog"
+    tools:layout="@layout/dialog_bottom_sheet_sample">
+
+    <action
+      android:id="@+id/action_sampleBottomSheetDialog_to_sampleFragment"
+      app:destination="@id/sampleFragment" />
+
+  </dialog>
+
+  <fragment
+    android:id="@+id/sampleFragment"
+    android:name="com.mstf.basekotlinmvvm.ui.sample.fragment.SampleFragment"
+    android:label="SampleFragment"
+    tools:layout="@layout/fragment_sample" />
 
 </navigation>

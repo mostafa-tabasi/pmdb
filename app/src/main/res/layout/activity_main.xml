@@ -30,7 +30,8 @@
       app:backgroundTint="?colorPrimaryVariant"
       app:contentInsetEnd="0dp"
       app:contentInsetStart="0dp"
-      app:fabAlignmentMode="end">
+      app:fabAlignmentMode="end"
+      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}">
 
       <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -51,7 +52,8 @@
       android:contentDescription="TODO"
       android:src="@{viewModel.currentPage == 0 ? @drawable/ic_add : viewModel.currentPage == 1 ? @drawable/ic_search : @drawable/ic_info }"
       app:backgroundTint="?colorOnPrimary"
-      app:layout_anchor="@id/bottom_bar" />
+      app:layout_anchor="@id/bottom_bar"
+      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"/>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

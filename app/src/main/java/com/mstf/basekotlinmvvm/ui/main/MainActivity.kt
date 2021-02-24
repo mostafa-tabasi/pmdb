@@ -20,16 +20,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
-    setUpNavigation()
+    setUp()
   }
 
-  private fun setUpNavigation() {
+  private fun setUp() {
     val navHostFragment =
       supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-    NavigationUI.setupWithNavController(
-      viewDataBinding!!.bottomNavigation,
-      navHostFragment.navController
-    )
-    navHostFragment.navController.addOnDestinationChangedListener(viewModel)
+
+    with(navHostFragment.navController) {
+      NavigationUI.setupWithNavController(viewDataBinding!!.bottomNavigation, this)
+      addOnDestinationChangedListener(viewModel)
+
+      viewDataBinding!!.fabMain.setOnClickListener {
+        when (currentDestination?.label) {
+          "Home" -> navigate(R.id.sampleBottomSheetDialog)
+          "Archive" -> {
+          }
+          "Settings" -> {
+          }
+        }
+      }
+    }
   }
 }

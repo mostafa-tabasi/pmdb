@@ -5,21 +5,21 @@
   tools:ignore="AlwaysShowAction">
 
   <item
-    android:id="@+id/home"
+    android:id="@+id/homeFragment"
     android:icon="@drawable/ic_home"
-    android:title="Home"
+    android:title="@string/home_label"
     app:showAsAction="always" />
 
   <item
-    android:id="@+id/archive"
+    android:id="@+id/archiveFragment"
     android:icon="@drawable/ic_archive"
-    android:title="Archive"
+    android:title="@string/archive_label"
     app:showAsAction="always" />
 
   <item
-    android:id="@+id/settings"
+    android:id="@+id/settingsFragment"
     android:icon="@drawable/ic_settings"
-    android:title="Settings"
+    android:title="@string/settings_label"
     app:showAsAction="always" />
 
   <item

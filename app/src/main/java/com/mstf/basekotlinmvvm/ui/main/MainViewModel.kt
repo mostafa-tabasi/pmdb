@@ -14,6 +14,7 @@ class MainViewModel @Inject constructor(dataManager: DataManager) :
   BaseViewModel<MainNavigator>(dataManager), NavController.OnDestinationChangedListener {
 
   val currentPage = ObservableField<Int>().apply { set(0) }
+  val isBottomToolbarVisible = ObservableField<Boolean>().apply { set(true) }
 
   override fun onDestinationChanged(
     controller: NavController,
@@ -25,7 +26,14 @@ class MainViewModel @Inject constructor(dataManager: DataManager) :
         "Home" -> 0
         "Archive" -> 1
         "Settings" -> 2
-        else -> -1
+        else -> currentPage.get()
+      }
+    )
+
+    isBottomToolbarVisible.set(
+      when (destination.label) {
+        "Home", "Archive", "Settings" -> true
+        else -> false
       }
     )
   }

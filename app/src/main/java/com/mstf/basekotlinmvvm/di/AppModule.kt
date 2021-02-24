@@ -16,6 +16,8 @@ import com.mstf.basekotlinmvvm.data.local.prefs.PreferencesHelper
 import com.mstf.basekotlinmvvm.data.remote.ApiHeader.ProtectedApiHeader
 import com.mstf.basekotlinmvvm.data.remote.ApiHelper
 import com.mstf.basekotlinmvvm.data.remote.AppApiHelper
+import com.mstf.basekotlinmvvm.data.resource.AppResourceHelper
+import com.mstf.basekotlinmvvm.data.resource.ResourceHelper
 import com.mstf.basekotlinmvvm.di.annotation.ApiInfo
 import com.mstf.basekotlinmvvm.di.annotation.DatabaseInfo
 import com.mstf.basekotlinmvvm.di.annotation.PreferenceInfo
@@ -51,8 +53,8 @@ object AppModule {
   @Provides
   @Singleton
   fun provideAppDatabase(
-      @DatabaseInfo dbName: String,
-      @ApplicationContext context: Context
+    @DatabaseInfo dbName: String,
+    @ApplicationContext context: Context
   ): AppDatabase =
     Room.databaseBuilder(context, AppDatabase::class.java, dbName)
       .fallbackToDestructiveMigration()   //TODO: migrations
@@ -76,6 +78,11 @@ object AppModule {
 
   @Provides
   @Singleton
+  fun provideResourceProvider(appResourceHelper: AppResourceHelper): ResourceHelper =
+    appResourceHelper
+
+  @Provides
+  @Singleton
   fun provideGson(): Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
   @Provides
@@ -90,11 +97,11 @@ object AppModule {
   @Provides
   @Singleton
   fun provideProtectedApiHeader(
-      @ApiInfo apiKey: String,
-      preferencesHelper: PreferencesHelper
+    @ApiInfo apiKey: String,
+    preferencesHelper: PreferencesHelper
   ): ProtectedApiHeader = ProtectedApiHeader(
-      apiKey,
-      preferencesHelper.currentUserId,
-      preferencesHelper.accessToken
+    apiKey,
+    preferencesHelper.currentUserId,
+    preferencesHelper.accessToken
   )
 }

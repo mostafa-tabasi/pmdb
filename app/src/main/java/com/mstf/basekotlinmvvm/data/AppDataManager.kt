@@ -6,6 +6,7 @@ import com.mstf.basekotlinmvvm.data.local.db.DbHelper
 import com.mstf.basekotlinmvvm.data.local.prefs.PreferencesHelper
 import com.mstf.basekotlinmvvm.data.remote.ApiHeader
 import com.mstf.basekotlinmvvm.data.remote.ApiHelper
+import com.mstf.basekotlinmvvm.data.resource.ResourceHelper
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,6 +16,7 @@ class AppDataManager @Inject constructor(
     private val dbHelper: DbHelper,
     private val preferencesHelper: PreferencesHelper,
     private val apiHelper: ApiHelper,
+    private val resourceHelper: ResourceHelper,
     private val gson: Gson
 ) : DataManager {
 
@@ -33,6 +35,8 @@ class AppDataManager @Inject constructor(
     }
 
   override fun getApiHeader(): ApiHeader = apiHelper.getApiHeader()
+
+  override fun getString(resourceId: Int) = resourceHelper.getString(resourceId)
 
   companion object {
     private const val TAG = "AppDataManager"
