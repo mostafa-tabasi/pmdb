@@ -5,7 +5,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.basekotlinmvvm.ui.sample.fragment.SampleFragmentViewModel" />
+      type="com.mstf.pmdb.ui.sample.fragment.SampleFragmentViewModel" />
 
   </data>
 
@@ -16,9 +16,9 @@
 
     <TextView
       android:id="@+id/text"
-      android:padding="32dp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:padding="32dp"
       android:text="Sample FRAGMENT" />
 
   </FrameLayout>

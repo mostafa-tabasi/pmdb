@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <import type="android.view.inputmethod.EditorInfo" />
+
+    <variable
+      name="viewModel"
+      type="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieViewModel" />
+
+  </data>
+
+  <FrameLayout
+    android:id="@+id/layout_blank_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="@{viewModel.blankFormLayoutAlpha}"
+    android:visibility="@{viewModel.blankFormLayoutVisibility}">
+
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="?actionBarSize">
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+          <ImageView
+            android:id="@+id/img_movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_foreground" />
+          <!--
+            android:onClick="@{viewModel.onPosterSelect}"
+            app:imageUrl="@{viewModel.model.poster}"
+          -->
+
+          <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="?colorOnPrimary"
+            android:visibility="gone" />
+
+          <View
+            android:id="@+id/view_center_align"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_centerVertical="true" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_movie_poster"
+            android:background="@drawable/bg_movie_title"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp"
+            android:paddingTop="70dp"
+            android:paddingRight="4dp"
+            android:weightSum="4">
+
+            <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3">
+
+              <ImageView
+                android:id="@+id/img_tv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/edt_title"
+                android:layout_alignBottom="@+id/edt_title"
+                android:visibility="gone" />
+              <!--
+                android:src="@drawable/ic_tv_accent"
+                app:tint="@color/colorPrimaryDark"
+                app:movieType="@{viewModel.model.type}"
+                -->
+
+              <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_tv"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="serif"
+                android:hint="Title"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:nextFocusForward="@id/edt_year"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/font_xx_large"
+                android:textStyle="bold"
+                app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+              <!--
+                android:text="@={viewModel.model.title}"
+                -->
+
+              <EditText
+                android:id="@+id/edt_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_title"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                android:hint="Runtime"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="10"
+                android:nextFocusForward="@id/edt_country"
+                android:padding="4dp"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/font_large" />
+              <!--
+                android:text="@={viewModel.model.runtime}"
+              -->
+
+              <View
+                android:id="@+id/txt_comma"
+                android:layout_width="0.1dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/edt_runtime"
+                android:layout_alignBottom="@+id/edt_runtime"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/edt_runtime"
+                android:alpha="0.5"
+                android:background="?attr/colorBlankFormDivider" />
+
+              <EditText
+                android:id="@+id/edt_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/edt_runtime"
+                android:layout_alignBottom="@+id/edt_runtime"
+                android:layout_toRightOf="@+id/txt_comma"
+                android:background="@android:color/transparent"
+                android:hint="Country"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:nextFocusForward="@id/edt_genre"
+                android:padding="4dp"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/font_large" />
+              <!--
+                android:text="@={viewModel.model.country}"
+              -->
+
+            </RelativeLayout>
+
+            <View
+              android:layout_width="0.1dp"
+              android:layout_height="match_parent"
+              android:layout_marginRight="8dp"
+              android:alpha="0.5"
+              android:background="?attr/colorBlankFormDivider" />
+
+            <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1">
+
+              <EditText
+                android:id="@+id/edt_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="Year "
+                android:imeOptions="actionNext"
+                android:inputType="numberSigned"
+                android:maxLength="10"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/font_x_large" />
+              <!--
+              android:text="@={viewModel.model.year}"
+                app:onEditorEnterAction="@{viewModel.onTitleSearchClick}"
+              -->
+
+              <EditText
+                android:id="@+id/edt_imdb_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_year"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:hint="IMDb ID"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="10"
+                android:padding="4dp"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/font_large" />
+              <!--
+                android:text="@={viewModel.model.imdbID}"
+                app:onEditorEnterAction="@{viewModel.onTitleSearchClick}"
+                -->
+
+            </RelativeLayout>
+
+          </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Genre"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Enter Movie Genres"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_imdb_rate"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/font_x_large"
+            app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+          <!--
+            android:text="@={viewModel.model.genre}"
+            -->
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:baselineAligned="false"
+          android:orientation="horizontal"
+          android:padding="4dp"
+          android:weightSum="3">
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="IMDb"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_imdb_rate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Rate"
+              android:imeOptions="actionNext"
+              android:inputType="text"
+              android:nextFocusForward="@id/edt_imdb_votes"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_xx_large" />
+            <!--
+              android:text="@={viewModel.model.imdbRate}"
+              -->
+
+            <EditText
+              android:id="@+id/edt_imdb_votes"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Votes"
+              android:imeOptions="actionNext"
+              android:inputType="text"
+              android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_medium" />
+            <!--
+              android:text="@={viewModel.model.imdbVotes}"
+              android:textColor="@color/colorPrimaryDark"
+              -->
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorBlankFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Rotten Tomatoes"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_rotten_tomatoes_rate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Rate"
+              android:imeOptions="actionNext"
+              android:inputType="text"
+              android:nextFocusForward="@id/edt_metacritic_rate"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_xx_large" />
+            <!--
+              android:text="@={viewModel.model.rottenTomatoesRate}"
+              -->
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorBlankFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Metacritic"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_metacritic_rate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Rate"
+              android:imeOptions="actionNext"
+              android:inputType="text"
+              android:nextFocusForward="@id/edt_awards"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_xx_large" />
+            <!--
+              android:text="@={viewModel.model.metacriticRate}"
+              -->
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Awards"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_awards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Enter Movie Awards"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_director"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/font_x_large"
+            app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+          <!--
+            android:text="@={viewModel.model.awards}"
+            -->
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:baselineAligned="false"
+          android:orientation="horizontal"
+          android:padding="4dp"
+          android:weightSum="2">
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Director"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_director"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Name"
+              android:inputType="textMultiLine"
+              android:nextFocusForward="@id/edt_writer"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_x_large"
+              app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+            <!--
+              android:text="@={viewModel.model.director}"
+              -->
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorBlankFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Writer"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_writer"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:backgroundTint="@android:color/transparent"
+              android:gravity="center"
+              android:hint="Name"
+              android:inputType="textMultiLine"
+              android:nextFocusForward="@id/edt_actors"
+              android:selectAllOnFocus="true"
+              android:textSize="@dimen/font_x_large"
+              app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+            <!--
+              android:text="@={viewModel.model.writer}"
+              -->
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Actors"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_actors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Names"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_plot"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/font_x_large"
+            app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+          <!--
+            android:text="@={viewModel.model.actors}"
+            -->
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Plot"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_plot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Enter Movie Plot"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_comment"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/font_x_large"
+            app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
+          <!--
+            android:text="@={viewModel.model.plot}"
+            -->
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Comment"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center"
+            android:hint="Write Your Comment"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/font_x_large"
+            app:multiLineWithAction="@{EditorInfo.IME_ACTION_DONE}" />
+          <!--
+            android:text="@={viewModel.model.comment}"
+            -->
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="top|left"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="16dp"
+      android:background="?android:selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:padding="8dp"
+      android:src="@drawable/ic_back"
+      app:tint="?colorBlankFormBottomToolbarIconTint" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:layout_gravity="bottom"
+      android:background="?colorBlankFormBottomToolbar"
+      android:clickable="true"
+      android:elevation="8dp"
+      android:gravity="right|center_vertical"
+      android:orientation="horizontal"
+      android:padding="8dp">
+
+      <ImageView
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/ic_tv_accent"
+        app:tint="?colorBlankFormBottomToolbarUnSelectedIconTint" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/ic_seen"
+        app:tint="?colorBlankFormBottomToolbarIconTint" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/ic_favorite"
+        app:tint="?colorBlankFormBottomToolbarIconTint" />
+
+      <View
+        android:layout_width="0.1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="?attr/colorBlankFormDivider" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/ic_clear"
+        app:tint="?colorBlankFormBottomToolbarIconTint" />
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:src="@drawable/ic_save"
+        app:tint="?colorBlankFormBottomToolbarIconTint" />
+
+    </LinearLayout>
+
+  </FrameLayout>
+
+</layout>

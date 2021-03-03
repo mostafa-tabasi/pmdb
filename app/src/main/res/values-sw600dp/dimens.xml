@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="font_massive">46sp</dimen>
+  <dimen name="font_very_large">40sp</dimen>
+  <dimen name="font_xxx_large">33sp</dimen>
+  <dimen name="font_xx_large">26sp</dimen>
+  <dimen name="font_x_large">19sp</dimen>
+  <dimen name="font_large">17sp</dimen>
+  <dimen name="font_medium">15sp</dimen>
+  <dimen name="font_small">13sp</dimen>
+  <dimen name="font_micro">11sp</dimen>
+</resources>

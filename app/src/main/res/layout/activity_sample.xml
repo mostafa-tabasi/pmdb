@@ -9,7 +9,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.basekotlinmvvm.ui.sample.activity.SampleActivityViewModel" />
+      type="com.mstf.pmdb.ui.sample.activity.SampleActivityViewModel" />
 
   </data>
 
