@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.mstf.pmdb.data.DataManager
 import java.lang.ref.WeakReference
 
-abstract class BaseViewModel<N>(val dataManager: DataManager) : ViewModel() {
+abstract class BaseViewModel<N : BaseNavigator>(val dataManager: DataManager) : ViewModel() {
 
   private var mNavigator: WeakReference<N>? = null
 

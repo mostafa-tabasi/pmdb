@@ -1,5 +1,7 @@
 package com.mstf.pmdb.ui.sample.fragment
 
-interface SampleFragmentNavigator {
+import com.mstf.pmdb.ui.base.BaseNavigator
+
+interface SampleFragmentNavigator : BaseNavigator {
   fun goBack()
 }

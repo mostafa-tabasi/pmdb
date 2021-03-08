@@ -10,10 +10,10 @@
 
   </data>
 
-  <FrameLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+    android:layout_height="match_parent">
 
     <include
       android:id="@+id/include_find_movie"
@@ -25,6 +25,6 @@
       layout="@layout/layout_blank_form"
       bind:viewModel="@{viewModel}" />
 
-  </FrameLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

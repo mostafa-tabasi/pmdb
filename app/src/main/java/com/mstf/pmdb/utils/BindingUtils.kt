@@ -1,8 +1,6 @@
 package com.mstf.pmdb.utils
 
-import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -20,12 +18,14 @@ object BindingUtils {
   }
 */
 
-  @JvmStatic
-  @BindingAdapter("imageUrl")
-  fun setImageUrl(imageView: ImageView, url: String) {
-    val context = imageView.context
-    Glide.with(context).load(url).into(imageView)
-  }
+  /*
+   @JvmStatic
+   @BindingAdapter("imageUrl")
+   fun setImageUrl(imageView: ImageView, url: String) {
+     val context = imageView.context
+     Glide.with(context).load(url).into(imageView)
+   }
+   */
 
   @JvmStatic
   @BindingAdapter("animatedVisibility")

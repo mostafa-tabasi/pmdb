@@ -1,14 +1,14 @@
 package com.mstf.pmdb
 
 import android.app.Application
+import com.mstf.pmdb.utils.AppLogger
 import dagger.hilt.android.HiltAndroidApp
-import timber.log.Timber
 
 @HiltAndroidApp
 class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
+    AppLogger.init()
   }
 }

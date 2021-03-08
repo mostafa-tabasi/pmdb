@@ -15,26 +15,56 @@ import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
 import com.mstf.pmdb.databinding.DialogAddMovieBinding
 import com.mstf.pmdb.ui.base.BaseBottomSheetDialog
-import com.mstf.pmdb.utils.extensions.clear
+import com.mstf.pmdb.utils.extensions.gone
+import com.mstf.pmdb.utils.extensions.hideKeyboard
+import com.mstf.pmdb.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.layout_find_movie.view.*
 
 
 @AndroidEntryPoint
 class AddMovieDialog :
   BaseBottomSheetDialog<DialogAddMovieBinding, AddMovieViewModel>(),
-  AddMovieNavigator {
+  AddMovieNavigator, View.OnFocusChangeListener {
 
   override val viewModel: AddMovieViewModel by viewModels()
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.dialog_add_movie
 
-  companion object {
-    const val TAG = "AddMovieDialog"
-    fun newInstance(): AddMovieDialog {
-      val args = Bundle()
-      val fragment = AddMovieDialog()
-      fragment.arguments = args
-      return fragment
+  private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+
+    override fun onStateChanged(bottomSheet: View, newState: Int) {
+      viewDataBinding?.let {
+        when (newState) {
+          BottomSheetBehavior.STATE_EXPANDED -> it.includeFindMovie.root.gone()
+          BottomSheetBehavior.STATE_COLLAPSED -> {
+            it.includeFindMovie.edtSearchTitle.requestFocus()
+            it.includeBlankForm.root.gone()
+          }
+        }
+      }
+    }
+
+    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+      // کیبورد در صورت باز بودن، با تغییر وضعیت باتم شیت، بسته شود
+      requireContext().hideKeyboard(bottomSheet)
+      // اگر جستجویی در حال انجام بود، با تغییر وضعیت باتم شیت، کنسل شود
+      viewModel.cancelSearching()
+      calculateLayoutsAlpha(slideOffset)
+    }
+
+    /**
+     * محاسبه ی مقدار نمایش لایه ها متناسب با میزان جابجایی باتم شیت
+     *
+     * @param slideOffset میزان جابجایی
+     */
+    private fun calculateLayoutsAlpha(slideOffset: Float) {
+      viewDataBinding?.let {
+        it.includeFindMovie.root.visible()
+        it.includeBlankForm.root.visible()
+        it.includeFindMovie.root.alpha = 1 - (slideOffset * 5)
+        it.includeBlankForm.root.alpha = slideOffset * 5
+      }
     }
   }
 
@@ -49,9 +79,16 @@ class AddMovieDialog :
   }
 
   private fun setUp() {
-    viewDataBinding?.includeFindMovie?.edtSearchTitle?.onFocusChangeListener = viewModel
-    viewDataBinding?.includeFindMovie?.edtSearchId?.onFocusChangeListener = viewModel
+    viewDataBinding?.let {
+      it.includeBlankForm.root.gone()
+      it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
+      it.includeFindMovie.edtSearchId.onFocusChangeListener = this
+    }
 
+    setUpBottomSheet()
+  }
+
+  private fun setUpBottomSheet() {
     view?.let {
       it.viewTreeObserver.addOnGlobalLayoutListener(object :
         ViewTreeObserver.OnGlobalLayoutListener {
@@ -64,38 +101,60 @@ class AddMovieDialog :
           val behavior = BottomSheetBehavior.from(bottomSheet!!)
           bottomSheet.layoutParams.height = MATCH_PARENT
           behavior.peekHeight = viewDataBinding?.includeFindMovie?.layoutSearch!!.height
-          behavior.addBottomSheetCallback(viewModel.bottomSheetCallback)
+          behavior.addBottomSheetCallback(bottomSheetCallback)
         }
       })
     }
   }
 
-  override fun onDestroyView() {
-    view?.viewTreeObserver?.addOnGlobalLayoutListener(null)
-    super.onDestroyView()
+  override fun onFocusChange(v: View?, hasFocus: Boolean) {
+    v?.let {
+      if (it.edt_search_title != null && hasFocus) {
+        // اگر فیلد جستجو براساس عنوان انتخاب شده بود، فیلد شناسه خالی میشود
+        viewModel.clearMovieId()
+        prepareSearchTitleField()
+        return
+      }
+      if (it.edt_search_id != null && hasFocus) {
+        // اگر فیلد جستجو براساس شناسه انتخاب شده بود، فیلد عنوان خالی میشود
+        viewModel.clearMovieTitle()
+        prepareSearchIdField()
+        return
+      }
+    }
   }
 
-  override fun expandSearchTitleField() {
+  /**
+   * آماده کردن فیلدِ جستجو براساس عنوان فیلم
+   */
+  override fun prepareSearchTitleField() {
     viewDataBinding?.let {
       it.includeFindMovie.edtSearchId.hint = "ID"
-      it.includeFindMovie.edtSearchId.clear()
       expandTextField(it.includeFindMovie.edtSearchTitle, it.includeFindMovie.edtSearchId)
     }
   }
 
-  override fun expandSearchIdField() {
+  /**
+   * آماده کردن فیلدِ جستجو براساس شناسه ی فیلم در سایت imdb
+   */
+  override fun prepareSearchIdField() {
     viewDataBinding?.let {
       it.includeFindMovie.edtSearchId.hint = "IMDb ID"
-      it.includeFindMovie.edtSearchTitle.clear()
       expandTextField(it.includeFindMovie.edtSearchId, it.includeFindMovie.edtSearchTitle)
     }
   }
 
+  /**
+   * تغییر فضای فیلد موردنظر همراه با انیمیشن
+   *
+   * @param viewToExpand فیلدی که قرار است بزرگتر شود
+   * @param viewToCollapse فیلدی که قرار است کوچکتر شود
+   */
   private fun expandTextField(viewToExpand: EditText, viewToCollapse: EditText) {
     val animator =
       ValueAnimator.ofFloat((viewToExpand.layoutParams as LinearLayout.LayoutParams).weight, 3f)
     with(animator) {
-      duration = 50
+      duration = 150
       addUpdateListener {
         (viewToCollapse.layoutParams as LinearLayout.LayoutParams).weight =
           4 - (it.animatedValue as Float)
@@ -106,5 +165,10 @@ class AddMovieDialog :
       }
       start()
     }
+  }
+
+  override fun onDestroyView() {
+    view?.viewTreeObserver?.addOnGlobalLayoutListener(null)
+    super.onDestroyView()
   }
 }

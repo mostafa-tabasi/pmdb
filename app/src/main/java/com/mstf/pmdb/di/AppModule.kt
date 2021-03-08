@@ -16,17 +16,20 @@ import com.mstf.pmdb.data.local.prefs.PreferencesHelper
 import com.mstf.pmdb.data.remote.ApiHeader.ProtectedApiHeader
 import com.mstf.pmdb.data.remote.ApiHelper
 import com.mstf.pmdb.data.remote.AppApiHelper
+import com.mstf.pmdb.data.remote.OmdbApiClient
 import com.mstf.pmdb.data.resource.AppResourceHelper
 import com.mstf.pmdb.data.resource.ResourceHelper
 import com.mstf.pmdb.di.annotation.ApiInfo
 import com.mstf.pmdb.di.annotation.DatabaseInfo
 import com.mstf.pmdb.di.annotation.PreferenceInfo
 import com.mstf.pmdb.utils.AppConstants
+import com.mstf.pmdb.utils.NetworkConnectionInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -37,10 +40,23 @@ object AppModule {
 
   @Singleton
   @Provides
-  fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
-    .baseUrl(BuildConfig.BASE_URL)
+  fun provideOkHttpClient(
+    networkConnectionInterceptor: NetworkConnectionInterceptor
+  ): OkHttpClient = OkHttpClient.Builder()
+    .addInterceptor(networkConnectionInterceptor)
+    .build()
+
+  @Singleton
+  @Provides
+  fun provideOmdbApiClient(
+    gson: Gson,
+    okHttpclient: OkHttpClient
+  ): OmdbApiClient = Retrofit.Builder()
+    .client(okHttpclient)
+    .baseUrl(BuildConfig.BASE_URL_OMDB)
     .addConverterFactory(GsonConverterFactory.create(gson))
     .build()
+    .create(OmdbApiClient::class.java)
 
   @Provides
   @Singleton
@@ -48,17 +64,16 @@ object AppModule {
 
   @Provides
   @ApiInfo
-  fun provideApiKey(): String = BuildConfig.API_KEY
+  fun provideOmdbApiKey(): String = BuildConfig.API_KEY_OMDB
 
   @Provides
   @Singleton
   fun provideAppDatabase(
     @DatabaseInfo dbName: String,
     @ApplicationContext context: Context
-  ): AppDatabase =
-    Room.databaseBuilder(context, AppDatabase::class.java, dbName)
-      .fallbackToDestructiveMigration()   //TODO: migrations
-      .build()
+  ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName)
+    .fallbackToDestructiveMigration()   //TODO: migrations
+    .build()
 
   @Provides
   @Singleton

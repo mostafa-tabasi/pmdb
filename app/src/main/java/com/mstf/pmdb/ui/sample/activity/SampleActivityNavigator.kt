@@ -1,4 +1,6 @@
 package com.mstf.pmdb.ui.sample.activity
 
-interface SampleActivityNavigator {
+import com.mstf.pmdb.ui.base.BaseNavigator
+
+interface SampleActivityNavigator : BaseNavigator {
 }

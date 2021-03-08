@@ -1,5 +1,6 @@
 package com.mstf.pmdb.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.mstf.pmdb.utils.extensions.snackBar
 
-abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragment(),
+  BaseNavigator {
 
   var baseActivity: BaseActivity<*, *>? = null
     private set
@@ -36,6 +39,11 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
     return rootView
   }
 
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    if (context is BaseActivity<*, *>) baseActivity = context
+  }
+
   override fun onDetach() {
     baseActivity = null
     super.onDetach()
@@ -48,18 +56,16 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
     viewDataBinding!!.executePendingBindings()
   }
 
-  fun hideKeyboard() {
-    if (baseActivity != null) {
-      baseActivity!!.hideKeyboard()
-    }
+  override fun hideKeyboard() {
+    baseActivity?.hideKeyboard()
   }
 
   val isNetworkConnected: Boolean
     get() = baseActivity != null && baseActivity!!.isNetworkConnected
 
   fun openActivityOnTokenExpire() {
-    if (baseActivity != null) {
-      baseActivity!!.openActivityOnTokenExpire()
-    }
+    baseActivity?.openActivityOnTokenExpire()
   }
+
+  override fun showError(message: String) = requireView().snackBar(message)
 }

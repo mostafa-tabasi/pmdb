@@ -17,9 +17,7 @@
   <FrameLayout
     android:id="@+id/layout_blank_form"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:alpha="@{viewModel.blankFormLayoutAlpha}"
-    android:visibility="@{viewModel.blankFormLayoutVisibility}">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
@@ -41,10 +39,10 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_foreground" />
+            android:src="@drawable/ic_foreground"
+            app:imageUrl="@{viewModel.movie.poster}" />
           <!--
             android:onClick="@{viewModel.onPosterSelect}"
-            app:imageUrl="@{viewModel.model.poster}"
           -->
 
           <ProgressBar
@@ -84,11 +82,10 @@
                 android:layout_height="24dp"
                 android:layout_alignTop="@+id/edt_title"
                 android:layout_alignBottom="@+id/edt_title"
-                android:visibility="gone" />
-              <!--
                 android:src="@drawable/ic_tv_accent"
+                android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}" />
+              <!--
                 app:tint="@color/colorPrimaryDark"
-                app:movieType="@{viewModel.model.type}"
                 -->
 
               <EditText
@@ -103,12 +100,10 @@
                 android:inputType="text"
                 android:nextFocusForward="@id/edt_year"
                 android:selectAllOnFocus="true"
+                android:text="@={viewModel.movie.title}"
                 android:textSize="@dimen/font_xx_large"
                 android:textStyle="bold"
                 app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-              <!--
-                android:text="@={viewModel.model.title}"
-                -->
 
               <EditText
                 android:id="@+id/edt_runtime"
@@ -124,10 +119,8 @@
                 android:nextFocusForward="@id/edt_country"
                 android:padding="4dp"
                 android:selectAllOnFocus="true"
+                android:text="@={viewModel.movie.runtime}"
                 android:textSize="@dimen/font_large" />
-              <!--
-                android:text="@={viewModel.model.runtime}"
-              -->
 
               <View
                 android:id="@+id/txt_comma"
@@ -152,13 +145,11 @@
                 android:hint="Country"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:nextFocusForward="@id/edt_genre"
+                android:nextFocusForward="@id/edt_imdb_id"
                 android:padding="4dp"
                 android:selectAllOnFocus="true"
+                android:text="@={viewModel.movie.country}"
                 android:textSize="@dimen/font_large" />
-              <!--
-                android:text="@={viewModel.model.country}"
-              -->
 
             </RelativeLayout>
 
@@ -184,11 +175,8 @@
                 android:inputType="numberSigned"
                 android:maxLength="10"
                 android:selectAllOnFocus="true"
+                android:text="@={viewModel.movie.year}"
                 android:textSize="@dimen/font_x_large" />
-              <!--
-              android:text="@={viewModel.model.year}"
-                app:onEditorEnterAction="@{viewModel.onTitleSearchClick}"
-              -->
 
               <EditText
                 android:id="@+id/edt_imdb_id"
@@ -201,13 +189,11 @@
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLength="10"
+                android:nextFocusForward="@id/edt_genre"
                 android:padding="4dp"
                 android:selectAllOnFocus="true"
+                android:text="@={viewModel.movie.imdbID}"
                 android:textSize="@dimen/font_large" />
-              <!--
-                android:text="@={viewModel.model.imdbID}"
-                app:onEditorEnterAction="@{viewModel.onTitleSearchClick}"
-                -->
 
             </RelativeLayout>
 
@@ -240,11 +226,9 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_imdb_rate"
             android:selectAllOnFocus="true"
+            android:text="@={viewModel.movie.genre}"
             android:textSize="@dimen/font_x_large"
             app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-          <!--
-            android:text="@={viewModel.model.genre}"
-            -->
 
         </LinearLayout>
 
@@ -281,10 +265,8 @@
               android:inputType="text"
               android:nextFocusForward="@id/edt_imdb_votes"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.imdbRate}"
               android:textSize="@dimen/font_xx_large" />
-            <!--
-              android:text="@={viewModel.model.imdbRate}"
-              -->
 
             <EditText
               android:id="@+id/edt_imdb_votes"
@@ -297,11 +279,9 @@
               android:inputType="text"
               android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.imdbVotes}"
+              android:textColor="?colorPrimaryVariant"
               android:textSize="@dimen/font_medium" />
-            <!--
-              android:text="@={viewModel.model.imdbVotes}"
-              android:textColor="@color/colorPrimaryDark"
-              -->
 
           </LinearLayout>
 
@@ -337,10 +317,8 @@
               android:inputType="text"
               android:nextFocusForward="@id/edt_metacritic_rate"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.rottenTomatoesRate}"
               android:textSize="@dimen/font_xx_large" />
-            <!--
-              android:text="@={viewModel.model.rottenTomatoesRate}"
-              -->
 
           </LinearLayout>
 
@@ -376,10 +354,8 @@
               android:inputType="text"
               android:nextFocusForward="@id/edt_awards"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.metacriticRate}"
               android:textSize="@dimen/font_xx_large" />
-            <!--
-              android:text="@={viewModel.model.metacriticRate}"
-              -->
 
           </LinearLayout>
 
@@ -410,11 +386,9 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_director"
             android:selectAllOnFocus="true"
+            android:text="@={viewModel.movie.awards}"
             android:textSize="@dimen/font_x_large"
             app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-          <!--
-            android:text="@={viewModel.model.awards}"
-            -->
 
         </LinearLayout>
 
@@ -450,11 +424,9 @@
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_writer"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.director}"
               android:textSize="@dimen/font_x_large"
               app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-            <!--
-              android:text="@={viewModel.model.director}"
-              -->
 
           </LinearLayout>
 
@@ -489,11 +461,9 @@
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_actors"
               android:selectAllOnFocus="true"
+              android:text="@={viewModel.movie.writer}"
               android:textSize="@dimen/font_x_large"
               app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-            <!--
-              android:text="@={viewModel.model.writer}"
-              -->
 
           </LinearLayout>
 
@@ -524,11 +494,9 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_plot"
             android:selectAllOnFocus="true"
+            android:text="@={viewModel.movie.actors}"
             android:textSize="@dimen/font_x_large"
             app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-          <!--
-            android:text="@={viewModel.model.actors}"
-            -->
 
         </LinearLayout>
 
@@ -557,11 +525,9 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_comment"
             android:selectAllOnFocus="true"
+            android:text="@={viewModel.movie.plot}"
             android:textSize="@dimen/font_x_large"
             app:multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}" />
-          <!--
-            android:text="@={viewModel.model.plot}"
-            -->
 
         </LinearLayout>
 
@@ -589,11 +555,9 @@
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:selectAllOnFocus="true"
+            android:text="@={viewModel.movie.comment}"
             android:textSize="@dimen/font_x_large"
             app:multiLineWithAction="@{EditorInfo.IME_ACTION_DONE}" />
-          <!--
-            android:text="@={viewModel.model.comment}"
-            -->
 
         </LinearLayout>
 
@@ -611,7 +575,7 @@
       android:clickable="true"
       android:padding="8dp"
       android:src="@drawable/ic_back"
-      app:tint="?colorBlankFormBottomToolbarIconTint" />
+      app:tint="?colorSelectedIconsTint" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -628,13 +592,14 @@
         android:layout_width="?actionBarSize"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
+        android:layout_marginVertical="4dp"
         android:layout_marginRight="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
         android:clickable="true"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_tv_accent"
-        app:tint="?colorBlankFormBottomToolbarUnSelectedIconTint" />
+        app:tint="?colorUnSelectedIconsTint" />
 
       <ImageView
         android:layout_width="wrap_content"
@@ -646,7 +611,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_seen"
-        app:tint="?colorBlankFormBottomToolbarIconTint" />
+        app:tint="?colorSelectedIconsTint" />
 
       <ImageView
         android:layout_width="wrap_content"
@@ -658,7 +623,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_favorite"
-        app:tint="?colorBlankFormBottomToolbarIconTint" />
+        app:tint="?colorSelectedIconsTint" />
 
       <View
         android:layout_width="0.1dp"
@@ -679,7 +644,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_clear"
-        app:tint="?colorBlankFormBottomToolbarIconTint" />
+        app:tint="?colorSelectedIconsTint" />
 
       <ImageView
         android:layout_width="wrap_content"
@@ -691,7 +656,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_save"
-        app:tint="?colorBlankFormBottomToolbarIconTint" />
+        app:tint="?colorSelectedIconsTint" />
 
     </LinearLayout>
 

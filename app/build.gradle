@@ -23,12 +23,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://www.yourbaseurl.com\"")
-            buildConfigField("String", "API_KEY", "\"YOUR_API_KEY\"")
+            buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")
+            buildConfigField("String", "API_KEY_OMDB", "\"b9c2e15f\"")
         }
         release {
-            buildConfigField("String", "BASE_URL", "\"http://www.yourbaseurl.com\"")
-            buildConfigField("String", "API_KEY", "\"YOUR_API_KEY\"")
+            buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")
+            buildConfigField("String", "API_KEY_OMDB", "\"b9c2e15f\"")
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -67,6 +67,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutine_version"
 
     // dagger

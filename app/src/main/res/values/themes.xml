@@ -4,14 +4,16 @@
     <!-- Primary brand color. -->
     <item name="colorPrimary">@color/white</item>
     <item name="colorPrimaryVariant">@color/grey_800</item>
+    <item name="colorPrimaryDark">?colorPrimaryVariant</item>
     <item name="colorOnPrimary">@color/yellow_600</item>
+    <item name="colorAccent">?colorOnPrimary</item>
     <!-- Status bar color. -->
     <item name="android:statusBarColor" tools:targetApi="l">@color/grey_900</item>
     <!-- Customize your theme here. -->
     <item name="colorBlankFormBottomToolbar">@color/white_transparent</item>
     <item name="colorBlankFormDivider">@color/grey_500</item>
-    <item name="colorBlankFormBottomToolbarIconTint">@color/grey_600</item>
-    <item name="colorBlankFormBottomToolbarUnSelectedIconTint">@color/grey_400</item>
+    <item name="colorSelectedIconsTint">@color/grey_600</item>
+    <item name="colorUnSelectedIconsTint">@color/grey_400</item>
 
     <item name="colorBottomNavigationItemSelected">@color/yellow_600</item>
     <item name="colorBottomNavigationItemUnSelected">@color/white</item>
@@ -25,10 +27,12 @@
 
   <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    <item name="android:windowIsFloating">false</item>
   </style>
 
   <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
     <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    <item name="android:windowIsFloating">false</item>
   </style>
 
   <style name="CustomShapeAppearanceBottomSheetDialog" parent="">

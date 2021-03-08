@@ -2,8 +2,10 @@
 <resources>
   <attr name="colorBottomNavigationItemSelected" format="color" />
   <attr name="colorBottomNavigationItemUnSelected" format="color" />
+
   <attr name="colorBlankFormDivider" format="color" />
   <attr name="colorBlankFormBottomToolbar" format="color" />
-  <attr name="colorBlankFormBottomToolbarIconTint" format="color" />
-  <attr name="colorBlankFormBottomToolbarUnSelectedIconTint" format="color" />
+
+  <attr name="colorSelectedIconsTint" format="color" />
+  <attr name="colorUnSelectedIconsTint" format="color" />
 </resources>

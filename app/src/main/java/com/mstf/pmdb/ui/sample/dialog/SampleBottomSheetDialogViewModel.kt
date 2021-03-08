@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SampleBottomSheetDialogViewModel @Inject constructor(dataManager: DataManager) :
-  BaseViewModel<SampleBottomSheetDialogNavigator?>(dataManager) {
+  BaseViewModel<SampleBottomSheetDialogNavigator>(dataManager) {
 
   fun onNavBackClick() {
     navigator?.goBack()

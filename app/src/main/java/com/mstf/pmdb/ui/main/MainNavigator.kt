@@ -1,4 +1,6 @@
 package com.mstf.pmdb.ui.main
 
-interface MainNavigator {
+import com.mstf.pmdb.ui.base.BaseNavigator
+
+interface MainNavigator : BaseNavigator {
 }

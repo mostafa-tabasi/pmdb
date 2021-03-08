@@ -12,8 +12,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.mstf.pmdb.utils.CommonUtils
 import com.mstf.pmdb.utils.NetworkUtils
+import com.mstf.pmdb.utils.extensions.snackBar
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(),
+  BaseNavigator {
 
   var viewDataBinding: T? = null
     private set
@@ -35,7 +37,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
         checkSelfPermission(permission!!) == PackageManager.PERMISSION_GRANTED
   }
 
-  fun hideKeyboard() {
+  override fun hideKeyboard() {
     val view = this.currentFocus
     if (view != null) {
       val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -72,5 +74,9 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
     viewDataBinding = DataBindingUtil.setContentView(this, layoutId)
     viewDataBinding!!.setVariable(bindingVariable, viewModel)
     viewDataBinding!!.executePendingBindings()
+  }
+
+  override fun showError(message: String) {
+    viewDataBinding?.root?.snackBar(message)
   }
 }

@@ -1,5 +1,6 @@
 package com.mstf.pmdb.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.mstf.pmdb.utils.extensions.toast
 
 abstract class BaseBottomSheetDialog<T : ViewDataBinding?, V : BaseViewModel<*>?> :
-  BottomSheetDialogFragment() {
+  BottomSheetDialogFragment(), BaseNavigator {
 
   var baseActivity: BaseActivity<*, *>? = null
     private set
@@ -38,6 +40,11 @@ abstract class BaseBottomSheetDialog<T : ViewDataBinding?, V : BaseViewModel<*>?
     return rootView
   }
 
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    if (context is BaseActivity<*, *>) baseActivity = context
+  }
+
   override fun onDetach() {
     baseActivity = null
     super.onDetach()
@@ -50,18 +57,16 @@ abstract class BaseBottomSheetDialog<T : ViewDataBinding?, V : BaseViewModel<*>?
     viewDataBinding!!.executePendingBindings()
   }
 
-  fun hideKeyboard() {
-    if (baseActivity != null) {
-      baseActivity!!.hideKeyboard()
-    }
+  override fun hideKeyboard() {
+    baseActivity?.hideKeyboard()
   }
 
   val isNetworkConnected: Boolean
     get() = baseActivity != null && baseActivity!!.isNetworkConnected
 
   fun openActivityOnTokenExpire() {
-    if (baseActivity != null) {
-      baseActivity!!.openActivityOnTokenExpire()
-    }
+    baseActivity?.openActivityOnTokenExpire()
   }
+
+  override fun showError(message: String) = requireContext().toast(message)
 }

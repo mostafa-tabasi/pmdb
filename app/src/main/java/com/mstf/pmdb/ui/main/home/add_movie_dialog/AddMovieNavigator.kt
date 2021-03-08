@@ -1,8 +1,17 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
-interface AddMovieNavigator {
+import com.mstf.pmdb.ui.base.BaseNavigator
 
-  fun expandSearchTitleField()
-  fun expandSearchIdField()
+interface AddMovieNavigator : BaseNavigator {
+
+  /**
+   * آماده کردن فیلد جستجو براساس عنوان
+   */
+  fun prepareSearchTitleField()
+
+  /**
+   * آماده کردن فیلد جستجو براساس شناسه ی سایت imdb
+   */
+  fun prepareSearchIdField()
 
 }

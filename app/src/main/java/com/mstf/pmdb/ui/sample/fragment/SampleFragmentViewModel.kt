@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SampleFragmentViewModel @Inject constructor(dataManager: DataManager) :
-  BaseViewModel<SampleFragmentNavigator?>(dataManager) {
+  BaseViewModel<SampleFragmentNavigator>(dataManager) {
 
   fun onNavBackClick() {
     navigator?.goBack()
