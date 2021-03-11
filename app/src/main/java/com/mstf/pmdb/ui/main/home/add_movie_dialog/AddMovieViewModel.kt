@@ -2,9 +2,11 @@ package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
 import android.view.View
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mstf.pmdb.data.DataManager
 import com.mstf.pmdb.data.model.api.MatchedMovie
+import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.data.model.api.MatchedMovieList
 import com.mstf.pmdb.ui.base.BaseViewModel
 import com.mstf.pmdb.utils.NoInternetException
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   BaseViewModel<AddMovieNavigator>(dataManager) {
 
+  val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
   val searchMovieLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
@@ -39,6 +42,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
         return
       }
 
+      navigator?.hideKeyboard()
       searchMovieLoading.set(true)
       searchJob = viewModelScope.launch {
 
@@ -57,12 +61,41 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   }
 
   /**
+   * عملکرد کلیک بازگشت به عقب در لیست فیلم های جستجو شده
+   */
+  fun onMatchedMovieListBackClick(v: View?) {
+    clearMatchedMovieList()
+    // نمایش لایه ی جستجو
+    navigator?.showSearchLayout()
+  }
+
+  /**
+   * خالی کردن لیست نتایج جستجوی فعلی
+   */
+  fun clearMatchedMovieList() {
+    matchedMovieList.postValue(arrayListOf())
+  }
+
+  /**
    * بررسی لیست فیلم های دریافت شده متناسب با عنوان جستجو شده
    */
   private fun checkMatchedMovieListResponse(response: Response<MatchedMovieList>) {
-    navigator?.showError(response.body().toString())
-    //TODO: show result list
     searchMovieLoading.set(false)
+    with(response) {
+      if (!isSuccessful || body() == null) {
+        navigator?.showError("Something wrong! try again")
+        return
+      }
+
+      if (!body()!!.response) {
+        if (!body()!!.error.isNullOrEmpty()) navigator?.showError(body()!!.error!!)
+        else navigator?.showError("Something wrong! try again")
+        return
+      }
+
+      matchedMovieList.postValue(body()!!.matchedList)
+      navigator?.showMatchedMovieList()
+    }
   }
 
   /**

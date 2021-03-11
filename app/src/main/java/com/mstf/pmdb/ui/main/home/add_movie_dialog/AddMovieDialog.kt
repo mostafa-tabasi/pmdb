@@ -1,5 +1,6 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
@@ -11,10 +12,13 @@ import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
+import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.databinding.DialogAddMovieBinding
 import com.mstf.pmdb.ui.base.BaseBottomSheetDialog
+import com.mstf.pmdb.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 import com.mstf.pmdb.utils.extensions.gone
 import com.mstf.pmdb.utils.extensions.hideKeyboard
 import com.mstf.pmdb.utils.extensions.visible
@@ -30,6 +34,71 @@ class AddMovieDialog :
   override val viewModel: AddMovieViewModel by viewModels()
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.dialog_add_movie
+  private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel.setNavigator(this)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    setUp()
+  }
+
+  private fun setUp() {
+    viewDataBinding?.let {
+      // لایه ی فرم خالی بصورت پیش فرض دیده نمیشود
+      it.includeBlankForm.root.gone()
+      // لایه ی نتیجه ی فیلم جستجو شده بصورت پیش فرض دیده نمیشود
+      it.includeMatchedMovieList.root.gone()
+
+      it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
+      it.includeFindMovie.edtSearchId.onFocusChangeListener = this
+    }
+
+    setUpMatchedMovieList()
+    setUpBottomSheet()
+  }
+
+  private fun setUpMatchedMovieList() {
+    viewDataBinding?.let {
+      with(MatchedMoviesAdapter(arrayListOf())) {
+        setListener(object : MatchedMoviesAdapter.Listener {
+          override fun onItemClick(movie: MatchedMovieCompact) {
+            showError(Gson().toJson(movie))
+            //TODO: search selected movie
+            /*
+            viewModel.clearMatchedMovieList()
+            showSearchLayout()
+            bottomSheetBehavior.isDraggable = true
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            */
+          }
+        })
+        it.includeMatchedMovieList.moviesRecyclerView.adapter = this
+      }
+    }
+  }
+
+  private fun setUpBottomSheet() {
+    view?.let {
+      it.viewTreeObserver.addOnGlobalLayoutListener(object :
+        ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+          it.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+          val dialog = dialog as BottomSheetDialog
+          val bottomSheet =
+            dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
+          bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet!!)
+          bottomSheet.layoutParams.height = MATCH_PARENT
+          bottomSheetBehavior.peekHeight = viewDataBinding?.includeFindMovie?.root!!.height
+          bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+        }
+      })
+    }
+  }
 
   private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -68,45 +137,83 @@ class AddMovieDialog :
     }
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel.setNavigator(this)
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    setUp()
-  }
-
-  private fun setUp() {
+  override fun showMatchedMovieList() {
     viewDataBinding?.let {
-      it.includeBlankForm.root.gone()
-      it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
-      it.includeFindMovie.edtSearchId.onFocusChangeListener = this
+      it.includeMatchedMovieList.root.alpha = 0F
+      it.includeMatchedMovieList.root.visible()
+      it.includeMatchedMovieList.root.post {
+        // باتم شیت قابل درگ کردن نباشد
+        bottomSheetBehavior.isDraggable = false
+        // نمایش لایه ی نتایج جستجو
+        toggleSearchAndResultLayoutVisibility(
+          it.includeMatchedMovieList.root,
+          it.includeFindMovie.root
+        )
+      }
     }
-
-    setUpBottomSheet()
   }
 
-  private fun setUpBottomSheet() {
-    view?.let {
-      it.viewTreeObserver.addOnGlobalLayoutListener(object :
-        ViewTreeObserver.OnGlobalLayoutListener {
-        override fun onGlobalLayout() {
-          it.viewTreeObserver.removeOnGlobalLayoutListener(this)
+  override fun showSearchLayout() {
+    viewDataBinding?.let {
+      it.includeFindMovie.root.alpha = 0F
+      it.includeFindMovie.root.visible()
+      it.includeFindMovie.root.post {
+        // باتم شیت قابل درگ مردن باشد
+        bottomSheetBehavior.isDraggable = true
+        // نمایش لایه ی فیلد های جستجو
+        toggleSearchAndResultLayoutVisibility(
+          it.includeFindMovie.root,
+          it.includeMatchedMovieList.root
+        )
+      }
+    }
+  }
 
-          val dialog = dialog as BottomSheetDialog
-          val bottomSheet =
-            dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
-          val behavior = BottomSheetBehavior.from(bottomSheet!!)
-          bottomSheet.layoutParams.height = MATCH_PARENT
-          behavior.peekHeight = viewDataBinding?.includeFindMovie?.layoutSearch!!.height
-          behavior.addBottomSheetCallback(bottomSheetCallback)
+  /**
+   * تغییر وضعیت نمایش لایه های موردنظر همراه با انیمیشن
+   *
+   * @param layoutToShow لایه ای که میخواهیم نمایش داده شود
+   * @param layoutToHide لایه ای که میخواهیم محو شود
+   */
+  private fun toggleSearchAndResultLayoutVisibility(layoutToShow: View, layoutToHide: View) {
+    // تغییر ارتفاع باتم شیت به اندازه ی لایه ای که میخواهیم نمایش دهیم (همراه با انیمیشن)
+    ValueAnimator.ofInt(
+      bottomSheetBehavior.peekHeight,
+      layoutToShow.height
+    ).apply {
+      duration = 300
+      addUpdateListener { valueAnimator ->
+        bottomSheetBehavior.peekHeight = valueAnimator.animatedValue as Int
+      }
+    }.start()
+
+    // نمایش لایه ی موردنظر و محو شدن لایه ی دیگر (همراه با انیمیشن)
+    ValueAnimator.ofFloat(0F, 1F).apply {
+      duration = 300
+      addUpdateListener { valueAnimator ->
+        layoutToShow.alpha = valueAnimator.animatedValue as Float
+        layoutToHide.alpha = 1 - (valueAnimator.animatedValue as Float)
+      }
+      addListener(object : Animator.AnimatorListener {
+        override fun onAnimationStart(p0: Animator?) {
+        }
+
+        override fun onAnimationEnd(p0: Animator?) {
+          layoutToHide.gone()
+        }
+
+        override fun onAnimationCancel(p0: Animator?) {
+        }
+
+        override fun onAnimationRepeat(p0: Animator?) {
         }
       })
-    }
+    }.start()
   }
 
+  /**
+   * هندل کردن عملیات لازم هنگام فکوس شدن روی ویوهای موردنظر
+   */
   override fun onFocusChange(v: View?, hasFocus: Boolean) {
     v?.let {
       if (it.edt_search_title != null && hasFocus) {

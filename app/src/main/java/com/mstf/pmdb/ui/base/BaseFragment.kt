@@ -1,10 +1,12 @@
 package com.mstf.pmdb.ui.base
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -57,7 +59,10 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
   }
 
   override fun hideKeyboard() {
-    baseActivity?.hideKeyboard()
+    view?.let {
+      val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+      imm.hideSoftInputFromWindow(it.windowToken, 0)
+    }
   }
 
   val isNetworkConnected: Boolean

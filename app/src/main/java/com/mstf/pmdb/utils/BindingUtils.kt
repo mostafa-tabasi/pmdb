@@ -1,31 +1,24 @@
 package com.mstf.pmdb.utils
 
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mstf.pmdb.data.model.api.MatchedMovieCompact
+import com.mstf.pmdb.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 
 object BindingUtils {
 
-/*
   @JvmStatic
   @BindingAdapter("adapter")
-  fun addBlogItems(recyclerView: RecyclerView, blogs: List<BlogResponse.Blog>?) {
-      val adapter: BlogAdapter = recyclerView.adapter as BlogAdapter
-      if (adapter != null) {
-          adapter.clearItems()
-          adapter.addItems(blogs)
+  fun RecyclerView.addMatchedMovieItems(movies: List<MatchedMovieCompact>?) {
+    movies?.let {
+      with(adapter as MatchedMoviesAdapter) {
+        clearItems()
+        addItems(movies)
       }
+    }
   }
-*/
-
-  /*
-   @JvmStatic
-   @BindingAdapter("imageUrl")
-   fun setImageUrl(imageView: ImageView, url: String) {
-     val context = imageView.context
-     Glide.with(context).load(url).into(imageView)
-   }
-   */
 
   @JvmStatic
   @BindingAdapter("animatedVisibility")

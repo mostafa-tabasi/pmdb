@@ -10,7 +10,7 @@
 
   </data>
 
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
+  <FrameLayout
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,10 +21,17 @@
       bind:viewModel="@{viewModel}" />
 
     <include
-      android:id="@+id/include_blank_form"
-      layout="@layout/layout_blank_form"
+      android:id="@+id/include_matched_movie_list"
+      layout="@layout/layout_matched_movie_list"
+      android:visibility="invisible"
       bind:viewModel="@{viewModel}" />
 
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <include
+      android:id="@+id/include_blank_form"
+      layout="@layout/layout_blank_form"
+      android:visibility="invisible"
+      bind:viewModel="@{viewModel}" />
+
+  </FrameLayout>
 
 </layout>

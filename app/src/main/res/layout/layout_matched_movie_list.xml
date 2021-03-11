@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <import type="android.view.inputmethod.EditorInfo" />
+
+    <variable
+      name="viewModel"
+      type="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieViewModel" />
+
+  </data>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="2dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="16dp">
+
+    <ImageView
+      android:id="@+id/btn_back"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="8dp"
+      android:background="?android:selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:onClick="@{viewModel.onMatchedMovieListBackClick}"
+      android:padding="8dp"
+      android:src="@drawable/ic_back"
+      app:tint="?colorSelectedIconsTint" />
+
+    <TextView
+      android:id="@+id/txt_search_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@+id/btn_back"
+      android:layout_alignBottom="@+id/btn_back"
+      android:layout_marginLeft="8dp"
+      android:layout_toRightOf="@+id/btn_back"
+      android:gravity="center"
+      android:text="select your movie"
+      android:textSize="@dimen/font_large" />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/movies_recycler_view"
+      adapter="@{viewModel.matchedMovieList}"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/btn_back"
+      android:nestedScrollingEnabled="false"
+      android:orientation="horizontal"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      tools:listitem="@layout/item_matched_movie" />
+
+  </RelativeLayout>
+
+</layout>

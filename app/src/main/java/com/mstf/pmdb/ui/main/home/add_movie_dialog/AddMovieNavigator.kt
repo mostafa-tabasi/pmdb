@@ -14,4 +14,14 @@ interface AddMovieNavigator : BaseNavigator {
    */
   fun prepareSearchIdField()
 
+  /**
+   * نمایش لیست فیلم های پیدا شده متناسب با جستجوی کاربر
+   */
+  fun showMatchedMovieList()
+
+  /**
+   * نمایش لایه ی جستجوی فیلم
+   */
+  fun showSearchLayout()
+
 }
