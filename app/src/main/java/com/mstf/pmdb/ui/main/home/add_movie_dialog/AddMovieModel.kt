@@ -3,9 +3,13 @@ package com.mstf.pmdb.ui.main.home.add_movie_dialog
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.mstf.pmdb.BR
+import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_EPISODE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
+import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_IMDB
+import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_METACRITIC
+import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_ROTTEN_TOMATOES
 
 class AddMovieModel : BaseObservable() {
 
@@ -157,15 +161,14 @@ class AddMovieModel : BaseObservable() {
       notifyPropertyChanged(BR.favorite)
     }
 
-  /*
-  fun update(movieResponse: MovieResponse) {
-    title = movieResponse.title
-    imdbID = movieResponse.imdbID
-    poster = movieResponse.poster
-    type = movieResponse.type
-    runtime = movieResponse.runtime
-    country = movieResponse.country
-    movieResponse.ratings?.let {
+  fun update(movie: MatchedMovie) {
+    title = movie.title
+    imdbID = movie.imdbID
+    poster = movie.poster
+    type = movie.type
+    runtime = movie.runtime
+    country = movie.country
+    movie.ratings?.let {
       it.forEach { rate ->
         when (rate.source) {
           RATING_SOURCE_IMDB -> imdbRate = rate.value
@@ -174,19 +177,18 @@ class AddMovieModel : BaseObservable() {
         }
       }
     }
-    imdbVotes = movieResponse.imdbVotes
-    genre = movieResponse.genre
-    director = movieResponse.director
-    writer = movieResponse.writer
-    actors = movieResponse.actors
-    plot = movieResponse.plot
-    awards = movieResponse.awards
-    year = movieResponse.year
+    imdbVotes = movie.imdbVotes
+    genre = movie.genre
+    director = movie.director
+    writer = movie.writer
+    actors = movie.actors
+    plot = movie.plot
+    awards = movie.awards
+    year = "(${movie.year})"
     comment = null
     seen = false
     favorite = false
   }
-  */
 
   fun clear() {
     title = null

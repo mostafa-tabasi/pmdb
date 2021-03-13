@@ -27,8 +27,8 @@
       bind:viewModel="@{viewModel}" />
 
     <include
-      android:id="@+id/include_blank_form"
-      layout="@layout/layout_blank_form"
+      android:id="@+id/include_movie_form"
+      layout="@layout/layout_movie_form"
       android:visibility="invisible"
       bind:viewModel="@{viewModel}" />
 

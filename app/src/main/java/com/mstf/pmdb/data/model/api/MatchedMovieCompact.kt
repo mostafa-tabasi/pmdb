@@ -10,5 +10,6 @@ data class MatchedMovieCompact(
   @Expose @SerializedName("Year") val year: String?,
   @Expose @SerializedName("imdbID") val imdbID: String?,
   @Expose @SerializedName("Type") val type: String?,
-  @Expose @SerializedName("Poster") val poster: String?
+  @Expose @SerializedName("Poster") val poster: String?,
+  var loading: Boolean = false
 )

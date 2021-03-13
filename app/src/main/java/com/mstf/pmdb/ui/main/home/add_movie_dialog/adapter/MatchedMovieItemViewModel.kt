@@ -12,5 +12,5 @@ class MatchedMovieItemViewModel(item: MatchedMovieCompact) {
   val poster = ObservableField<String?>().apply { set(item.poster) }
   val tv = ObservableField<Boolean>()
     .apply { set(item.type == MEDIA_TYPE_TITLE_SERIES || item.type == MEDIA_TYPE_TITLE_EPISODE) }
-
+  val loading = ObservableField<Boolean>().apply { set(item.loading) }
 }

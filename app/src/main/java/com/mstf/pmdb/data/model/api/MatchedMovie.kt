@@ -1,8 +1,10 @@
 package com.mstf.pmdb.data.model.api
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class MatchedMovie(
   @Expose @SerializedName("Title") val title: String?,
   @Expose @SerializedName("Year") val year: String?,
@@ -29,5 +31,5 @@ data class MatchedMovie(
   @Expose @SerializedName("Production") val production: String?,
   @Expose @SerializedName("Website") val website: String?,
   @Expose @SerializedName("Error") val error: String?,
-  @Expose @SerializedName("Response") val response: Boolean
+  @Expose @SerializedName("Response") val isSuccessful: Boolean
 )

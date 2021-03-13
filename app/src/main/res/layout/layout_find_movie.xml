@@ -55,8 +55,9 @@
         android:hint="Title"
         android:inputType="text"
         android:padding="4dp"
+        android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="@={viewModel.movie.title}"
+        android:text="@={viewModel.searchTitle}"
         android:textSize="@dimen/font_x_large" />
 
       <EditText
@@ -71,8 +72,9 @@
         android:hint="IMDb ID"
         android:inputType="text"
         android:padding="4dp"
+        android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="@={viewModel.movie.imdbID}"
+        android:text="@={viewModel.searchID}"
         android:textSize="@dimen/font_x_large" />
 
       <ImageView
@@ -85,7 +87,7 @@
         android:onClick="@{viewModel.searchMovie}"
         android:padding="4dp"
         android:src="@drawable/ic_search"
-        android:visibility="@{viewModel.searchMovieLoading ? View.GONE : View.VISIBLE}"
+        android:visibility="@{viewModel.searchLoading ? View.GONE : View.VISIBLE}"
         app:tint="?colorSelectedIconsTint" />
 
       <ProgressBar
@@ -95,7 +97,7 @@
         android:layout_margin="4dp"
         android:layout_weight="0.75"
         android:indeterminateTint="?colorSelectedIconsTint"
-        android:visibility="@{viewModel.searchMovieLoading ? View.VISIBLE : View.GONE}" />
+        android:visibility="@{viewModel.searchLoading ? View.VISIBLE : View.GONE}" />
 
     </LinearLayout>
 

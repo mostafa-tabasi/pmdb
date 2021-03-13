@@ -9,5 +9,5 @@ data class MatchedMovieList(
   @Expose @SerializedName("Search") val matchedList: List<MatchedMovieCompact>?,
   @Expose @SerializedName("totalResults") val totalResults: Int,
   @Expose @SerializedName("Error") val error: String?,
-  @Expose @SerializedName("Response") val response: Boolean
+  @Expose @SerializedName("Response") val isSuccessful: Boolean
 )

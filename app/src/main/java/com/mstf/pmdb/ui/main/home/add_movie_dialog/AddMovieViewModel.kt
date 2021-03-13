@@ -23,7 +23,9 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
-  val searchMovieLoading = ObservableField<Boolean>().apply { set(false) }
+  val searchTitle = ObservableField<String?>()
+  val searchID = ObservableField<String>()
+  val searchLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
 
   /**
@@ -31,39 +33,44 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun cancelSearching() {
     searchJob?.cancel()
-    searchMovieLoading.set(false)
+    searchLoading.set(false)
   }
 
   fun searchMovie(v: View?) {
-    with(movie) {
+    if (searchTitle.get().isNullOrEmptyAfterTrim() && searchID.get().isNullOrEmptyAfterTrim()) {
+      navigator?.showError("Enter movie title or id")
+      return
+    }
 
-      if (title.isNullOrEmptyAfterTrim() && imdbID.isNullOrEmptyAfterTrim()) {
-        navigator?.showError("Enter movie title or id")
-        return
-      }
+    navigator?.hideKeyboard()
+    searchLoading.set(true)
+    searchJob = viewModelScope.launch {
+      try {
+        if (!searchTitle.get().isNullOrEmptyAfterTrim())
+          dataManager.findMovieByTitle(searchTitle.get()!!.trim())
+            .run { checkMatchedMovieListResponse(this) }
+        else dataManager.findMovieByImdbId(searchID.get()!!.trim())
+          .run { checkMatchedMovieResponse(this) }
 
-      navigator?.hideKeyboard()
-      searchMovieLoading.set(true)
-      searchJob = viewModelScope.launch {
-
-        try {
-          if (!title.isNullOrEmptyAfterTrim())
-            dataManager.findMovieByTitle(title!!.trim()).run { checkMatchedMovieListResponse(this) }
-          else
-            dataManager.findMovieByImdbId(imdbID!!.trim()).run { checkMatchedMovieResponse(this) }
-
-        } catch (e: NoInternetException) {
-          navigator?.showError("Check Internet Connection")
-          searchMovieLoading.set(false)
-        }
+      } catch (e: NoInternetException) {
+        navigator?.showError("Check Internet Connection")
+        searchLoading.set(false)
       }
     }
+  }
+
+  /**
+   * عملکرد کلیک خالی کردن فرم مربوط به اطلاعات فیلم
+   */
+  fun onFormClear(v: View? = null) {
+    movie.clear()
   }
 
   /**
    * عملکرد کلیک بازگشت به عقب در لیست فیلم های جستجو شده
    */
   fun onMatchedMovieListBackClick(v: View?) {
+    cancelSearching()
     clearMatchedMovieList()
     // نمایش لایه ی جستجو
     navigator?.showSearchLayout()
@@ -72,7 +79,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    * خالی کردن لیست نتایج جستجوی فعلی
    */
-  fun clearMatchedMovieList() {
+  private fun clearMatchedMovieList() {
     matchedMovieList.postValue(arrayListOf())
   }
 
@@ -80,14 +87,14 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * بررسی لیست فیلم های دریافت شده متناسب با عنوان جستجو شده
    */
   private fun checkMatchedMovieListResponse(response: Response<MatchedMovieList>) {
-    searchMovieLoading.set(false)
+    searchLoading.set(false)
     with(response) {
       if (!isSuccessful || body() == null) {
         navigator?.showError("Something wrong! try again")
         return
       }
 
-      if (!body()!!.response) {
+      if (!body()!!.isSuccessful) {
         if (!body()!!.error.isNullOrEmpty()) navigator?.showError(body()!!.error!!)
         else navigator?.showError("Something wrong! try again")
         return
@@ -100,18 +107,78 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   /**
    * بررسی فیلم دریافت شده متناسب با شناسه ی جستجو شده
+   *
+   * @param response نتیجه ی دریافت شده جهت بررسی
+   * @param itemPosition شماره ردیف فیلمی که جزئیات دریافت شده ی آن بررسی میشود
+   * (در صورتیکه فیلم از لیست جستجو انتخاب شده باشد)
    */
-  private fun checkMatchedMovieResponse(response: Response<MatchedMovie>) {
-    navigator?.showError(response.body().toString())
-    //TODO: show movie info
-    searchMovieLoading.set(false)
+  private fun checkMatchedMovieResponse(
+    response: Response<MatchedMovie>,
+    itemPosition: Int? = null
+  ) {
+    //اگر فیلم از لیست جستجو انتخاب شده بود، لودینگ مربوط به آیتمِ لیست متوقف شود
+    if (itemPosition != null) navigator?.hideItemLoadingAtPosition(itemPosition)
+    // در غیراینصورت لودینگ مربوط به فیلد جستجو متوقف شود
+    else searchLoading.set(false)
+
+    with(response) {
+      if (!isSuccessful || body() == null) {
+        navigator?.showError("Something wrong! try again")
+        return
+      }
+
+      if (!body()!!.isSuccessful) {
+        if (!body()!!.error.isNullOrEmpty()) navigator?.showError(body()!!.error!!)
+        else navigator?.showError("Something wrong! try again")
+        return
+      }
+
+      movie.update(body()!!)
+      navigator?.hideMatchedMovieList()
+      navigator?.showFormLayout()
+      clearMatchedMovieList()
+    }
   }
 
+  /**
+   * خالی کردن شناسه ی مربوط به فیلم موردنظر برای جستجو
+   */
   fun clearMovieId() {
-    movie.imdbID = null
+    searchID.set(null)
   }
 
+  /**
+   * خالی کردن عنوان مربوط به فیلم موردنظر برای جستجو
+   */
   fun clearMovieTitle() {
-    movie.title = null
+    searchTitle.set(null)
+  }
+
+  /**
+   * دریافت اطلاعات مربوط به فیلم موردنظر
+   *
+   * @param movie فیلم انتخاب شده
+   * @param itemPosition شماره ردیف فیلم انتخاب شده از لیست
+   */
+  fun getMovieDetails(movie: MatchedMovieCompact, itemPosition: Int) {
+    with(movie) {
+      if (imdbID.isNullOrEmpty() || imdbID == "N/A") {
+        navigator?.showError("Item has problem right now, try again later")
+        return
+      }
+
+      searchJob = viewModelScope.launch {
+        try {
+          navigator?.showItemLoadingAtPosition(itemPosition)
+          dataManager.findMovieByImdbId(imdbID).run {
+            checkMatchedMovieResponse(this, itemPosition)
+          }
+
+        } catch (e: NoInternetException) {
+          navigator?.showError("Check Internet Connection")
+          navigator?.hideItemLoadingAtPosition(itemPosition)
+        }
+      }
+    }
   }
 }

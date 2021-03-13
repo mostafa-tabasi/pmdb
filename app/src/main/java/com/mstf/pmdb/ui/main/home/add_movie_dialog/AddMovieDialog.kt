@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.Gson
 import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
 import com.mstf.pmdb.data.model.api.MatchedMovieCompact
@@ -49,7 +48,7 @@ class AddMovieDialog :
   private fun setUp() {
     viewDataBinding?.let {
       // لایه ی فرم خالی بصورت پیش فرض دیده نمیشود
-      it.includeBlankForm.root.gone()
+      it.includeMovieForm.root.gone()
       // لایه ی نتیجه ی فیلم جستجو شده بصورت پیش فرض دیده نمیشود
       it.includeMatchedMovieList.root.gone()
 
@@ -65,20 +64,32 @@ class AddMovieDialog :
     viewDataBinding?.let {
       with(MatchedMoviesAdapter(arrayListOf())) {
         setListener(object : MatchedMoviesAdapter.Listener {
-          override fun onItemClick(movie: MatchedMovieCompact) {
-            showError(Gson().toJson(movie))
-            //TODO: search selected movie
-            /*
-            viewModel.clearMatchedMovieList()
-            showSearchLayout()
-            bottomSheetBehavior.isDraggable = true
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            */
+          override fun onMovieSelect(movie: MatchedMovieCompact, itemPosition: Int) {
+            viewModel.getMovieDetails(movie, itemPosition)
           }
         })
         it.includeMatchedMovieList.moviesRecyclerView.adapter = this
       }
     }
+  }
+
+  override fun showItemLoadingAtPosition(itemPosition: Int) {
+    viewDataBinding?.let {
+      (it.includeMatchedMovieList.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
+          as MatchedMoviesAdapter.MatchedMovieViewHolder).showLoading(itemPosition)
+    }
+  }
+
+  override fun hideItemLoadingAtPosition(itemPosition: Int) {
+    viewDataBinding?.let {
+      (it.includeMatchedMovieList.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
+          as MatchedMoviesAdapter.MatchedMovieViewHolder).hideLoading(itemPosition)
+    }
+  }
+
+  override fun showFormLayout() {
+    // باتم شیت کامل باز شود تا لایه ی مربوط به فرم نمایش داده شود
+    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
   }
 
   private fun setUpBottomSheet() {
@@ -107,8 +118,8 @@ class AddMovieDialog :
         when (newState) {
           BottomSheetBehavior.STATE_EXPANDED -> it.includeFindMovie.root.gone()
           BottomSheetBehavior.STATE_COLLAPSED -> {
-            it.includeFindMovie.edtSearchTitle.requestFocus()
-            it.includeBlankForm.root.gone()
+            it.includeMovieForm.root.gone()
+            viewModel.onFormClear()
           }
         }
       }
@@ -130,9 +141,9 @@ class AddMovieDialog :
     private fun calculateLayoutsAlpha(slideOffset: Float) {
       viewDataBinding?.let {
         it.includeFindMovie.root.visible()
-        it.includeBlankForm.root.visible()
+        it.includeMovieForm.root.visible()
         it.includeFindMovie.root.alpha = 1 - (slideOffset * 5)
-        it.includeBlankForm.root.alpha = slideOffset * 5
+        it.includeMovieForm.root.alpha = slideOffset * 5
       }
     }
   }
@@ -149,6 +160,18 @@ class AddMovieDialog :
           it.includeMatchedMovieList.root,
           it.includeFindMovie.root
         )
+      }
+    }
+  }
+
+  override fun hideMatchedMovieList() {
+    viewDataBinding?.let {
+      it.includeMatchedMovieList.root.gone()
+      it.includeFindMovie.root.visible()
+      it.includeFindMovie.root.post {
+        // باتم شیت قابل درگ مردن باشد
+        bottomSheetBehavior.isDraggable = true
+        bottomSheetBehavior.peekHeight = it.includeFindMovie.root.height
       }
     }
   }

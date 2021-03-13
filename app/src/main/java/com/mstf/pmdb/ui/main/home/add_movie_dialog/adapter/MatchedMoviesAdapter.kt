@@ -27,7 +27,7 @@ class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
     return items.size
   }
 
-  public fun setListener(listener: Listener) {
+  fun setListener(listener: Listener) {
     this.listener = listener
   }
 
@@ -41,7 +41,14 @@ class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
   }
 
   interface Listener {
-    fun onItemClick(movie: MatchedMovieCompact)
+
+    /**
+     * انتخاب فیلم موردنظر از لیست
+     *
+     * @param movie فیلم انتخاب شده
+     * @param itemPosition شماره ردیف فیلم انتخاب شده
+     */
+    fun onMovieSelect(movie: MatchedMovieCompact, itemPosition: Int)
   }
 
   inner class MatchedMovieViewHolder(private val binding: ItemMatchedMovieBinding) :
@@ -57,8 +64,8 @@ class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
         txtTitle.isSelected = false
 
         val item = items[position]
-        // انتخاب هر فیلم
-        root.setOnClickListener { listener.onItemClick(item) }
+        // انتخاب فیلم موردنظر
+        root.setOnClickListener { listener.onMovieSelect(item, position) }
         // با کلیک روی عنوان فیلم، متن کامل نمایش داده شود
         txtTitle.setOnClickListener { it.isSelected = true }
 
@@ -66,6 +73,16 @@ class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
         viewModel = itemViewModel
         executePendingBindings()
       }
+    }
+
+    fun showLoading(itemPosition: Int) {
+      items[itemPosition].loading = true
+      itemViewModel.loading.set(true)
+    }
+
+    fun hideLoading(itemPosition: Int) {
+      items[itemPosition].loading = false
+      itemViewModel.loading.set(false)
     }
   }
 }

@@ -28,14 +28,31 @@
       app:cardCornerRadius="10dp"
       app:cardElevation="3dp">
 
-      <ImageView
-        android:id="@+id/img_poster"
-        imageUrl="@{viewModel.poster}"
+      <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_foreground" />
+        android:layout_height="match_parent">
+
+        <ImageView
+          android:id="@+id/img_poster"
+          imageUrl="@{viewModel.poster}"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:adjustViewBounds="true"
+          android:scaleType="centerCrop"
+          android:src="@drawable/ic_foreground" />
+
+        <ProgressBar
+          android:id="@+id/pb_loading"
+          style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom"
+          android:background="?colorPrimaryVariant"
+          android:indeterminate="true"
+          android:paddingHorizontal="8dp"
+          android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />
+
+      </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
