@@ -297,6 +297,7 @@
   <color name="grey_700">#616161</color>
   <color name="grey_800">#424242</color>
   <color name="grey_900">#212121</color>
+  <color name="grey_900_transparent">#CC212121</color>
   <!-- Grey -->
 
   <!-- Blue Grey -->
@@ -314,6 +315,7 @@
 
   <!-- Black -->
   <color name="black">#000000</color>
+  <color name="black_transparent">#CC000000</color>
   <!-- Black -->
 
   <!-- White -->

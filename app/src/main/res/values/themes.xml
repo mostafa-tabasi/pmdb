@@ -3,8 +3,9 @@
   <style name="Theme.PMDb" parent="Theme.MaterialComponents.Light.NoActionBar">
     <!-- Primary brand color. -->
     <item name="colorPrimary">@color/white</item>
+    <item name="colorTransparentPrimary">@color/white_transparent</item>
     <item name="colorPrimaryVariant">@color/grey_800</item>
-    <item name="colorTransparentPrimaryVariant">@color/white_transparent</item>
+    <item name="colorTransparentPrimaryVariant">@color/grey_900_transparent</item>
     <item name="colorPrimaryDark">?colorPrimaryVariant</item>
     <item name="colorOnPrimary">@color/yellow_600</item>
     <item name="colorAccent">?colorOnPrimary</item>

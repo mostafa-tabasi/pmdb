@@ -9,6 +9,8 @@ import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.data.model.api.MatchedMovieList
 import com.mstf.pmdb.ui.base.BaseViewModel
+import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
+import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.NoInternetException
 import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
-  val searchTitle = ObservableField<String?>()
+  val searchTitle = ObservableField<String>()
   val searchID = ObservableField<String>()
   val searchLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
@@ -77,6 +79,30 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   }
 
   /**
+   * تغییر نوع فیلم
+   */
+  fun toggleMovieType(v: View?) {
+    with(movie) {
+      tv.set(!tv.get()!!)
+      type.set(if (tv.get()!!) MEDIA_TYPE_TITLE_MOVIE else MEDIA_TYPE_TITLE_SERIES)
+    }
+  }
+
+  /**
+   * تغییر وضعیت دیدن فیلم (کاربر فیلم را دیده است یا خیر)
+   */
+  fun toggleSeenState(v: View?) {
+    with(movie) { seen.set(!seen.get()!!) }
+  }
+
+  /**
+   * تغییر وضعیت مورد علاقه بودن فیلم
+   */
+  fun toggleFavoriteState(v: View?) {
+    with(movie) { favorite.set(!favorite.get()!!) }
+  }
+
+  /**
    * خالی کردن لیست نتایج جستجوی فعلی
    */
   private fun clearMatchedMovieList() {
@@ -100,7 +126,12 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
         return
       }
 
-      matchedMovieList.postValue(body()!!.matchedList)
+      if (body()!!.matchedList == null || body()!!.matchedList!!.isEmpty()) {
+        navigator?.showError("Movie not found")
+        return
+      }
+
+      matchedMovieList.postValue(body()!!.matchedList!!)
       navigator?.showMatchedMovieList()
     }
   }

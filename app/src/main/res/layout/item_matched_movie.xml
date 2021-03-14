@@ -47,7 +47,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_gravity="bottom"
-          android:background="?colorPrimaryVariant"
+          android:background="?colorTransparentPrimaryVariant"
           android:indeterminate="true"
           android:paddingHorizontal="8dp"
           android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}" />

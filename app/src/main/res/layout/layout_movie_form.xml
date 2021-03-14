@@ -6,6 +6,8 @@
 
     <import type="android.view.View" />
 
+    <import type="com.mstf.pmdb.R" />
+
     <import type="android.view.inputmethod.EditorInfo" />
 
     <variable
@@ -174,7 +176,7 @@
                 android:hint="Year "
                 android:imeOptions="actionNext"
                 android:inputType="numberSigned"
-                android:maxLength="11"
+                android:maxLength="10"
                 android:selectAllOnFocus="true"
                 android:text="@={viewModel.movie.year}"
                 android:textSize="@dimen/font_x_large" />
@@ -578,6 +580,7 @@
       android:padding="8dp">
 
       <ImageView
+        isActivated="@{viewModel.movie.tv}"
         android:layout_width="?actionBarSize"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
@@ -585,30 +588,38 @@
         android:layout_marginRight="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:onClick="@{viewModel.toggleMovieType}"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:src="@drawable/ic_tv_accent"
-        app:tint="?colorUnSelectedIconsTint" />
+        android:src="@drawable/ic_tv_accent" />
 
       <ImageView
+        isSelected="@{viewModel.movie.seen}"
+        selectedIcon="@{ @drawable/ic_seen_filled }"
+        unselectedIcon="@{ @drawable/ic_seen }"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:onClick="@{viewModel.toggleSeenState}"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_seen"
         app:tint="?colorSelectedIconsTint" />
 
       <ImageView
+        isSelected="@{viewModel.movie.favorite}"
+        selectedIcon="@{ @drawable/ic_favorite_filled }"
+        unselectedIcon="@{ @drawable/ic_favorite }"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:onClick="@{viewModel.toggleFavoriteState}"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_favorite"

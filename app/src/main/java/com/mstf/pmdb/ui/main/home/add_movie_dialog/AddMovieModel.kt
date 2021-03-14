@@ -1,11 +1,9 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
 import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import com.mstf.pmdb.BR
+import androidx.databinding.ObservableField
 import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_EPISODE
-import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_IMDB
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_METACRITIC
@@ -13,203 +11,80 @@ import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_ROTTEN_TOMATOES
 
 class AddMovieModel : BaseObservable() {
 
-  @get:Bindable
-  var title: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.title)
-    }
-
-  @get:Bindable
-  var year: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.year)
-    }
-
-  @get:Bindable
-  var imdbID: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.imdbID)
-    }
-
-  @get:Bindable
-  var poster: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.poster)
-    }
-
-  @get:Bindable
-  var type: String? = MEDIA_TYPE_TITLE_MOVIE
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.type)
-      tv = value == MEDIA_TYPE_TITLE_SERIES || value == MEDIA_TYPE_TITLE_EPISODE
-    }
-
-  @get:Bindable
-  var tv: Boolean = false
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.tv)
-    }
-
-  @get:Bindable
-  var runtime: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.runtime)
-    }
-
-  @get:Bindable
-  var country: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.country)
-    }
-
-  @get:Bindable
-  var imdbRate: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.imdbRate)
-    }
-
-  @get:Bindable
-  var imdbVotes: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.imdbVotes)
-    }
-
-  @get:Bindable
-  var rottenTomatoesRate: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.rottenTomatoesRate)
-    }
-
-  @get:Bindable
-  var metacriticRate: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.metacriticRate)
-    }
-
-  @get:Bindable
-  var genre: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.genre)
-    }
-
-  @get:Bindable
-  var director: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.director)
-    }
-
-  @get:Bindable
-  var writer: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.writer)
-    }
-
-  @get:Bindable
-  var actors: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.actors)
-    }
-
-  @get:Bindable
-  var plot: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.plot)
-    }
-
-  @get:Bindable
-  var awards: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.awards)
-    }
-
-  @get:Bindable
-  var comment: String? = null
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.comment)
-    }
-
-  @get:Bindable
-  var seen: Boolean = false
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.seen)
-    }
-
-  @get:Bindable
-  var favorite: Boolean = false
-    set(value) {
-      field = value
-      notifyPropertyChanged(BR.favorite)
-    }
+  val title = ObservableField<String>()
+  val year = ObservableField<String>()
+  val imdbID = ObservableField<String>()
+  val poster = ObservableField<String>().apply { set("N/A") }
+  val type = ObservableField<String>()
+  val tv = ObservableField<Boolean>()
+    .apply { set(type.get() == MEDIA_TYPE_TITLE_SERIES || type.get() == MEDIA_TYPE_TITLE_EPISODE) }
+  val runtime = ObservableField<String>()
+  val country = ObservableField<String>()
+  val imdbRate = ObservableField<String>()
+  val imdbVotes = ObservableField<String>()
+  val rottenTomatoesRate = ObservableField<String>()
+  val metacriticRate = ObservableField<String>()
+  val genre = ObservableField<String>()
+  val director = ObservableField<String>()
+  val writer = ObservableField<String>()
+  val actors = ObservableField<String>()
+  val plot = ObservableField<String>()
+  val awards = ObservableField<String>()
+  val comment = ObservableField<String>()
+  val seen = ObservableField<Boolean>().apply { set(false) }
+  val favorite = ObservableField<Boolean>().apply { set(false) }
 
   fun update(movie: MatchedMovie) {
-    title = movie.title
-    imdbID = movie.imdbID
-    poster = movie.poster
-    type = movie.type
-    runtime = movie.runtime
-    country = movie.country
+    title.set(movie.title)
+    imdbID.set(movie.imdbID)
+    poster.set(movie.poster)
+    type.set(movie.type)
+    tv.set(type.get() == MEDIA_TYPE_TITLE_SERIES || type.get() == MEDIA_TYPE_TITLE_EPISODE)
+    runtime.set(movie.runtime)
+    country.set(movie.country)
     movie.ratings?.let {
       it.forEach { rate ->
         when (rate.source) {
-          RATING_SOURCE_IMDB -> imdbRate = rate.value
-          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate = rate.value
-          RATING_SOURCE_METACRITIC -> metacriticRate = rate.value
+          RATING_SOURCE_IMDB -> imdbRate.set(rate.value)
+          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate.set(rate.value)
+          RATING_SOURCE_METACRITIC -> metacriticRate.set(rate.value)
         }
       }
     }
-    imdbVotes = movie.imdbVotes
-    genre = movie.genre
-    director = movie.director
-    writer = movie.writer
-    actors = movie.actors
-    plot = movie.plot
-    awards = movie.awards
-    year = "(${movie.year})"
-    comment = null
-    seen = false
-    favorite = false
+    imdbVotes.set(movie.imdbVotes)
+    genre.set(movie.genre)
+    director.set(movie.director)
+    writer.set(movie.writer)
+    actors.set(movie.actors)
+    plot.set(movie.plot)
+    awards.set(movie.awards)
+    year.set(movie.year)
+    comment.set(null)
+    seen.set(false)
+    favorite.set(false)
   }
 
   fun clear() {
-    title = null
-    imdbID = null
-    poster = "N/A"
-    type = MEDIA_TYPE_TITLE_MOVIE
-    runtime = null
-    country = null
-    imdbRate = null
-    rottenTomatoesRate = null
-    metacriticRate = null
-    imdbVotes = null
-    genre = null
-    director = null
-    writer = null
-    actors = null
-    plot = null
-    awards = null
-    year = null
-    comment = null
-    seen = false
-    favorite = false
+    title.set(null)
+    imdbID.set(null)
+    poster.set("N/A")
+    type.set(null)
+    tv.set(false)
+    runtime.set(null)
+    country.set(null)
+    imdbRate.set(null)
+    rottenTomatoesRate.set(null)
+    metacriticRate.set(null)
+    imdbVotes.set(null)
+    genre.set(null)
+    director.set(null)
+    writer.set(null)
+    actors.set(null)
+    plot.set(null)
+    awards.set(null)
+    year.set(null)
+    comment.set(null)
+    seen.set(false)
+    favorite.set(false)
   }
 }
