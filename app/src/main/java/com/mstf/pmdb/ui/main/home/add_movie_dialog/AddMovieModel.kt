@@ -14,7 +14,7 @@ class AddMovieModel : BaseObservable() {
   val title = ObservableField<String>()
   val year = ObservableField<String>()
   val imdbID = ObservableField<String>()
-  val poster = ObservableField<String>().apply { set("N/A") }
+  val poster = ObservableField<String>()
   val type = ObservableField<String>()
   val tv = ObservableField<Boolean>()
     .apply { set(type.get() == MEDIA_TYPE_TITLE_SERIES || type.get() == MEDIA_TYPE_TITLE_EPISODE) }

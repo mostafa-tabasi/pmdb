@@ -1,6 +1,9 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -38,7 +41,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     searchLoading.set(false)
   }
 
-  fun searchMovie(v: View?) {
+  fun searchMovie(v: View? = null) {
     if (searchTitle.get().isNullOrEmptyAfterTrim() && searchID.get().isNullOrEmptyAfterTrim()) {
       navigator?.showError("Enter movie title or id")
       return
@@ -61,6 +64,14 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     }
   }
 
+  fun onEditorAction(view: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+      searchMovie()
+      return true
+    }
+    return false
+  }
+
   /**
    * عملکرد کلیک خالی کردن فرم مربوط به اطلاعات فیلم
    */
@@ -71,7 +82,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    * عملکرد کلیک بازگشت به عقب در لیست فیلم های جستجو شده
    */
-  fun onMatchedMovieListBackClick(v: View?) {
+  fun onMatchedMovieListBackClick(v: View? = null) {
     cancelSearching()
     clearMatchedMovieList()
     // نمایش لایه ی جستجو
@@ -81,7 +92,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    * تغییر نوع فیلم
    */
-  fun toggleMovieType(v: View?) {
+  fun toggleMovieType(v: View? = null) {
     with(movie) {
       tv.set(!tv.get()!!)
       type.set(if (tv.get()!!) MEDIA_TYPE_TITLE_MOVIE else MEDIA_TYPE_TITLE_SERIES)
@@ -91,14 +102,14 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    * تغییر وضعیت دیدن فیلم (کاربر فیلم را دیده است یا خیر)
    */
-  fun toggleSeenState(v: View?) {
+  fun toggleSeenState(v: View? = null) {
     with(movie) { seen.set(!seen.get()!!) }
   }
 
   /**
    * تغییر وضعیت مورد علاقه بودن فیلم
    */
-  fun toggleFavoriteState(v: View?) {
+  fun toggleFavoriteState(v: View? = null) {
     with(movie) { favorite.set(!favorite.get()!!) }
   }
 
@@ -211,5 +222,12 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
         }
       }
     }
+  }
+
+  /**
+   * ست کردن مسیر پوستر انتخابی کاربر از حافظه ی دیوایس
+   */
+  fun setMoviePoster(posterPath: String) {
+    if (!posterPath.isNullOrEmptyAfterTrim()) movie.poster.set(posterPath)
   }
 }

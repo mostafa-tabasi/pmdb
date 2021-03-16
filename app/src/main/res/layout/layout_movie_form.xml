@@ -6,6 +6,8 @@
 
     <import type="android.view.View" />
 
+    <import type="android.text.TextUtils" />
+
     <import type="com.mstf.pmdb.R" />
 
     <import type="android.view.inputmethod.EditorInfo" />
@@ -22,6 +24,7 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+      android:id="@+id/layout_scroll_view"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
@@ -47,14 +50,6 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_foreground"
             app:imageUrl="@{viewModel.movie.poster}" />
-
-          <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="?colorOnPrimary"
-            android:visibility="gone" />
 
           <View
             android:id="@+id/view_center_align"
@@ -135,7 +130,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toRightOf="@+id/edt_runtime"
                 android:alpha="0.5"
-                android:background="?attr/colorBlankFormDivider" />
+                android:background="?attr/colorMovieFormDivider" />
 
               <EditText
                 android:id="@+id/edt_country"
@@ -161,7 +156,7 @@
               android:layout_height="match_parent"
               android:layout_marginRight="8dp"
               android:alpha="0.5"
-              android:background="?attr/colorBlankFormDivider" />
+              android:background="?attr/colorMovieFormDivider" />
 
             <RelativeLayout
               android:layout_width="0dp"
@@ -294,7 +289,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:alpha="0.5"
-            android:background="?attr/colorBlankFormDivider" />
+            android:background="?attr/colorMovieFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -331,7 +326,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:alpha="0.5"
-            android:background="?attr/colorBlankFormDivider" />
+            android:background="?attr/colorMovieFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -439,7 +434,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:alpha="0.5"
-            android:background="?attr/colorBlankFormDivider" />
+            android:background="?attr/colorMovieFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -569,10 +564,54 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+      android:id="@+id/layout_header_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:layout_gravity="top"
+      android:background="?colorPrimary"
+      android:clickable="true"
+      android:elevation="4dp"
+      android:gravity="left|center_vertical"
+      android:orientation="horizontal"
+      android:padding="4dp"
+      android:visibility="invisible">
+
+      <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@+id/edt_title"
+        android:layout_alignBottom="@+id/edt_title"
+        android:src="@drawable/ic_tv_accent"
+        android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:fontFamily="serif"
+        android:paddingLeft="4dp"
+        android:singleLine="true"
+        android:text="@{viewModel.movie.title}"
+        android:textSize="@dimen/font_xx_large"
+        android:textStyle="bold" />
+
+      <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:text="@{`(`+viewModel.movie.year+`)`}"
+        android:textSize="@dimen/font_x_large"
+        android:visibility="@{TextUtils.isEmpty(viewModel.movie.year) ? View.GONE : View.VISIBLE}" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_footer_toolbar"
       android:layout_width="match_parent"
       android:layout_height="?actionBarSize"
       android:layout_gravity="bottom"
-      android:background="?colorBlankFormBottomToolbar"
+      android:background="?attr/colorMovieFormToolbarBackground"
       android:clickable="true"
       android:elevation="8dp"
       android:gravity="right|center_vertical"
@@ -632,7 +671,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
         android:alpha="0.5"
-        android:background="?attr/colorBlankFormDivider" />
+        android:background="?attr/colorMovieFormDivider" />
 
       <ImageView
         android:layout_width="wrap_content"

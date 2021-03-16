@@ -1,5 +1,7 @@
 package com.mstf.pmdb.utils.extensions
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.view.View
 import android.view.View.*
 import com.google.android.material.snackbar.Snackbar
@@ -40,4 +42,38 @@ fun View.snackBar(
   Snackbar.make(this, message, duration).apply {
     functionsToApply?.invoke()
   }.show()
+}
+
+/**
+ * تغییر آلفا ویو همراه با انیمیشن
+ *
+ * @param from مقدار آلفای ویو در شروع انیمیشن
+ * @param to مقدار آلفای ویو در پایان انیمیشن
+ * @param duration مدت زمان انیمیشن
+ * @param beforeAnimate عملیاتی که قبل از شروع انیمیشن لازم است انجام شود
+ * @param afterAnimate عملیاتی که بعد از اتمام انیمیشن لازم است انجام شود
+ */
+fun View.animateAlpha(
+  from: Float,
+  to: Float,
+  duration: Long,
+  beforeAnimate: (() -> Unit)? = null,
+  afterAnimate: (() -> Unit)? = null
+) {
+  ValueAnimator.ofFloat(from, to).apply {
+    this.duration = duration
+    this.addUpdateListener { alpha = it.animatedValue as Float }
+    this.addListener(object : Animator.AnimatorListener {
+      override fun onAnimationStart(p0: Animator?) {
+        beforeAnimate?.invoke()
+      }
+
+      override fun onAnimationEnd(p0: Animator?) {
+        afterAnimate?.invoke()
+      }
+
+      override fun onAnimationCancel(p0: Animator?) {}
+      override fun onAnimationRepeat(p0: Animator?) {}
+    })
+  }.start()
 }

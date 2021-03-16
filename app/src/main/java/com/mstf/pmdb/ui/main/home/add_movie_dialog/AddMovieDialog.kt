@@ -1,6 +1,5 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
@@ -9,6 +8,8 @@ import android.view.ViewTreeObserver
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -18,9 +19,7 @@ import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.databinding.DialogAddMovieBinding
 import com.mstf.pmdb.ui.base.BaseBottomSheetDialog
 import com.mstf.pmdb.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
-import com.mstf.pmdb.utils.extensions.gone
-import com.mstf.pmdb.utils.extensions.hideKeyboard
-import com.mstf.pmdb.utils.extensions.visible
+import com.mstf.pmdb.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_find_movie.view.*
 
@@ -34,6 +33,12 @@ class AddMovieDialog :
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.dialog_add_movie
   private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+
+  // هدر موجود در فرم اطلاعات فیلم درحال نمایش است یا خیر
+  private var isMovieFormHeaderToolbarVisible = false
+  private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
+    it?.let { viewModel.setMoviePoster(it.toString()) }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -54,9 +59,12 @@ class AddMovieDialog :
 
       it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
       it.includeFindMovie.edtSearchId.onFocusChangeListener = this
+
+      it.includeMovieForm.imgMoviePoster.setOnClickListener { getContent.launch("image/*") }
     }
 
     setUpMatchedMovieList()
+    setUpMovieFormHeaderToolbar()
     setUpBottomSheet()
   }
 
@@ -69,6 +77,42 @@ class AddMovieDialog :
           }
         })
         it.includeMatchedMovieList.moviesRecyclerView.adapter = this
+      }
+    }
+  }
+
+  /**
+   *هندل کردن تولبار موجود در هدرِ فرم مربوط به وارد کردن اطلاعات فیلم
+   */
+  private fun setUpMovieFormHeaderToolbar() {
+    viewDataBinding?.let { it ->
+      with(it.includeMovieForm) {
+        layoutScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
+
+          val location = IntArray(2)
+          edtTitle.getLocationInWindow(location)
+          // قسمت پایینیِ فیلد مربوط به عنوان فیلم
+          val y = location[1]
+          // قسمت بالایی فیلد مربوط به عنوان فیلم
+          val titleFieldTopLocation = y - edtTitle.height + 12
+
+          // اگر قسمت بالایی عنوان فیلم از تصویر بیرون رفت و عنوان خالی نبود، هدر نمایش داده شود
+          if (titleFieldTopLocation < 0 && !isMovieFormHeaderToolbarVisible &&
+            !viewModel!!.movie.title.get().isNullOrEmptyAfterTrim()
+          ) {
+            layoutHeaderToolbar.animateAlpha(0F, 1F, 150,
+              beforeAnimate = {
+                isMovieFormHeaderToolbarVisible = true
+                layoutHeaderToolbar.alpha = 0F
+                layoutHeaderToolbar.visible()
+              })
+          } else if (titleFieldTopLocation > 0 && isMovieFormHeaderToolbarVisible) {
+            layoutHeaderToolbar.animateAlpha(1F, 0F, 150,
+              beforeAnimate = { isMovieFormHeaderToolbarVisible = false },
+              afterAnimate = { layoutHeaderToolbar.gone() }
+            )
+          }
+        })
       }
     }
   }
@@ -199,39 +243,21 @@ class AddMovieDialog :
    * @param layoutToHide لایه ای که میخواهیم محو شود
    */
   private fun toggleSearchAndResultLayoutVisibility(layoutToShow: View, layoutToHide: View) {
+    val animDuration = 300L
     // تغییر ارتفاع باتم شیت به اندازه ی لایه ای که میخواهیم نمایش دهیم (همراه با انیمیشن)
     ValueAnimator.ofInt(
       bottomSheetBehavior.peekHeight,
       layoutToShow.height
     ).apply {
-      duration = 300
+      duration = animDuration
       addUpdateListener { valueAnimator ->
         bottomSheetBehavior.peekHeight = valueAnimator.animatedValue as Int
       }
     }.start()
 
     // نمایش لایه ی موردنظر و محو شدن لایه ی دیگر (همراه با انیمیشن)
-    ValueAnimator.ofFloat(0F, 1F).apply {
-      duration = 300
-      addUpdateListener { valueAnimator ->
-        layoutToShow.alpha = valueAnimator.animatedValue as Float
-        layoutToHide.alpha = 1 - (valueAnimator.animatedValue as Float)
-      }
-      addListener(object : Animator.AnimatorListener {
-        override fun onAnimationStart(p0: Animator?) {
-        }
-
-        override fun onAnimationEnd(p0: Animator?) {
-          layoutToHide.gone()
-        }
-
-        override fun onAnimationCancel(p0: Animator?) {
-        }
-
-        override fun onAnimationRepeat(p0: Animator?) {
-        }
-      })
-    }.start()
+    layoutToShow.animateAlpha(0F, 1F, animDuration)
+    layoutToHide.animateAlpha(1F, 0F, animDuration, afterAnimate = { layoutToHide.gone() })
   }
 
   /**
