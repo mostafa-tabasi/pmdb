@@ -22,8 +22,10 @@ fun Context.hideKeyboard(view: View) {
   inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun Context.getColorFromAttr(attrColor: Int): Int {
+fun Context.colorFromAttr(attrColor: Int): Int {
   val typedValue = TypedValue()
   theme.resolveAttribute(attrColor, typedValue, true)
   return ContextCompat.getColor(this, typedValue.resourceId)
 }
+
+fun Context.color(colorResourceId: Int) = ContextCompat.getColor(this, colorResourceId)

@@ -15,6 +15,8 @@ import com.mstf.pmdb.ui.base.BaseViewModel
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.NoInternetException
+import com.mstf.pmdb.utils.enums.MovieGenre
+import com.mstf.pmdb.utils.enums.TvGenre
 import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -32,6 +34,9 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   val searchID = ObservableField<String>()
   val searchLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
+
+  // درحال حاضر اطلاعات فیلم امکان ادیت شدن دارند یا خیر
+  val isEditingEnable = ObservableField<Boolean>().apply { set(true) }
 
   /**
    *اگر جستجویی در حال انجام بود، کنسل شود
@@ -64,6 +69,9 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     }
   }
 
+  /**
+   * عملیات لازم زمان انتخاب یک عملگر از روی کیبورد
+   */
   fun onEditorAction(view: TextView?, actionId: Int, event: KeyEvent?): Boolean {
     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
       searchMovie()
@@ -73,10 +81,26 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   }
 
   /**
-   * عملکرد کلیک خالی کردن فرم مربوط به اطلاعات فیلم
+   * خالی کردن فرم مربوط به اطلاعات فیلم
    */
-  fun onFormClear(v: View? = null) {
+  fun clearForm(v: View? = null) {
+    navigator?.removeAllGenreChips()
     movie.clear()
+  }
+
+  /**
+   *ذخیره ی فیلم در دیتابیس
+   */
+  fun saveMovie(v: View? = null) {
+    if (movie.title.get().isNullOrEmptyAfterTrim()) {
+      navigator?.showError("Title can't be empty")
+      return
+    }
+    //TODO: save
+    //isEditingEnable.set(false)
+
+    // temp
+    isEditingEnable.set(!isEditingEnable.get()!!)
   }
 
   /**
@@ -94,8 +118,9 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun toggleMovieType(v: View? = null) {
     with(movie) {
-      tv.set(!tv.get()!!)
-      type.set(if (tv.get()!!) MEDIA_TYPE_TITLE_MOVIE else MEDIA_TYPE_TITLE_SERIES)
+      type.set(if (tv.get() == true) MEDIA_TYPE_TITLE_MOVIE else MEDIA_TYPE_TITLE_SERIES)
+      navigator?.setUpMovieGenres(getGenreItems())
+      checkRedundantGenres()
     }
   }
 
@@ -111,6 +136,68 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun toggleFavoriteState(v: View? = null) {
     with(movie) { favorite.set(!favorite.get()!!) }
+  }
+
+  /**
+   * لیست ژانرهای موجود برای فیلم موردنظر متناسب با نوع آن
+   */
+  fun getGenreItems() =
+    if (movie.type.get() == MEDIA_TYPE_TITLE_MOVIE) dataManager.getMovieGenreList() else dataManager.getTvSeriesGenreList()
+
+  /**
+   * انتخاب کردن یک ژانر برای افزودن به لیست ژانرهای انتخاب شده ی فیلم
+   *
+   * @param label عنوان ژانر انتخاب شده
+   */
+  fun onGenreSelect(label: String) {
+    // اگر از قبل ای ژانر اضافه شده بود، مجدد اضافه نشود
+    if (movie.genre.get()!!.contains(label)) return
+    // افزودن ژانر به لیست ژانرهای انتخاب شده
+    movie.genre.set(movie.genre.get() + "$label,")
+    // نمایش چیپ مربوط به ژانر انتخاب شده
+    navigator?.addGenreChip(label, true)
+  }
+
+  /**
+   * حذف ژانرهای بلااستفاده در لیست ژانرهای انتخاب شده متناسب با نوع مدیا (فیلم یا سریال)
+   */
+  private fun checkRedundantGenres() {
+    movie.genre.get()?.let {
+      when (movie.type.get()) {
+        // اگر نوع فیلم سینمایی بود، تمام ژانرهای مربوط به سریال حذف شوند
+        MEDIA_TYPE_TITLE_MOVIE -> {
+          removeGenre(TvGenre.GAME_SHOW.labelWithSeparator())
+          { navigator?.removeGenreChip(TvGenre.GAME_SHOW.label()) }
+          removeGenre(TvGenre.NEWS.labelWithSeparator())
+          { navigator?.removeGenreChip(TvGenre.NEWS.label()) }
+          removeGenre(TvGenre.REALITY_TV.labelWithSeparator())
+          { navigator?.removeGenreChip(TvGenre.REALITY_TV.label()) }
+          removeGenre(TvGenre.TALK_SHOW.labelWithSeparator())
+          { navigator?.removeGenreChip(TvGenre.TALK_SHOW.label()) }
+        }
+        // اگر نوع فیلم سریال بود، تمام ژانرهای مربوط به سینمایی حذف شوند
+        else -> {
+          removeGenre(MovieGenre.FILM_NOIR.labelWithSeparator())
+          { navigator?.removeGenreChip(MovieGenre.FILM_NOIR.label()) }
+          removeGenre(MovieGenre.SHORT.labelWithSeparator())
+          { navigator?.removeGenreChip(MovieGenre.SHORT.label()) }
+        }
+      }
+    }
+  }
+
+  /**
+   * حذف ژانر موردنظر از لیست ژانرهای انتخاب شده
+   *
+   * @param label عنوان ژانر موردنظر
+   * @param afterRemove عملیاتی که بعد از حذف شدن لازم است انحام شود
+   */
+  fun removeGenre(label: String, afterRemove: (() -> Unit)? = null) {
+    movie.genre.get()?.let {
+      if (!it.contains(label)) return
+      movie.genre.set(it.replace(label, ""))
+      afterRemove?.invoke()
+    }
   }
 
   /**
@@ -178,6 +265,11 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
       movie.update(body()!!)
       navigator?.hideMatchedMovieList()
       navigator?.showFormLayout()
+      navigator?.setUpMovieGenres(getGenreItems())
+      // نمایش چیپ های مربوط به ژانر فیلم
+      movie.genre.get()?.let {
+        it.split(", ").forEach { genre -> navigator?.addGenreChip(genre, false) }
+      }
       clearMatchedMovieList()
     }
   }

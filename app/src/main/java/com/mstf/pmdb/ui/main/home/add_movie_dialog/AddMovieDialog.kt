@@ -2,12 +2,11 @@ package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewTreeObserver
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
@@ -32,10 +31,10 @@ class AddMovieDialog :
   override val viewModel: AddMovieViewModel by viewModels()
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.dialog_add_movie
-  private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
   // هدر موجود در فرم اطلاعات فیلم درحال نمایش است یا خیر
   private var isMovieFormHeaderToolbarVisible = false
+  private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
   private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
     it?.let { viewModel.setMoviePoster(it.toString()) }
   }
@@ -66,6 +65,7 @@ class AddMovieDialog :
     setUpMatchedMovieList()
     setUpMovieFormHeaderToolbar()
     setUpBottomSheet()
+    setUpMovieGenres(viewModel.getGenreItems())
   }
 
   private fun setUpMatchedMovieList() {
@@ -94,23 +94,20 @@ class AddMovieDialog :
           // قسمت پایینیِ فیلد مربوط به عنوان فیلم
           val y = location[1]
           // قسمت بالایی فیلد مربوط به عنوان فیلم
-          val titleFieldTopLocation = y - edtTitle.height + 12
+          val titleFieldTopLocation = y - (edtTitle.height / 1.35)
 
           // اگر قسمت بالایی عنوان فیلم از تصویر بیرون رفت و عنوان خالی نبود، هدر نمایش داده شود
           if (titleFieldTopLocation < 0 && !isMovieFormHeaderToolbarVisible &&
             !viewModel!!.movie.title.get().isNullOrEmptyAfterTrim()
           ) {
-            layoutHeaderToolbar.animateAlpha(0F, 1F, 150,
-              beforeAnimate = {
-                isMovieFormHeaderToolbarVisible = true
-                layoutHeaderToolbar.alpha = 0F
-                layoutHeaderToolbar.visible()
-              })
+            isMovieFormHeaderToolbarVisible = true
+            layoutHeaderToolbar.visible()
+            //بعد از اتمام انیمیشن، عنوان فیلم به حالت selected در میاد
+            // تا درصورتِ طولانی بودن، تمام محتوا همراه با انیمیشن نمایش داده شود
+            txtTitle.isSelected = true
           } else if (titleFieldTopLocation > 0 && isMovieFormHeaderToolbarVisible) {
-            layoutHeaderToolbar.animateAlpha(1F, 0F, 150,
-              beforeAnimate = { isMovieFormHeaderToolbarVisible = false },
-              afterAnimate = { layoutHeaderToolbar.gone() }
-            )
+            layoutHeaderToolbar.gone()
+            isMovieFormHeaderToolbarVisible = false
           }
         })
       }
@@ -163,7 +160,7 @@ class AddMovieDialog :
           BottomSheetBehavior.STATE_EXPANDED -> it.includeFindMovie.root.gone()
           BottomSheetBehavior.STATE_COLLAPSED -> {
             it.includeMovieForm.root.gone()
-            viewModel.onFormClear()
+            viewModel.clearForm()
           }
         }
       }
@@ -320,6 +317,50 @@ class AddMovieDialog :
         viewToExpand.requestLayout()
       }
       start()
+    }
+  }
+
+  override fun setUpMovieGenres(items: List<String>) {
+    viewDataBinding?.let {
+      val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+        requireContext(),
+        android.R.layout.simple_dropdown_item_1line,
+        items
+      )
+      with(it.includeMovieForm.edtGenre) {
+        setAdapter(adapter)
+        setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+        threshold = 1
+        onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, pos, _ ->
+          clear()
+          // عنوان ژانر انتخاب شده
+          val label: String = adapterView.getItemAtPosition(pos) as String
+          viewModel.onGenreSelect(label)
+        }
+      }
+    }
+  }
+
+  override fun addGenreChip(label: String, animate: Boolean) {
+    viewDataBinding?.let {
+      it.includeMovieForm.layoutGenreChips.addChip(label, true, animate) {
+        viewModel.removeGenre("$it,")
+      }
+      // اگر انیمیشن فعال بود، بعد از اضافه شدن چیپِ جدید، به سمت راست اسکرول، تا چیپ دیده شود
+      if (animate) Handler().postDelayed({
+        it.includeMovieForm.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+      }, 200L)
+    }
+  }
+
+  override fun removeGenreChip(label: String) {
+    viewDataBinding?.includeMovieForm?.layoutGenreChips?.removeChip(label)
+  }
+
+  override fun removeAllGenreChips() {
+    viewDataBinding?.let {
+      it.includeMovieForm.layoutGenreChips.removeAllChips()
+      it.includeMovieForm.layoutGenres.invalidate()
     }
   }
 

@@ -47,6 +47,10 @@ class AppDataManager @Inject constructor(
 
   override fun getString(resourceId: Int) = resourceHelper.getString(resourceId)
 
+  override fun getMovieGenreList(): List<String> = resourceHelper.getMovieGenreList()
+
+  override fun getTvSeriesGenreList(): List<String> = resourceHelper.getTvSeriesGenreList()
+
   companion object {
     private const val TAG = "AppDataManager"
   }

@@ -4,7 +4,11 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.view.View
 import android.view.View.*
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
+import androidx.databinding.BindingAdapter
 import com.google.android.material.snackbar.Snackbar
+
 
 fun View.visible() {
   visibility = VISIBLE
@@ -76,4 +80,19 @@ fun View.animateAlpha(
       override fun onAnimationRepeat(p0: Animator?) {}
     })
   }.start()
+}
+
+@BindingAdapter("android:layout_weight")
+fun View.setWeight(weight: Float) {
+  val params = layoutParams
+  (params as LinearLayout.LayoutParams).weight = weight
+  layoutParams = params
+}
+
+@BindingAdapter("android:layout_width")
+fun View.setWidth(isWrapContent: Boolean) {
+  val params = layoutParams
+  params.width = if (isWrapContent) WRAP_CONTENT else 0
+  (params as LinearLayout.LayoutParams).weight = if (isWrapContent) 0F else 1F
+  layoutParams = params
 }

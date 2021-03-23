@@ -13,4 +13,7 @@
   <attr name="colorUnSelectedIconsTint" format="color" />
 
   <attr name="colorTransparentMatchedMovieListItemLoading" format="color" />
+
+  <attr name="colorCheckedChip" format="color" />
+  <attr name="colorUnCheckedChip" format="color" />
 </resources>

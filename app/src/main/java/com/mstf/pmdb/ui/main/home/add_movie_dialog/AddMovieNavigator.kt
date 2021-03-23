@@ -48,4 +48,31 @@ interface AddMovieNavigator : BaseNavigator {
    */
   fun showFormLayout()
 
+  /**
+   * افزودن چیپ متناسب با ژانر موردنظر
+   *
+   * @param label عنوان ژانر
+   * @param animate همراه با انیمیشن نمایش داده شود یا خیر
+   */
+  fun addGenreChip(label: String, animate: Boolean)
+
+  /**
+   * حذف چیپ موردنظر
+   *
+   * @param label عنوان ژانر
+   */
+  fun removeGenreChip(label: String)
+
+  /**
+   * حذف تمام چیپ های مربوط به ژانر فیلم
+   */
+  fun removeAllGenreChips()
+
+  /**
+   * ست کردن ژانرهای موجود برای فیلم متناسب با نوع آن
+   *
+   * @param items لیست ژانرهای موجود
+   */
+  fun setUpMovieGenres(items: List<String>)
+
 }

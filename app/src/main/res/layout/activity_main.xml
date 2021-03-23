@@ -27,11 +27,11 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
+      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorPrimaryVariant"
       app:contentInsetEnd="0dp"
       app:contentInsetStart="0dp"
-      app:fabAlignmentMode="end"
-      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}">
+      app:fabAlignmentMode="end">
 
       <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -39,8 +39,8 @@
         android:layout_height="match_parent"
         app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
-        app:itemIconTint="@color/bottom_nav_items"
-        app:itemTextColor="@color/bottom_nav_items"
+        app:itemIconTint="@color/selector_color_bottom_nav_items"
+        app:itemTextColor="@color/selector_color_bottom_nav_items"
         app:menu="@menu/main_bottom_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
@@ -51,9 +51,9 @@
       android:layout_height="wrap_content"
       android:contentDescription="TODO"
       android:src="@{viewModel.currentPage == 0 ? @drawable/ic_add : viewModel.currentPage == 1 ? @drawable/ic_search : @drawable/ic_info }"
+      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorOnPrimary"
-      app:layout_anchor="@id/bottom_bar"
-      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"/>
+      app:layout_anchor="@id/bottom_bar" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
