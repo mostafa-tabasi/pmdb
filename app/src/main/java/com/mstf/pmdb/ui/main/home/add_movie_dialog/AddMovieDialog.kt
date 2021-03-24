@@ -59,7 +59,9 @@ class AddMovieDialog :
       it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
       it.includeFindMovie.edtSearchId.onFocusChangeListener = this
 
-      it.includeMovieForm.imgMoviePoster.setOnClickListener { getContent.launch("image/*") }
+      it.includeMovieForm.imgMoviePoster.setOnClickListener {
+        if (viewModel.isEditingEnable.get() == true) getContent.launch("image/*")
+      }
     }
 
     setUpMatchedMovieList()
@@ -104,7 +106,7 @@ class AddMovieDialog :
             layoutHeaderToolbar.visible()
             //بعد از اتمام انیمیشن، عنوان فیلم به حالت selected در میاد
             // تا درصورتِ طولانی بودن، تمام محتوا همراه با انیمیشن نمایش داده شود
-            txtTitle.isSelected = true
+            txtHeaderTitle.isSelected = true
           } else if (titleFieldTopLocation > 0 && isMovieFormHeaderToolbarVisible) {
             layoutHeaderToolbar.gone()
             isMovieFormHeaderToolbarVisible = false

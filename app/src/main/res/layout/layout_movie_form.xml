@@ -81,33 +81,60 @@
                 android:id="@+id/img_tv"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_alignTop="@+id/edt_title"
-                android:layout_alignBottom="@+id/edt_title"
+                android:layout_alignTop="@+id/layout_title"
+                android:layout_alignBottom="@+id/layout_title"
                 android:layout_marginRight="4dp"
                 android:src="@drawable/ic_tv_accent"
                 android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
                 app:tint="?colorSelectedIconsTint" />
 
-              <EditText
-                android:id="@+id/edt_title"
-                style="@style/Theme.PMDb.MovieFormEditText"
-                multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+              <FrameLayout
+                android:id="@+id/layout_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/img_tv"
-                android:fontFamily="serif"
-                android:hint="Title"
-                android:inputType="text"
-                android:nextFocusForward="@id/edt_year"
-                android:text="@={viewModel.movie.title}"
-                android:textSize="@dimen/font_xx_large"
-                android:textStyle="bold" />
+                android:layout_toRightOf="@+id/img_tv">
+
+                <EditText
+                  android:id="@+id/edt_title"
+                  style="@style/Theme.PMDb.MovieFormEditText"
+                  multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="serif"
+                  android:hint="Title"
+                  android:inputType="text"
+                  android:nextFocusForward="@id/edt_year"
+                  android:text="@={viewModel.movie.title}"
+                  android:textSize="@dimen/font_xx_large"
+                  android:textStyle="bold"
+                  android:visibility="@{viewModel.isEditingEnable ? View.VISIBLE : View.INVISIBLE, default=visible}" />
+
+                <TextView
+                  android:id="@+id/txt_title"
+                  selected="@{!viewModel.isEditingEnable}"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:ellipsize="marquee"
+                  android:focusable="true"
+                  android:focusableInTouchMode="true"
+                  android:fontFamily="serif"
+                  android:marqueeRepeatLimit="marquee_forever"
+                  android:maxEms="@{viewModel.movie.tv ? 11 : 14}"
+                  android:paddingLeft="4dp"
+                  android:singleLine="true"
+                  android:text="@{viewModel.movie.title}"
+                  android:textSize="@dimen/font_xx_large"
+                  android:textStyle="bold"
+                  android:visibility="@{viewModel.isEditingEnable ? View.GONE : View.VISIBLE, default=gone}" />
+
+              </FrameLayout>
 
               <LinearLayout
                 android:id="@+id/layout_runtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/edt_title"
+                android:layout_below="@+id/layout_title"
                 android:layout_alignParentLeft="true"
                 android:orientation="horizontal">
 
@@ -704,15 +731,13 @@
       <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignTop="@+id/edt_title"
-        android:layout_alignBottom="@+id/edt_title"
         android:layout_marginRight="4dp"
         android:src="@drawable/ic_tv_accent"
         android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
         app:tint="?colorSelectedIconsTint" />
 
       <TextView
-        android:id="@+id/txt_title"
+        android:id="@+id/txt_header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"

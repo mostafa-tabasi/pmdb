@@ -12,6 +12,7 @@ import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.data.model.api.MatchedMovieList
 import com.mstf.pmdb.ui.base.BaseViewModel
+import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_EPISODE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.NoInternetException
@@ -86,6 +87,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun clearForm(v: View? = null) {
     navigator?.removeAllGenreChips()
     movie.clear()
+    isEditingEnable.set(true)
   }
 
   /**
@@ -229,7 +231,14 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
         return
       }
 
-      matchedMovieList.postValue(body()!!.matchedList!!)
+      // فقط آیتم هایی که از نوع فیلم (سینمایی، سریال، اپیزود) هستند به لیست اضافه شوند
+      arrayListOf<MatchedMovieCompact>().apply {
+        body()!!.matchedList!!.forEach {
+          when (it.type) {
+            MEDIA_TYPE_TITLE_MOVIE, MEDIA_TYPE_TITLE_SERIES, MEDIA_TYPE_TITLE_EPISODE -> add(it)
+          }
+        }
+      }.also { matchedMovieList.postValue(it) }
       navigator?.showMatchedMovieList()
     }
   }

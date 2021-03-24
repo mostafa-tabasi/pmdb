@@ -5,3 +5,9 @@ fun String?.isNullOrEmptyAfterTrim(): Boolean {
   if (trim().isEmpty()) return true
   return false
 }
+
+fun String?.ifAvailable(): String {
+  if (isNullOrEmptyAfterTrim()) return ""
+  if (this == "N/A") return ""
+  return this.toString()
+}

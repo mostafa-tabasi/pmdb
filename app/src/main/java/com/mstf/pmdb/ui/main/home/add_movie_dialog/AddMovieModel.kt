@@ -9,6 +9,7 @@ import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_IMDB
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_METACRITIC
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_ROTTEN_TOMATOES
+import com.mstf.pmdb.utils.extensions.ifAvailable
 import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 
 class AddMovieModel : BaseObservable() {
@@ -51,33 +52,33 @@ class AddMovieModel : BaseObservable() {
   }
 
   fun update(movie: MatchedMovie) {
-    title.set(movie.title)
-    imdbID.set(movie.imdbID)
+    title.set(movie.title.ifAvailable())
+    imdbID.set(movie.imdbID.ifAvailable())
     poster.set(movie.poster)
-    type.set(movie.type)
-    runtime.set(movie.runtime?.replace("min", "")?.replace(" ", ""))
-    country.set(movie.country)
+    type.set(movie.type.ifAvailable())
+    runtime.set(movie.runtime?.replace("min", "")?.replace(" ", "").ifAvailable())
+    country.set(movie.country.ifAvailable())
     movie.ratings?.let {
       it.forEach { rate ->
         when (rate.source) {
-          RATING_SOURCE_IMDB -> imdbRate.set(rate.value.replace("/10", ""))
-          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate.set(rate.value.replace("%", ""))
-          RATING_SOURCE_METACRITIC -> metacriticRate.set(rate.value.replace("/100", ""))
+          RATING_SOURCE_IMDB -> imdbRate.set(rate.value.replace("/10", "").ifAvailable())
+          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate.set(rate.value.replace("%", "").ifAvailable())
+          RATING_SOURCE_METACRITIC -> metacriticRate.set(rate.value.replace("/100", "").ifAvailable())
         }
       }
     }
-    imdbVotes.set(movie.imdbVotes)
-    genre.set(movie.genre)
-    director.set(movie.director)
-    writer.set(movie.writer)
-    actors.set(movie.actors)
-    plot.set(movie.plot)
-    awards.set(movie.awards)
+    imdbVotes.set(movie.imdbVotes.ifAvailable())
+    genre.set(movie.genre.ifAvailable())
+    director.set(movie.director.ifAvailable())
+    writer.set(movie.writer.ifAvailable())
+    actors.set(movie.actors.ifAvailable())
+    plot.set(movie.plot.ifAvailable())
+    awards.set(movie.awards.ifAvailable())
     movie.year?.let {
       if (tv.get() == true && it.contains("–")) {
-        yearStart.set(it.split("–")[0])
-        yearEnd.set(it.split("–")[1])
-      } else yearStart.set(it)
+        yearStart.set(it.split("–")[0].ifAvailable())
+        yearEnd.set(it.split("–")[1].ifAvailable())
+      } else yearStart.set(it.ifAvailable())
     }
     comment.set(null)
     seen.set(false)
