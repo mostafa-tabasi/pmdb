@@ -16,6 +16,16 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.fragment_archive
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel.setNavigator(this)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    //viewModel.getMovies()
+  }
+
   companion object {
     const val TAG = "ArchiveFragment"
     fun newInstance(): ArchiveFragment {
@@ -24,10 +34,5 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
       fragment.arguments = args
       return fragment
     }
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    viewModel.setNavigator(this)
   }
 }

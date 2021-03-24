@@ -101,7 +101,7 @@
         android:layout_margin="4dp"
         android:layout_weight="0.75"
         android:indeterminateTint="?colorSelectedIconsTint"
-        android:visibility="@{viewModel.searchLoading ? View.VISIBLE : View.GONE}" />
+        android:visibility="@{viewModel.searchLoading ? View.VISIBLE : View.GONE, default=gone}" />
 
     </LinearLayout>
 

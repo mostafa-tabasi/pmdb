@@ -857,7 +857,15 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:src="@drawable/ic_save_outline"
+        android:visibility="@{viewModel.saveLoading ? View.GONE : View.VISIBLE, default=visible}"
         app:tint="?colorSelectedIconsTint" />
+
+      <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?colorSelectedIconsTint"
+        android:padding="4dp"
+        android:visibility="@{viewModel.saveLoading ? View.VISIBLE : View.GONE, default=gone}" />
 
     </LinearLayout>
 

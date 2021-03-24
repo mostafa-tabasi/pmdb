@@ -72,7 +72,7 @@ object AppModule {
     @DatabaseInfo dbName: String,
     @ApplicationContext context: Context
   ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, dbName)
-    .fallbackToDestructiveMigration()   //TODO: migrations
+    //TODO: migrations
     .build()
 
   @Provides

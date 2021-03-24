@@ -11,6 +11,7 @@ import com.mstf.pmdb.data.DataManager
 import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.data.model.api.MatchedMovieList
+import com.mstf.pmdb.data.model.db.MovieEntity
 import com.mstf.pmdb.ui.base.BaseViewModel
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_EPISODE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
@@ -21,6 +22,7 @@ import com.mstf.pmdb.utils.enums.TvGenre
 import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -31,9 +33,11 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
+  private var updateJob: Job? = null
   val searchTitle = ObservableField<String>()
   val searchID = ObservableField<String>()
   val searchLoading = ObservableField<Boolean>().apply { set(false) }
+  val saveLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
 
   // درحال حاضر اطلاعات فیلم امکان ادیت شدن دارند یا خیر
@@ -82,30 +86,6 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   }
 
   /**
-   * خالی کردن فرم مربوط به اطلاعات فیلم
-   */
-  fun clearForm(v: View? = null) {
-    navigator?.removeAllGenreChips()
-    movie.clear()
-    isEditingEnable.set(true)
-  }
-
-  /**
-   *ذخیره ی فیلم در دیتابیس
-   */
-  fun saveMovie(v: View? = null) {
-    if (movie.title.get().isNullOrEmptyAfterTrim()) {
-      navigator?.showError("Title can't be empty")
-      return
-    }
-    //TODO: save
-    //isEditingEnable.set(false)
-
-    // temp
-    isEditingEnable.set(!isEditingEnable.get()!!)
-  }
-
-  /**
    * عملکرد کلیک بازگشت به عقب در لیست فیلم های جستجو شده
    */
   fun onMatchedMovieListBackClick(v: View? = null) {
@@ -130,14 +110,31 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * تغییر وضعیت دیدن فیلم (کاربر فیلم را دیده است یا خیر)
    */
   fun toggleSeenState(v: View? = null) {
-    with(movie) { seen.set(!seen.get()!!) }
+    with(movie) {
+      seen.set(!seen.get()!!)
+
+      // make it function
+      updateJob?.cancel()
+      updateJob = viewModelScope.launch {
+        delay(500)
+        //TODO: update movie in database if exist (both seen and favorite state)
+      }
+    }
   }
 
   /**
    * تغییر وضعیت مورد علاقه بودن فیلم
    */
   fun toggleFavoriteState(v: View? = null) {
-    with(movie) { favorite.set(!favorite.get()!!) }
+    with(movie) {
+      favorite.set(!favorite.get()!!)
+
+      updateJob?.cancel()
+      updateJob = viewModelScope.launch {
+        delay(500)
+        //TODO: update movie in database if exist (both seen and favorite state)
+      }
+    }
   }
 
   /**
@@ -330,5 +327,36 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun setMoviePoster(posterPath: String) {
     if (!posterPath.isNullOrEmptyAfterTrim()) movie.poster.set(posterPath)
+  }
+
+  /**
+   * خالی کردن فرم مربوط به اطلاعات فیلم
+   */
+  fun clearForm(v: View? = null) {
+    //TODO: check that this function should clear form or delete movie from database
+    navigator?.removeAllGenreChips()
+    movie.clear()
+    isEditingEnable.set(true)
+  }
+
+  /**
+   *ذخیره ی فیلم در دیتابیس
+   */
+  fun saveMovie(v: View? = null) {
+    if (movie.title.get().isNullOrEmptyAfterTrim()) {
+      navigator?.showError("Title can't be empty")
+      return
+    }
+
+    saveLoading.set(true)
+    isEditingEnable.set(false)
+    viewModelScope.launch {
+      //TODO: check if movie exist for update
+      //TODO: disable back button and dragging bottom sheet until finish
+      dataManager.insertMovie(MovieEntity.from(movie)).run {
+        saveLoading.set(false)
+        navigator?.showError("MOVIE SAVED SUCCESSFULLY")
+      }
+    }
   }
 }

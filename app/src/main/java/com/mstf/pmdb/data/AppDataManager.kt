@@ -6,6 +6,7 @@ import com.mstf.pmdb.data.local.db.DbHelper
 import com.mstf.pmdb.data.local.prefs.PreferencesHelper
 import com.mstf.pmdb.data.model.api.MatchedMovie
 import com.mstf.pmdb.data.model.api.MatchedMovieList
+import com.mstf.pmdb.data.model.db.MovieEntity
 import com.mstf.pmdb.data.remote.ApiHeader
 import com.mstf.pmdb.data.remote.ApiHelper
 import com.mstf.pmdb.data.resource.ResourceHelper
@@ -47,11 +48,11 @@ class AppDataManager @Inject constructor(
 
   override fun getString(resourceId: Int) = resourceHelper.getString(resourceId)
 
-  override fun getMovieGenreList(): List<String> = resourceHelper.getMovieGenreList()
+  override fun getMovieGenreList() = resourceHelper.getMovieGenreList()
 
-  override fun getTvSeriesGenreList(): List<String> = resourceHelper.getTvSeriesGenreList()
+  override fun getTvSeriesGenreList() = resourceHelper.getTvSeriesGenreList()
 
-  companion object {
-    private const val TAG = "AppDataManager"
-  }
+  override suspend fun insertMovie(movie: MovieEntity) = dbHelper.insertMovie(movie)
+
+  override suspend fun getAllMovies() = dbHelper.getAllMovies()
 }
