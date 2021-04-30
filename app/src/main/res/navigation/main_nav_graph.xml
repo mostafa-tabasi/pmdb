@@ -33,18 +33,6 @@
     android:id="@+id/addMovieDialog"
     android:name="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieDialog"
     android:label="Add Movie Dialog"
-    tools:layout="@layout/dialog_add_movie">
-
-    <action
-      android:id="@+id/action_addMovieDialog_to_sampleFragment"
-      app:destination="@id/sampleFragment" />
-
-  </dialog>
-
-  <fragment
-    android:id="@+id/sampleFragment"
-    android:name="com.mstf.pmdb.ui.sample.fragment.SampleFragment"
-    android:label="SampleFragment"
-    tools:layout="@layout/fragment_sample" />
+    tools:layout="@layout/dialog_add_movie" />
 
 </navigation>

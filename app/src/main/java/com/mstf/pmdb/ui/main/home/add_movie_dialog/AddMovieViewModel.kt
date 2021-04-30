@@ -41,7 +41,10 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   val movie = AddMovieModel()
 
   // درحال حاضر اطلاعات فیلم امکان ادیت شدن دارند یا خیر
-  val isEditingEnable = ObservableField<Boolean>().apply { set(true) }
+  val isEditing = ObservableField<Boolean>().apply { set(true) }
+
+  // درحال حاضر فیلم موردنظر در دیتابیس آرشیو شده است یا خیر
+  val isArchived = ObservableField<Boolean>().apply { set(false) }
 
   /**
    *اگر جستجویی در حال انجام بود، کنسل شود
@@ -109,15 +112,15 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    * تغییر وضعیت دیدن فیلم (کاربر فیلم را دیده است یا خیر)
    */
-  fun toggleSeenState(v: View? = null) {
+  fun toggleWatchState(v: View? = null) {
     with(movie) {
-      seen.set(!seen.get()!!)
+      watched.set(!watched.get()!!)
 
       // make it function
       updateJob?.cancel()
       updateJob = viewModelScope.launch {
-        delay(500)
-        //TODO: update movie in database if exist (both seen and favorite state)
+        delay(300)
+        if (isArchived.get() == true) dataManager.updateWatchState(id.get()!!, watched.get()!!)
       }
     }
   }
@@ -131,8 +134,8 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
       updateJob?.cancel()
       updateJob = viewModelScope.launch {
-        delay(500)
-        //TODO: update movie in database if exist (both seen and favorite state)
+        delay(300)
+        if (isArchived.get() == true) dataManager.updateFavoriteState(id.get()!!, favorite.get()!!)
       }
     }
   }
@@ -333,10 +336,16 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * خالی کردن فرم مربوط به اطلاعات فیلم
    */
   fun clearForm(v: View? = null) {
-    //TODO: check that this function should clear form or delete movie from database
     navigator?.removeAllGenreChips()
     movie.clear()
-    isEditingEnable.set(true)
+    isEditing.set(true)
+    isArchived.set(false)
+  }
+
+  /**
+   * حذف فیلم موردنظر از دیتابیس
+   */
+  fun deleteMovie() {
   }
 
   /**
@@ -349,14 +358,25 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     }
 
     saveLoading.set(true)
-    isEditingEnable.set(false)
+    isEditing.set(false)
+    navigator?.dismissConfirm()
     viewModelScope.launch {
       //TODO: check if movie exist for update
       //TODO: disable back button and dragging bottom sheet until finish
       dataManager.insertMovie(MovieEntity.from(movie)).run {
+        delay(300)
         saveLoading.set(false)
-        navigator?.showError("MOVIE SAVED SUCCESSFULLY")
+        isArchived.set(true)
+        movie.id.set(this)
+        navigator?.showError("Inserted Movie ID: $this")
       }
     }
+  }
+
+  /**
+   *فعال کردن امکان ویرایش اطلاعات فیلم
+   */
+  fun editMovie(v: View? = null) {
+    isEditing.set(true)
   }
 }

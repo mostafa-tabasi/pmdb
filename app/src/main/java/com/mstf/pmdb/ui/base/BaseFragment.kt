@@ -65,9 +65,6 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
     }
   }
 
-  val isNetworkConnected: Boolean
-    get() = baseActivity != null && baseActivity!!.isNetworkConnected
-
   fun openActivityOnTokenExpire() {
     baseActivity?.openActivityOnTokenExpire()
   }

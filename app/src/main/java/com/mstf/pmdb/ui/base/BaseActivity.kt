@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.mstf.pmdb.utils.CommonUtils
-import com.mstf.pmdb.utils.NetworkUtils
 import com.mstf.pmdb.utils.extensions.snackBar
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(),
@@ -54,9 +53,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
       progressDialog!!.cancel()
     }
   }
-
-  val isNetworkConnected: Boolean
-    get() = NetworkUtils.isNetworkConnected(applicationContext)
 
   fun openActivityOnTokenExpire() {
     //TODO: redirect user to login activity

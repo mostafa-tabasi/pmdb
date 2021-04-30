@@ -10,11 +10,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.fragment.app.DialogFragment
 import com.mstf.pmdb.utils.extensions.toast
 
-abstract class BaseBottomSheetDialog<T : ViewDataBinding?, V : BaseViewModel<*>?> :
-  BottomSheetDialogFragment(), BaseNavigator {
+abstract class BaseDialog<T : ViewDataBinding?, V : BaseViewModel<*>?> :
+  DialogFragment(), BaseNavigator {
 
   var baseActivity: BaseActivity<*, *>? = null
     private set

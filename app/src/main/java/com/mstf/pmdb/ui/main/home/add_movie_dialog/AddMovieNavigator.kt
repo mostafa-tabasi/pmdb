@@ -75,4 +75,9 @@ interface AddMovieNavigator : BaseNavigator {
    */
   fun setUpMovieGenres(items: List<String>)
 
+  /**
+   * عدم نمایش لایه ی تاییدیه ی
+   */
+  fun dismissConfirm()
+
 }

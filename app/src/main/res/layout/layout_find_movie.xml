@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_weight="0.75"
-        android:background="?android:selectableItemBackgroundBorderless"
+        android:background="?android:actionBarItemBackground"
         android:clickable="true"
         android:onClick="@{viewModel.searchMovie}"
         android:padding="4dp"

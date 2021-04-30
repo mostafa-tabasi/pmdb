@@ -14,6 +14,7 @@ import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 
 class AddMovieModel : BaseObservable() {
 
+  val id = ObservableField<Long>()
   val title = ObservableField<String>()
   val yearStart = ObservableField<String>()
   val yearEnd = ObservableField<String>()
@@ -34,7 +35,7 @@ class AddMovieModel : BaseObservable() {
   val plot = ObservableField<String>()
   val awards = ObservableField<String>()
   val comment = ObservableField<String>()
-  val seen = ObservableField<Boolean>().apply { set(false) }
+  val watched = ObservableField<Boolean>().apply { set(false) }
   val favorite = ObservableField<Boolean>().apply { set(false) }
   val canSave = ObservableField<Boolean>().apply { set(false) }
 
@@ -81,11 +82,12 @@ class AddMovieModel : BaseObservable() {
       } else yearStart.set(it.ifAvailable())
     }
     comment.set(null)
-    seen.set(false)
+    watched.set(false)
     favorite.set(false)
   }
 
   fun clear() {
+    id.set(null)
     title.set(null)
     imdbID.set(null)
     poster.set("N/A")
@@ -105,7 +107,7 @@ class AddMovieModel : BaseObservable() {
     yearStart.set(null)
     yearEnd.set(null)
     comment.set(null)
-    seen.set(false)
+    watched.set(false)
     favorite.set(false)
   }
 }

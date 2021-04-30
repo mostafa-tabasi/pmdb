@@ -3,11 +3,16 @@ package com.mstf.pmdb.ui.main.home.add_movie_dialog
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.Handler
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -39,6 +44,12 @@ class AddMovieDialog :
     it?.let { viewModel.setMoviePoster(it.toString()) }
   }
 
+  // لایه ی تاییدیه مربوط به دکمه هایی که قبل از انجام عملکرد نیاز به گرفتن تایید دارند
+  // مثل حذف فیلم از آرشیو یا پاک کردن اطلاعات ثبت شده در فرم
+  private var confirmLayout: LinearLayout? = null
+  private var confirmTitle: TextView? = null
+  private var confirmCancel: ImageView? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
@@ -60,8 +71,11 @@ class AddMovieDialog :
       it.includeFindMovie.edtSearchId.onFocusChangeListener = this
 
       it.includeMovieForm.imgMoviePoster.setOnClickListener {
-        if (viewModel.isEditingEnable.get() == true) getContent.launch("image/*")
+        if (viewModel.isEditing.get() == true) getContent.launch("image/*")
       }
+
+      it.includeMovieForm.btnClear.setOnClickListener { showClearFormConfirm() }
+      it.includeMovieForm.btnDelete.setOnClickListener { showDeleteConfirm() }
     }
 
     setUpMatchedMovieList()
@@ -70,6 +84,121 @@ class AddMovieDialog :
     setUpMovieGenres(viewModel.getGenreItems())
   }
 
+  /**
+   * نمایش دکمه ی تایید جهت پاک کردن اطلاعات صبت شده در فرم
+   */
+  private fun showClearFormConfirm() {
+    showConfirm(" Clear? ") { viewModel.clearForm(); dismissConfirm() }
+  }
+
+  /**
+   * نمایش دکمه ی تایید جهت پاک کردن فیلم از آرشیو
+   */
+  private fun showDeleteConfirm() {
+    showConfirm(" Delete? ") { viewModel.deleteMovie(); dismissConfirm() }
+  }
+
+  /**
+   * نمایش عنوان تاییدیه مربوط به دکمه ی موردنظر
+   *
+   * @param title عنوان تاییدیه
+   */
+  private fun showConfirm(title: String, onConfirm: () -> Unit) {
+    if (confirmLayout == null) {
+      confirmLayout = LinearLayout(requireContext())
+
+      // تعریف دکمه ی مربوط به کنسل کردن تاییدیه
+      confirmCancel = ImageView(requireContext()).apply {
+        setImageResource(R.drawable.ic_clear)
+        setOnClickListener { dismissConfirm() }
+        background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_confirm_cancel)
+        elevation = 4F
+        setPadding(8)
+        confirmLayout!!.addView(this)
+
+        (layoutParams as LinearLayout.LayoutParams).apply {
+          rightMargin = 16
+          bottomMargin = 16
+        }
+      }
+
+      // تعریف عنوان تاییدیه
+      confirmTitle = TextView(context).apply {
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_x_large))
+        setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_confirm_button)
+        elevation = 4F
+        setPadding(24, 8, 24, 8)
+        confirmLayout!!.addView(this)
+      }
+
+      // محاسبه ی مقدار margin از پایین مربوط به لایه ی المنت های تاییدیه
+      val lp = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.BOTTOM)
+      val tv = TypedValue()
+      if (requireActivity().theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+        val actionBarHeight =
+          TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+        lp.bottomMargin = actionBarHeight + 8
+      }
+      confirmLayout!!.layoutParams = lp
+    }
+
+    viewDataBinding?.let {
+      // عنوان تاییدیه
+      confirmTitle!!.text = title
+      // عملکرد دکمه ی تایید
+      it.includeMovieForm.btnConfirm.setOnClickListener { onConfirm.invoke() }
+
+      with(confirmLayout!!) {
+        alpha = 0F
+        it.includeMovieForm.layoutMovieForm.addView(this)
+        post {
+          // محاسبه محل نمایش عنوان تاییدیه
+          // باید عنوان به موازات دکمه ی تایید نمایش داده شود و در بالای آن
+
+          // مقدار عرض دکمه ی کنسل را محاسبه میکنیم تا به مقدار آن عقب تر از دکمه ی تایید لایه را نمایش دهیم
+          // تا عنوان و دکمه ی تایید، در یک راستا قرار گیرند
+          val cancelWidth = confirmCancel!!.width
+
+          val location = IntArray(2)
+          it.includeMovieForm.btnConfirm.getLocationOnScreen(location)
+          // محل قرارگیری دکمه ی تایید (محور x)
+          val x = location[0]
+          // محل قرارگیری لایه ی عنوان و دکمه ی کنسل
+          //                          مقدار margin از راستِ دکمه ی کنسل
+          this.x = (x - (cancelWidth + 16)).toFloat()
+
+          //نمایش لایه ی عنوان تاییدیه و دکمه ی کنسل همراه با انیمیشن
+          animateAlpha(0F, 1F, 100, beforeAnimate = { visible() })
+          // نمایش دکمه ی تایید همراه با انیمیشن
+          with(it.includeMovieForm.btnConfirm) {
+            animateAlpha(0F, 1F, 100, beforeAnimate = { alpha = 0F; visible() })
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * عدم نمایش المنت های مربوط به تاییدیه
+   */
+  override fun dismissConfirm() {
+    viewDataBinding?.let {
+      with(it.includeMovieForm.btnConfirm) {
+        animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
+      }
+      confirmLayout?.let { confirm ->
+        confirm.animateAlpha(1F, 0F, 100, afterAnimate = {
+          // بعد از اتمام انیمیشن، لایه ی مربوط به تاییدیه حذف شود
+          it.includeMovieForm.layoutMovieForm.removeView(confirm)
+        })
+      }
+    }
+  }
+
+  /**
+   * لیست فیلم های مربوط به نتیجه ی جستجوی موردنظر
+   */
   private fun setUpMatchedMovieList() {
     viewDataBinding?.let {
       with(MatchedMoviesAdapter(arrayListOf())) {
@@ -163,6 +292,7 @@ class AddMovieDialog :
           BottomSheetBehavior.STATE_COLLAPSED -> {
             it.includeMovieForm.root.gone()
             viewModel.clearForm()
+            dismissConfirm()
           }
         }
       }

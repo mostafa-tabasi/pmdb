@@ -61,8 +61,8 @@ data class MovieEntity(
           awards = awards.get(),
           comment = comment.get(),
           favorite = favorite.get() ?: false,
-          watch = seen.get() ?: false,
-          watchedAt = if (seen.get() == true) currentTime else null,
+          watch = watched.get() ?: false,
+          watchedAt = if (watched.get() == true) currentTime else null,
           createdAt = currentTime
         )
       }

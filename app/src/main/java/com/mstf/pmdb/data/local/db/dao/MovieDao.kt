@@ -7,7 +7,7 @@ import com.mstf.pmdb.data.model.db.MovieEntity
 interface MovieDao {
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
-  suspend fun insert(movie: MovieEntity)
+  suspend fun insert(movie: MovieEntity): Long
 
   @Update
   suspend fun update(movie: MovieEntity)
@@ -20,4 +20,10 @@ interface MovieDao {
 
   @Query("SELECT * FROM movie")
   suspend fun getAllMovies(): List<MovieEntity>?
+
+  @Query("UPDATE movie SET watch = :isWatched, watched_at = :watchedAt WHERE id = :id ")
+  suspend fun updateWatchState(id: Long, isWatched: Boolean, watchedAt: Long)
+
+  @Query("UPDATE movie SET favorite = :favorite WHERE id = :id ")
+  suspend fun updateFavoriteState(id: Long, favorite: Boolean)
 }
