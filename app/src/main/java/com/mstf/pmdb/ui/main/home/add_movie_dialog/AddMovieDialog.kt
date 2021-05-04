@@ -12,7 +12,6 @@ import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,7 +25,6 @@ import com.mstf.pmdb.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 import com.mstf.pmdb.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_find_movie.view.*
-
 
 @AndroidEntryPoint
 class AddMovieDialog :
@@ -46,9 +44,7 @@ class AddMovieDialog :
 
   // لایه ی تاییدیه مربوط به دکمه هایی که قبل از انجام عملکرد نیاز به گرفتن تایید دارند
   // مثل حذف فیلم از آرشیو یا پاک کردن اطلاعات ثبت شده در فرم
-  private var confirmLayout: LinearLayout? = null
-  private var confirmTitle: TextView? = null
-  private var confirmCancel: ImageView? = null
+  private var confirmLayout: View? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -88,109 +84,147 @@ class AddMovieDialog :
    * نمایش دکمه ی تایید جهت پاک کردن اطلاعات صبت شده در فرم
    */
   private fun showClearFormConfirm() {
-    showConfirm(" Clear? ") { viewModel.clearForm(); dismissConfirm() }
+    viewDataBinding?.let {
+      showConfirmFor(
+        it.includeMovieForm.btnConfirmClearDelete,
+        "Clear?",
+        R.drawable.bg_confirm_red_button
+      ) { viewModel.clearForm(); dismissConfirm() }
+    }
   }
 
   /**
    * نمایش دکمه ی تایید جهت پاک کردن فیلم از آرشیو
    */
   private fun showDeleteConfirm() {
-    showConfirm(" Delete? ") { viewModel.deleteMovie(); dismissConfirm() }
+    viewDataBinding?.let {
+      showConfirmFor(
+        it.includeMovieForm.btnConfirmClearDelete,
+        "Delete?",
+        R.drawable.bg_confirm_red_button
+      ) { viewModel.deleteMovie(); dismissConfirm() }
+    }
+  }
+
+  /**
+   * نمایش دکمه ی تایید جهت ذخیره مجدد فیلم روی فیلم قبلی آرشیو شده
+   */
+  override fun showOverwriteConfirm() {
+    viewDataBinding?.let {
+      showConfirmFor(
+        it.includeMovieForm.btnConfirmOverwrite,
+        "Already archived, overwrite?",
+        R.drawable.bg_confirm_green_button
+      ) { viewModel.saveMovie(); dismissConfirm() }
+    }
   }
 
   /**
    * نمایش عنوان تاییدیه مربوط به دکمه ی موردنظر
    *
+   * @param confirmButton دکمه ی تاییدی که عنوان برای آن نمایش داده میشود
    * @param title عنوان تاییدیه
+   * @param colorRes رنگ پس زمینه عنوان و دکمه ی تایید
+   * @param onConfirm عملیاتی که بعد از تایید باید انجام شود
    */
-  private fun showConfirm(title: String, onConfirm: () -> Unit) {
-    if (confirmLayout == null) {
-      confirmLayout = LinearLayout(requireContext())
-
-      // تعریف دکمه ی مربوط به کنسل کردن تاییدیه
-      confirmCancel = ImageView(requireContext()).apply {
-        setImageResource(R.drawable.ic_clear)
-        setOnClickListener { dismissConfirm() }
-        background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_confirm_cancel)
-        elevation = 4F
-        setPadding(8)
-        confirmLayout!!.addView(this)
-
-        (layoutParams as LinearLayout.LayoutParams).apply {
-          rightMargin = 16
-          bottomMargin = 16
-        }
-      }
-
-      // تعریف عنوان تاییدیه
-      confirmTitle = TextView(context).apply {
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_x_large))
-        setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_confirm_button)
-        elevation = 4F
-        setPadding(24, 8, 24, 8)
-        confirmLayout!!.addView(this)
-      }
-
-      // محاسبه ی مقدار margin از پایین مربوط به لایه ی المنت های تاییدیه
-      val lp = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.BOTTOM)
-      val tv = TypedValue()
-      if (requireActivity().theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-        val actionBarHeight =
-          TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
-        lp.bottomMargin = actionBarHeight + 8
-      }
-      confirmLayout!!.layoutParams = lp
-    }
-
+  private fun showConfirmFor(
+    confirmButton: ImageView,
+    title: String,
+    colorRes: Int,
+    onConfirm: () -> Unit
+  ) {
     viewDataBinding?.let {
-      // عنوان تاییدیه
-      confirmTitle!!.text = title
-      // عملکرد دکمه ی تایید
-      it.includeMovieForm.btnConfirm.setOnClickListener { onConfirm.invoke() }
 
-      with(confirmLayout!!) {
-        alpha = 0F
-        it.includeMovieForm.layoutMovieForm.addView(this)
-        post {
-          // محاسبه محل نمایش عنوان تاییدیه
-          // باید عنوان به موازات دکمه ی تایید نمایش داده شود و در بالای آن
+      if (confirmLayout == null) {
+        confirmLayout = layoutInflater.inflate(R.layout.layout_confirm_title, null)
+        confirmLayout!!.findViewById<ImageView>(R.id.btn_cancel)
+          .setOnClickListener { dismissConfirm() }
 
-          // مقدار عرض دکمه ی کنسل را محاسبه میکنیم تا به مقدار آن عقب تر از دکمه ی تایید لایه را نمایش دهیم
-          // تا عنوان و دکمه ی تایید، در یک راستا قرار گیرند
-          val cancelWidth = confirmCancel!!.width
-
-          val location = IntArray(2)
-          it.includeMovieForm.btnConfirm.getLocationOnScreen(location)
-          // محل قرارگیری دکمه ی تایید (محور x)
-          val x = location[0]
-          // محل قرارگیری لایه ی عنوان و دکمه ی کنسل
-          //                          مقدار margin از راستِ دکمه ی کنسل
-          this.x = (x - (cancelWidth + 16)).toFloat()
-
-          //نمایش لایه ی عنوان تاییدیه و دکمه ی کنسل همراه با انیمیشن
-          animateAlpha(0F, 1F, 100, beforeAnimate = { visible() })
-          // نمایش دکمه ی تایید همراه با انیمیشن
-          with(it.includeMovieForm.btnConfirm) {
-            animateAlpha(0F, 1F, 100, beforeAnimate = { alpha = 0F; visible() })
-          }
+        // محاسبه ی مقدار margin از پایین مربوط به لایه ی المنت های تاییدیه
+        val lp = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.BOTTOM)
+        val tv = TypedValue()
+        if (requireActivity().theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+          val actionBarHeight =
+            TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+          lp.bottomMargin = actionBarHeight + 8
         }
+        confirmLayout!!.layoutParams = lp
+      }
+
+      // اگر لایه ی تاییدیه دیگری درحال نمایش بود، ابتدا حذف شود
+      dismissConfirm(false)
+
+      // تنظیمات دکمه ی تایید
+      confirmButton.apply {
+        alpha = 0F
+        background = ContextCompat.getDrawable(requireContext(), colorRes)
+        // عملکرد دکمه ی تایید
+        setOnClickListener { onConfirm.invoke() }
+      }
+
+      // تنظیمات لایه ی عنوان و کنسل تاییدیه
+      confirmLayout!!.apply {
+        alpha = 0F
+        findViewById<TextView>(R.id.txt_title).apply {
+          // عنوان تاییدیه
+          text = title
+          background = ContextCompat.getDrawable(requireContext(), colorRes)
+        }
+      }
+
+      // افزودن لایه ی تاییدیه به صفحه
+      it.includeMovieForm.layoutMovieForm.addView(confirmLayout)
+
+      //نمایش لایه ی عنوان تاییدیه و دکمه ی کنسل همراه با انیمیشن
+      with(confirmLayout!!) {
+        animateAlpha(0F, 1F, 100, beforeAnimate = {
+          visible()
+          post { initConfirmLayoutLocation(confirmButton) }
+        })
+      }
+
+      // نمایش دکمه ی تایید همراه با انیمیشن
+      with(confirmButton) {
+        animateAlpha(0F, 1F, 100, beforeAnimate = { visible() })
       }
     }
   }
 
   /**
-   * عدم نمایش المنت های مربوط به تاییدیه
+   * محاسبه و ست کردن محل قرارگیری لایه ی مربوط به عنوان تاییدیه
    */
-  override fun dismissConfirm() {
+  private fun initConfirmLayoutLocation(confirmButton: ImageView) {
+    // باید سمت راست عنوان در راستای سمت راست دکمه ی تایید نمایش داده شود و در بالای آن
+
+    // مقدار عرض عنوان را محاسبه میکنیم تا به مقدار اختلافِ آن با دکمه ی تایید، عقب تر از دکمه ی تایید، لایه را نمایش دهیم
+    val titleWidth = confirmLayout!!.findViewById<TextView>(R.id.txt_title).width
+    val confirmButtonWidth = confirmButton.width
+
+    // محاسبه محل نمایش عنوان تاییدیه
+    // متغیری جهت نگهداری موقعیت لایه ای که دکمه ی تایید در آن نمایش داده میشود
+    val location = IntArray(2)
+    confirmButton.getLocationOnScreen(location)
+    // محل قرارگیری دکمه ی تایید (محور x)
+    val x = location[0]
+    // محل قرارگیری لایه ی عنوان و دکمه ی کنسل
+    confirmLayout!!.x = (x - (titleWidth - confirmButtonWidth)).toFloat()
+  }
+
+  override fun dismissConfirm(animate: Boolean) {
     viewDataBinding?.let {
-      with(it.includeMovieForm.btnConfirm) {
-        animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
+      with(it.includeMovieForm.btnConfirmClearDelete) {
+        if (!animate) gone()
+        else animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
       }
-      confirmLayout?.let { confirm ->
-        confirm.animateAlpha(1F, 0F, 100, afterAnimate = {
-          // بعد از اتمام انیمیشن، لایه ی مربوط به تاییدیه حذف شود
-          it.includeMovieForm.layoutMovieForm.removeView(confirm)
+      with(it.includeMovieForm.btnConfirmOverwrite) {
+        if (!animate) gone()
+        else animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
+      }
+      confirmLayout?.let { layout ->
+        if (!animate) it.includeMovieForm.layoutMovieForm.removeView(layout)
+        else layout.animateAlpha(1F, 0F, 100, afterAnimate = {
+          // بعد از اتمام انیمیشن، لایه ی مربوط به عنوان تاییدیه حذف شود
+          it.includeMovieForm.layoutMovieForm.removeView(layout)
         })
       }
     }
@@ -288,12 +322,26 @@ class AddMovieDialog :
     override fun onStateChanged(bottomSheet: View, newState: Int) {
       viewDataBinding?.let {
         when (newState) {
-          BottomSheetBehavior.STATE_EXPANDED -> it.includeFindMovie.root.gone()
+          BottomSheetBehavior.STATE_EXPANDED -> {
+            it.includeFindMovie.root.gone()
+            setMovieFormLoadingWidth()
+          }
           BottomSheetBehavior.STATE_COLLAPSED -> {
             it.includeMovieForm.root.gone()
             viewModel.clearForm()
             dismissConfirm()
           }
+        }
+      }
+    }
+
+    /**
+     * محاسبه و ست کردن عرض مربوط به لودینگ موجود در فرم اطلاعات فیلم
+     */
+    private fun setMovieFormLoadingWidth() {
+      viewDataBinding?.let {
+        with(it.includeMovieForm.btnSave) {
+          post { it.includeMovieForm.pbLoading.layoutParams.width = width }
         }
       }
     }

@@ -56,6 +56,8 @@ class AppDataManager @Inject constructor(
 
   override suspend fun getAllMovies() = dbHelper.getAllMovies()
 
+  override suspend fun getMovieByImdbId(id: String): MovieEntity? = dbHelper.getMovieByImdbId(id)
+
   override suspend fun updateWatchState(id: Long, watched: Boolean) =
     dbHelper.updateWatchState(id, watched)
 

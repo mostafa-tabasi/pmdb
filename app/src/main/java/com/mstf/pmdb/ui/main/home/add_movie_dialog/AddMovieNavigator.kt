@@ -77,7 +77,14 @@ interface AddMovieNavigator : BaseNavigator {
 
   /**
    * عدم نمایش لایه ی تاییدیه ی
+   *
+   * @param animate همراه با انیمیشن انجام شود یا خیر
    */
-  fun dismissConfirm()
+  fun dismissConfirm(animate: Boolean = true)
+
+  /**
+   * نمایش تاییدیه جهت ذخیره ی فیلم
+   */
+  fun showOverwriteConfirm()
 
 }

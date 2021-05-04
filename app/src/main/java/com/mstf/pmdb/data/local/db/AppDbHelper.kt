@@ -11,6 +11,9 @@ class AppDbHelper @Inject constructor(private val appDatabase: AppDatabase) : Db
 
   override suspend fun getAllMovies() = appDatabase.movieDao().getAllMovies()
 
+  override suspend fun getMovieByImdbId(id: String): MovieEntity? =
+    appDatabase.movieDao().getMovieByImdbId(id)
+
   override suspend fun updateWatchState(id: Long, watched: Boolean) =
     // اگر فیلم دیده شده بود، تاریخ فعلی بعنوان تاریخی که فیلم در آن دیده شده است ثبت میشود
     appDatabase.movieDao().updateWatchState(id, watched, if (watched) System.currentTimeMillis() else 0L)

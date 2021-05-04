@@ -21,6 +21,9 @@ interface MovieDao {
   @Query("SELECT * FROM movie")
   suspend fun getAllMovies(): List<MovieEntity>?
 
+  @Query("SELECT * FROM movie WHERE imdb_id = :id LIMIT 1")
+  suspend fun getMovieByImdbId(id: String): MovieEntity?
+
   @Query("UPDATE movie SET watch = :isWatched, watched_at = :watchedAt WHERE id = :id ")
   suspend fun updateWatchState(id: Long, isWatched: Boolean, watchedAt: Long)
 

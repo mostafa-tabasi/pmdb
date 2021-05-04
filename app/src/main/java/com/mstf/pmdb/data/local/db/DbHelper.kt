@@ -15,6 +15,11 @@ interface DbHelper {
   suspend fun getAllMovies(): List<MovieEntity>?
 
   /**
+   * دریافت فیلم موردنظر براساس شناسه ی سایت imdb در صورت موجود بودن در دیتابیس
+   */
+  suspend fun getMovieByImdbId(id: String): MovieEntity?
+
+  /**
    * بروزرسانی وضعیت مشاهده شدن فیلم (فیلم دیده شده یا خیر)
    */
   suspend fun updateWatchState(id: Long, watched: Boolean)

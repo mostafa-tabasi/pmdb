@@ -1,5 +1,6 @@
 package com.mstf.pmdb.ui.main.home.add_movie_dialog
 
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -349,26 +350,39 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   }
 
   /**
-   *ذخیره ی فیلم در دیتابیس
+   *بررسی شرایط جهت ذخیره ی فیلم در دیتابیس
    */
-  fun saveMovie(v: View? = null) {
+  fun saveProcess(v: View? = null) {
     if (movie.title.get().isNullOrEmptyAfterTrim()) {
       navigator?.showError("Title can't be empty")
       return
     }
-
-    saveLoading.set(true)
-    isEditing.set(false)
-    navigator?.dismissConfirm()
+    // اگر تایید پاک کردن فیلم یا فرم درحال نمایش بود، حذف شود
+    navigator?.dismissConfirm(false)
     viewModelScope.launch {
-      //TODO: check if movie exist for update
-      //TODO: disable back button and dragging bottom sheet until finish
+      var existMovie: MovieEntity? = null
+      movie.imdbID.get()?.let {
+        if (!TextUtils.isEmpty(it.trim())) existMovie = dataManager.getMovieByImdbId(it)
+      }
+      // اگر فیلمی با این شناسه ی imdb در آرشیو موجود بود،
+      // تاییدیه جهت ذخیره روی فیلم موجود گرفته شود
+      if (existMovie != null) navigator?.showOverwriteConfirm()
+      // در غیراینصورت در آرشیو ذخیره شود
+      else saveMovie()
+    }
+  }
+
+  /**
+   *ذخیره ی فیلم در دیتابیس
+   */
+  fun saveMovie(v: View? = null) {
+    viewModelScope.launch {
+      saveLoading.set(true)
+      isEditing.set(false)
       dataManager.insertMovie(MovieEntity.from(movie)).run {
-        delay(300)
         saveLoading.set(false)
         isArchived.set(true)
         movie.id.set(this)
-        navigator?.showError("Inserted Movie ID: $this")
       }
     }
   }

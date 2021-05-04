@@ -725,6 +725,7 @@
       android:layout_width="match_parent"
       android:layout_height="?actionBarSize"
       android:layout_gravity="top"
+      android:animateLayoutChanges="true"
       android:background="?colorPrimary"
       android:clickable="true"
       android:elevation="4dp"
@@ -863,54 +864,74 @@
           app:tint="?colorSelectedIconsTint" />
 
         <ImageView
-          android:id="@+id/btn_confirm"
+          android:id="@+id/btn_confirm_clear_delete"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
           android:alpha="0"
-          android:background="@drawable/bg_confirm_button"
+          android:background="@drawable/bg_confirm_red_button"
           android:onClick="@{viewModel.clearForm}"
           android:paddingHorizontal="8dp"
           android:src="@drawable/ic_check"
           android:visibility="gone"
           app:tint="@color/white" />
-
       </FrameLayout>
 
-      <ImageView
-        activatedIcon="@{ @drawable/ic_save }"
-        deactivatedIcon="@{ @drawable/ic_save_outline }"
-        isActivated="@{viewModel.movie.canSave}"
+      <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:background="?android:actionBarItemBackground"
-        android:clickable="true"
-        android:onClick="@{viewModel.saveMovie}"
-        android:paddingHorizontal="8dp"
-        android:src="@drawable/ic_save_outline"
-        android:visibility="@{(viewModel.saveLoading || !viewModel.isEditing) ? View.GONE : View.VISIBLE, default=visible}"
-        app:tint="?colorSelectedIconsTint" />
+        android:layout_marginRight="32dp">
 
-      <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:background="?android:actionBarItemBackground"
-        android:clickable="true"
-        android:onClick="@{viewModel.editMovie}"
-        android:paddingHorizontal="8dp"
-        android:src="@drawable/ic_edit"
-        android:visibility="@{(viewModel.saveLoading || viewModel.isEditing) ? View.GONE : View.VISIBLE, default=gone}"
-        app:tint="?colorSelectedIconsTint" />
+        <ImageView
+          android:id="@+id/btn_save"
+          activatedIcon="@{ @drawable/ic_save }"
+          deactivatedIcon="@{ @drawable/ic_save_outline }"
+          isActivated="@{viewModel.movie.canSave}"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:background="?android:actionBarItemBackground"
+          android:clickable="true"
+          android:onClick="@{viewModel.saveProcess}"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_save_outline"
+          android:visibility="@{(viewModel.saveLoading || !viewModel.isEditing) ? View.GONE : View.VISIBLE, default=visible}"
+          app:tint="?colorSelectedIconsTint" />
 
-      <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateTint="?colorSelectedIconsTint"
-        android:padding="4dp"
-        android:visibility="@{viewModel.saveLoading ? View.VISIBLE : View.GONE, default=gone}" />
+        <ImageView
+          android:id="@+id/btn_edit"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:background="?android:actionBarItemBackground"
+          android:clickable="true"
+          android:onClick="@{viewModel.editMovie}"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_edit"
+          android:visibility="@{(viewModel.saveLoading || viewModel.isEditing) ? View.GONE : View.VISIBLE, default=gone}"
+          app:tint="?colorSelectedIconsTint" />
+
+        <ImageView
+          android:id="@+id/btn_confirm_overwrite"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center"
+          android:alpha="0"
+          android:background="@drawable/bg_confirm_green_button"
+          android:onClick="@{viewModel.saveMovie}"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_check"
+          android:visibility="gone"
+          app:tint="@color/white" />
+
+        <ProgressBar
+          android:id="@+id/pb_loading"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center"
+          android:indeterminateTint="?colorSelectedIconsTint"
+          android:padding="5dp"
+          android:visibility="@{viewModel.saveLoading ? View.VISIBLE : View.GONE, default=gone}" />
+
+      </FrameLayout>
 
     </LinearLayout>
 
