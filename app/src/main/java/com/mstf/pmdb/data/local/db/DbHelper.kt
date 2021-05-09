@@ -10,6 +10,11 @@ interface DbHelper {
   suspend fun insertMovie(movie: MovieEntity): Long
 
   /**
+   * حذف فیلم از دیتابیس
+   */
+  suspend fun deleteMovieById(id: Long): Int?
+
+  /**
    * دریافت تمام فیلم های موجود در دیتابیس
    */
   suspend fun getAllMovies(): List<MovieEntity>?
@@ -28,4 +33,9 @@ interface DbHelper {
    * بروزرسانی وضعیت مورد علاقه بودن فیلم
    */
   suspend fun updateFavoriteState(id: Long, favorite: Boolean)
+
+  /**
+   * بروزرسانی فیلم در دیتابیس
+   */
+  suspend fun updateMovie(movie: MovieEntity)
 }

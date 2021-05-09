@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.mstf.pmdb.utils.CommonUtils
-import com.mstf.pmdb.utils.extensions.snackBar
+import com.mstf.pmdb.utils.extensions.toast
 
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(),
   BaseNavigator {
@@ -71,7 +71,5 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
     viewDataBinding!!.executePendingBindings()
   }
 
-  override fun showError(message: String) {
-    viewDataBinding?.root?.snackBar(message)
-  }
+  override fun showError(message: String) = toast(message)
 }

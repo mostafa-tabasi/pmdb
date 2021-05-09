@@ -14,9 +14,8 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
 
   fun getMovies() {
     viewModelScope.launch {
-      navigator?.showError("GETTING MOVIES")
       val movies = dataManager.getAllMovies()
-      navigator?.showError(if (movies != null) Gson().toJson(movies) else "EMPTY ARCHIVE")
+      navigator?.showError(if (movies != null) Gson().toJson(movies[movies.size - 1]) else "EMPTY ARCHIVE")
     }
   }
 }

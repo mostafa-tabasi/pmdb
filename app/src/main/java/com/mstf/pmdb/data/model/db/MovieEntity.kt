@@ -64,7 +64,11 @@ data class MovieEntity(
           watch = watched.get() ?: false,
           watchedAt = if (watched.get() == true) currentTime else null,
           createdAt = currentTime
-        )
+        ).also {
+          // ست کردن اطلاعاتی که برای بروزرسانی نیاز است (در صورت موجود بودن)
+          if (movie.dbId != -1L) it.id = movie.dbId
+          if (movie.dbCreatedAt != -1L) it.createdAt = movie.dbCreatedAt
+        }
       }
     }
   }

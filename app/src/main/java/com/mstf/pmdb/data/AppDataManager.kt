@@ -54,6 +54,8 @@ class AppDataManager @Inject constructor(
 
   override suspend fun insertMovie(movie: MovieEntity) = dbHelper.insertMovie(movie)
 
+  override suspend fun deleteMovieById(id: Long): Int? = dbHelper.deleteMovieById(id)
+
   override suspend fun getAllMovies() = dbHelper.getAllMovies()
 
   override suspend fun getMovieByImdbId(id: String): MovieEntity? = dbHelper.getMovieByImdbId(id)
@@ -63,4 +65,6 @@ class AppDataManager @Inject constructor(
 
   override suspend fun updateFavoriteState(id: Long, favorite: Boolean) =
     dbHelper.updateFavoriteState(id, favorite)
+
+  override suspend fun updateMovie(movie: MovieEntity) = dbHelper.updateMovie(movie)
 }

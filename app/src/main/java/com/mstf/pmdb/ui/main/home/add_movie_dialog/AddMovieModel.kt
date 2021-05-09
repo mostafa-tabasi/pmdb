@@ -14,7 +14,8 @@ import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 
 class AddMovieModel : BaseObservable() {
 
-  val id = ObservableField<Long>()
+  var dbId: Long = -1L
+  var dbCreatedAt: Long = -1L
   val title = ObservableField<String>()
   val yearStart = ObservableField<String>()
   val yearEnd = ObservableField<String>()
@@ -87,7 +88,8 @@ class AddMovieModel : BaseObservable() {
   }
 
   fun clear() {
-    id.set(null)
+    dbId = -1L
+    dbCreatedAt = -1L
     title.set(null)
     imdbID.set(null)
     poster.set("N/A")

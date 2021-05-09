@@ -34,7 +34,8 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
-  private var updateJob: Job? = null
+  private var updateFavoriteJob: Job? = null
+  private var updateWatchJob: Job? = null
   val searchTitle = ObservableField<String>()
   val searchID = ObservableField<String>()
   val searchLoading = ObservableField<Boolean>().apply { set(false) }
@@ -116,12 +117,13 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun toggleWatchState(v: View? = null) {
     with(movie) {
       watched.set(!watched.get()!!)
-
-      // make it function
-      updateJob?.cancel()
-      updateJob = viewModelScope.launch {
-        delay(300)
-        if (isArchived.get() == true) dataManager.updateWatchState(id.get()!!, watched.get()!!)
+      // اگر فیلم آرشیو شده بود، وضعیتِ موردنظر بروزرسانی شود
+      if (isArchived.get() == true) {
+        updateWatchJob?.cancel()
+        updateWatchJob = viewModelScope.launch {
+          delay(300)
+          dataManager.updateWatchState(dbId, watched.get()!!)
+        }
       }
     }
   }
@@ -132,11 +134,13 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun toggleFavoriteState(v: View? = null) {
     with(movie) {
       favorite.set(!favorite.get()!!)
-
-      updateJob?.cancel()
-      updateJob = viewModelScope.launch {
-        delay(300)
-        if (isArchived.get() == true) dataManager.updateFavoriteState(id.get()!!, favorite.get()!!)
+      // اگر فیلم آرشیو شده بود، وضعیتِ موردنظر بروزرسانی شود
+      if (isArchived.get() == true) {
+        updateFavoriteJob?.cancel()
+        updateFavoriteJob = viewModelScope.launch {
+          delay(300)
+          dataManager.updateFavoriteState(dbId, favorite.get()!!)
+        }
       }
     }
   }
@@ -347,6 +351,13 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * حذف فیلم موردنظر از دیتابیس
    */
   fun deleteMovie() {
+    if (isArchived.get() != true || movie.dbId == -1L) return
+
+    viewModelScope.launch {
+      dataManager.deleteMovieById(movie.dbId).run {
+        clearForm()
+      }
+    }
   }
 
   /**
@@ -359,16 +370,42 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     }
     // اگر تایید پاک کردن فیلم یا فرم درحال نمایش بود، حذف شود
     navigator?.dismissConfirm(false)
-    viewModelScope.launch {
-      var existMovie: MovieEntity? = null
-      movie.imdbID.get()?.let {
-        if (!TextUtils.isEmpty(it.trim())) existMovie = dataManager.getMovieByImdbId(it)
+    // اگر فیلم قبلا آرشیو شده بود، فقط باید بروزرسانی شود
+    if (isArchived.get() == true) updateMovie()
+    // در غیراینصورت باید آرشیو شود
+    else {
+      viewModelScope.launch {
+        var existMovie: MovieEntity? = null
+        // بررسی اینکه فیلمی قبلا با این شناسه آرشیو شده است یا خیر
+        movie.imdbID.get()?.let {
+          if (!TextUtils.isEmpty(it.trim())) existMovie = dataManager.getMovieByImdbId(it)
+        }
+        // اگر فیلمی با این شناسه ی imdb در آرشیو موجود بود،
+        // تاییدیه جهت ذخیره روی فیلم موجود گرفته شود
+        if (existMovie != null) {
+          // شناسه و اطلاعاتِ لازمِ فعلیِ فیلم در دیتابیس که لازم به نگهداری است را ست میکنیم،
+          // در صورتیکه کاربر بخواهد اطلاعات را بروز کند
+          movie.dbId = existMovie!!.id!!
+          movie.dbCreatedAt = existMovie!!.createdAt
+          navigator?.showOverwriteConfirm()
+        }
+        // در غیراینصورت در آرشیو ذخیره شود
+        else saveMovie()
       }
-      // اگر فیلمی با این شناسه ی imdb در آرشیو موجود بود،
-      // تاییدیه جهت ذخیره روی فیلم موجود گرفته شود
-      if (existMovie != null) navigator?.showOverwriteConfirm()
-      // در غیراینصورت در آرشیو ذخیره شود
-      else saveMovie()
+    }
+  }
+
+  /**
+   *بروزرسانی فیلم در دیتابیس
+   */
+  fun updateMovie() {
+    viewModelScope.launch {
+      saveLoading.set(true)
+      isEditing.set(false)
+      dataManager.updateMovie(MovieEntity.from(movie)).run {
+        saveLoading.set(false)
+        isArchived.set(true)
+      }
     }
   }
 
@@ -382,7 +419,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
       dataManager.insertMovie(MovieEntity.from(movie)).run {
         saveLoading.set(false)
         isArchived.set(true)
-        movie.id.set(this)
+        movie.dbId = this
       }
     }
   }

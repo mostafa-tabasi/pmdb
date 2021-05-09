@@ -11,7 +11,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.mstf.pmdb.utils.extensions.snackBar
+import com.mstf.pmdb.utils.extensions.toast
 
 abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragment(),
   BaseNavigator {
@@ -69,5 +69,5 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
     baseActivity?.openActivityOnTokenExpire()
   }
 
-  override fun showError(message: String) = requireView().snackBar(message)
+  override fun showError(message: String) = requireContext().toast(message)
 }

@@ -13,7 +13,10 @@ interface MovieDao {
   suspend fun update(movie: MovieEntity)
 
   @Delete
-  suspend fun delete(movie: MovieEntity)
+  suspend fun delete(movie: MovieEntity): Int?
+
+  @Query("DELETE FROM movie WHERE id = :id")
+  suspend fun delete(id: Long): Int?
 
   @Query("SELECT * FROM movie WHERE title LIKE :title")
   suspend fun findByTitle(title: String): List<MovieEntity>?

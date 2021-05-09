@@ -9,6 +9,8 @@ class AppDbHelper @Inject constructor(private val appDatabase: AppDatabase) : Db
 
   override suspend fun insertMovie(movie: MovieEntity) = appDatabase.movieDao().insert(movie)
 
+  override suspend fun deleteMovieById(id: Long): Int? = appDatabase.movieDao().delete(id)
+
   override suspend fun getAllMovies() = appDatabase.movieDao().getAllMovies()
 
   override suspend fun getMovieByImdbId(id: String): MovieEntity? =
@@ -20,5 +22,7 @@ class AppDbHelper @Inject constructor(private val appDatabase: AppDatabase) : Db
 
   override suspend fun updateFavoriteState(id: Long, favorite: Boolean) =
     appDatabase.movieDao().updateFavoriteState(id, favorite)
+
+  override suspend fun updateMovie(movie: MovieEntity) = appDatabase.movieDao().update(movie)
 
 }

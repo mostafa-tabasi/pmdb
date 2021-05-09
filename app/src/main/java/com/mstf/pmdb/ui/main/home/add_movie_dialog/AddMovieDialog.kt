@@ -115,7 +115,7 @@ class AddMovieDialog :
         it.includeMovieForm.btnConfirmOverwrite,
         "Already archived, overwrite?",
         R.drawable.bg_confirm_green_button
-      ) { viewModel.saveMovie(); dismissConfirm() }
+      ) { viewModel.updateMovie(); dismissConfirm() }
     }
   }
 
@@ -330,6 +330,8 @@ class AddMovieDialog :
             it.includeMovieForm.root.gone()
             viewModel.clearForm()
             dismissConfirm()
+          }
+          else -> {
           }
         }
       }
