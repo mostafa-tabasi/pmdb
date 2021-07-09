@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveViewModel" />
+
+  </data>
+
+  <FrameLayout
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingVertical="@dimen/space_massive"
+      android:text="HELLO WORLD" />
+
+  </FrameLayout>
+
+</layout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
@@ -12,6 +13,7 @@
   <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="?colorPrimary">
 
     <androidx.fragment.app.FragmentContainerView
@@ -20,7 +22,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:defaultNavHost="true"
-      app:navGraph="@navigation/main_nav_graph" />
+      app:navGraph="@navigation/main_navigation" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
       android:id="@+id/bottom_bar"
@@ -31,7 +33,9 @@
       app:backgroundTint="?colorPrimaryVariant"
       app:contentInsetEnd="0dp"
       app:contentInsetStart="0dp"
-      app:fabAlignmentMode="end">
+      app:fabAlignmentMode="end"
+      app:hideOnScroll="true"
+      app:layout_scrollFlags="scroll|enterAlways">
 
       <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -49,11 +53,10 @@
       android:id="@+id/fab_main"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:contentDescription="TODO"
-      android:src="@{viewModel.currentPage == 0 ? @drawable/ic_add : viewModel.currentPage == 1 ? @drawable/ic_search : @drawable/ic_info }"
       app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorOnPrimary"
-      app:layout_anchor="@id/bottom_bar" />
+      app:layout_anchor="@id/bottom_bar"
+      tools:src="@drawable/ic_add" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

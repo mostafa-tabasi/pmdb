@@ -1,5 +1,6 @@
 package com.mstf.pmdb.data.local.db
 
+import androidx.paging.DataSource
 import com.mstf.pmdb.data.model.db.MovieEntity
 
 interface DbHelper {
@@ -20,6 +21,11 @@ interface DbHelper {
   suspend fun getAllMovies(): List<MovieEntity>?
 
   /**
+   * دریافت تمام فیلم های موجود در دیتابیس براساس تاریخ ثبت
+   */
+  fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
    * دریافت فیلم موردنظر براساس شناسه ی سایت imdb در صورت موجود بودن در دیتابیس
    */
   suspend fun getMovieByImdbId(id: String): MovieEntity?
@@ -38,4 +44,11 @@ interface DbHelper {
    * بروزرسانی فیلم در دیتابیس
    */
   suspend fun updateMovie(movie: MovieEntity)
+
+  /**
+   * دریافت فیلم از دیتابیس براساس شناسه ی آن
+   *
+   * @param movieId شناسه ی فیلم موردنظر
+   */
+  suspend fun findMovieById(movieId: Long): MovieEntity?
 }

@@ -22,6 +22,8 @@ import com.mstf.pmdb.data.resource.ResourceHelper
 import com.mstf.pmdb.di.annotation.ApiInfo
 import com.mstf.pmdb.di.annotation.DatabaseInfo
 import com.mstf.pmdb.di.annotation.PreferenceInfo
+import com.mstf.pmdb.ui.main.archive.adapter.ListArchiveAdapter
+import com.mstf.pmdb.ui.main.archive.adapter.TilesArchiveAdapter
 import com.mstf.pmdb.utils.AppConstants
 import com.mstf.pmdb.utils.NetworkConnectionInterceptor
 import dagger.Module
@@ -119,4 +121,10 @@ object AppModule {
     preferencesHelper.currentUserId,
     preferencesHelper.accessToken
   )
+
+  @Provides
+  fun provideArchiveAdapter() = TilesArchiveAdapter()
+
+  @Provides
+  fun provideListArchiveAdapter() = ListArchiveAdapter()
 }

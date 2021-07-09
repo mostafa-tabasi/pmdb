@@ -5,7 +5,9 @@
   <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
   <string name="app_market_link">"market://details?id="</string>
 
-  <string name="home_label">Home</string>
-  <string name="archive_label">Archive</string>
-  <string name="settings_label">Settings</string>
+  <string name="home_label" translatable="false">Home</string>
+  <string name="archive_label" translatable="false">Archive</string>
+  <string name="settings_label" translatable="false">Settings</string>
+  <string name="add_movie_label" translatable="false">Add Movie Dialog</string>
+  <string name="search_in_archive_label" translatable="false">Search in Archive Dialog</string>
 </resources>

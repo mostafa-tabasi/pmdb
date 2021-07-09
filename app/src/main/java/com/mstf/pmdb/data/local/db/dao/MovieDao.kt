@@ -1,5 +1,6 @@
 package com.mstf.pmdb.data.local.db.dao
 
+import androidx.paging.DataSource
 import androidx.room.*
 import com.mstf.pmdb.data.model.db.MovieEntity
 
@@ -18,11 +19,17 @@ interface MovieDao {
   @Query("DELETE FROM movie WHERE id = :id")
   suspend fun delete(id: Long): Int?
 
+  @Query("SELECT * FROM movie WHERE id = :id")
+  suspend fun findById(id: Long): MovieEntity?
+
   @Query("SELECT * FROM movie WHERE title LIKE :title")
   suspend fun findByTitle(title: String): List<MovieEntity>?
 
   @Query("SELECT * FROM movie")
   suspend fun getAllMovies(): List<MovieEntity>?
+
+  @Query("SELECT * FROM movie ORDER BY created_at DESC")
+  fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity>
 
   @Query("SELECT * FROM movie WHERE imdb_id = :id LIMIT 1")
   suspend fun getMovieByImdbId(id: String): MovieEntity?

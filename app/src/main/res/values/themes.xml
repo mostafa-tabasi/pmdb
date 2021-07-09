@@ -27,6 +27,12 @@
     <item name="colorUnCheckedChip">@color/grey_300</item>
 
     <item name="colorTransparentMatchedMovieListItemLoading">@color/grey_900_transparent</item>
+
+    <item name="colorBackgroundSimpleImdbRate">@color/yellow_600</item>
+    <item name="colorBackgroundSimpleRottenTomatoesRate">@color/red_700</item>
+    <item name="colorBackgroundSimpleMetacriticRate">@color/grey_600</item>
+
+    <item name="colorBackgroundArchive">@color/grey_100</item>
     <!-- BottomSheetDialog theme -->
     <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
   </style>
@@ -65,5 +71,17 @@
     <item name="checkedIconVisible">false</item>
     <item name="chipBackgroundColor">@color/selector_color_genre_chips</item>
     <item name="android:checkable">true</item>
+  </style>
+
+  <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_cardCustomCorners</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay_cardCustomCorners" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopRight">0dp</item>
+    <item name="cornerSizeTopLeft">@dimen/space_large</item>
+    <item name="cornerSizeBottomRight">@dimen/space_large</item>
+    <item name="cornerSizeBottomLeft">0dp</item>
   </style>
 </resources>

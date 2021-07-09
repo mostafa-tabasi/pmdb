@@ -22,11 +22,13 @@
     android:title="@string/settings_label"
     app:showAsAction="always" />
 
+  <!--  فرمالیته برای پر شدن فضا -->
   <item
     android:enabled="false"
     android:title=""
     app:showAsAction="always" />
 
+  <!--  فرمالیته برای پر شدن فضا -->
   <item
     android:enabled="false"
     android:title=""

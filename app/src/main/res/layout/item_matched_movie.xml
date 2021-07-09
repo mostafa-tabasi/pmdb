@@ -34,7 +34,7 @@
 
         <ImageView
           android:id="@+id/img_poster"
-          imageUrl="@{viewModel.poster}"
+          omdbImageUrl="@{viewModel.poster}"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:adjustViewBounds="true"

@@ -10,5 +10,17 @@
   <dimen name="font_small">11sp</dimen>
   <dimen name="font_micro">9sp</dimen>
 
+  <dimen name="space_super_massive">44dp</dimen>
+  <dimen name="space_massive">36dp</dimen>
+  <dimen name="space_very_large">28dp</dimen>
+  <dimen name="space_xxx_large">24dp</dimen>
+  <dimen name="space_xx_large">20dp</dimen>
+  <dimen name="space_x_large">16dp</dimen>
+  <dimen name="space_large">12dp</dimen>
+  <dimen name="space_medium">8dp</dimen>
+  <dimen name="space_small">4dp</dimen>
+  <dimen name="space_micro">2dp</dimen>
+  <dimen name="space_zero">0dp</dimen>
+
   <dimen name="space_between_fields">16dp</dimen>
 </resources>

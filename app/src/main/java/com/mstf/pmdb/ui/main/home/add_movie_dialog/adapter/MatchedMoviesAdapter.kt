@@ -9,18 +9,18 @@ import com.mstf.pmdb.databinding.ItemMatchedMovieBinding
 import com.mstf.pmdb.ui.base.BaseViewHolder
 
 class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
-  RecyclerView.Adapter<BaseViewHolder>() {
+  RecyclerView.Adapter<MatchedMoviesAdapter.MatchedMovieViewHolder>() {
 
   private lateinit var listener: Listener
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchedMovieViewHolder {
     val binding =
       ItemMatchedMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return MatchedMovieViewHolder(binding)
   }
 
-  override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-    holder.onBind(position)
+  override fun onBindViewHolder(holder: MatchedMovieViewHolder, position: Int) {
+    holder.onBind(items[position], position)
   }
 
   override fun getItemCount(): Int {
@@ -52,18 +52,17 @@ class MatchedMoviesAdapter(private val items: ArrayList<MatchedMovieCompact>) :
   }
 
   inner class MatchedMovieViewHolder(private val binding: ItemMatchedMovieBinding) :
-    BaseViewHolder(binding.root) {
+    BaseViewHolder<MatchedMovieCompact>(binding.root) {
 
     private lateinit var itemViewModel: MatchedMovieItemViewModel
 
-    override fun onBind(position: Int) {
+    override fun onBind(item: MatchedMovieCompact, position: Int) {
       with(binding) {
         // پوستر پیش فرض هر فیلم
         imgPoster.setImageResource(R.drawable.ic_foreground)
         // عنوان بصورت پیش فرض انتخاب شده نباشد (برای نمایش کامل عنوان)
         txtTitle.isSelected = false
 
-        val item = items[position]
         // انتخاب فیلم موردنظر
         root.setOnClickListener { listener.onMovieSelect(item, position) }
         // با کلیک روی عنوان فیلم، متن کامل نمایش داده شود

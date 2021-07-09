@@ -1,6 +1,7 @@
 package com.mstf.pmdb.data
 
 import android.content.Context
+import androidx.paging.DataSource
 import com.google.gson.Gson
 import com.mstf.pmdb.data.local.db.DbHelper
 import com.mstf.pmdb.data.local.prefs.PreferencesHelper
@@ -58,6 +59,8 @@ class AppDataManager @Inject constructor(
 
   override suspend fun getAllMovies() = dbHelper.getAllMovies()
 
+  override fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity> = dbHelper.allMoviesByDate()
+
   override suspend fun getMovieByImdbId(id: String): MovieEntity? = dbHelper.getMovieByImdbId(id)
 
   override suspend fun updateWatchState(id: Long, watched: Boolean) =
@@ -67,4 +70,6 @@ class AppDataManager @Inject constructor(
     dbHelper.updateFavoriteState(id, favorite)
 
   override suspend fun updateMovie(movie: MovieEntity) = dbHelper.updateMovie(movie)
+
+  override suspend fun findMovieById(movieId: Long) = dbHelper.findMovieById(movieId)
 }

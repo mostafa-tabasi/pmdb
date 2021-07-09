@@ -96,3 +96,17 @@ fun View.setWidth(isWrapContent: Boolean) {
   (params as LinearLayout.LayoutParams).weight = if (isWrapContent) 0F else 1F
   layoutParams = params
 }
+
+/**
+ * تغییر elevation ویو همراه با انیمیشن
+ *
+ * @param from مقدار آلفای ویو در شروع انیمیشن
+ * @param to مقدار آلفای ویو در پایان انیمیشن
+ * @param duration مدت زمان انیمیشن
+ */
+fun View.animateElevation(from: Float, to: Float, duration: Long) {
+  ValueAnimator.ofFloat(from, to).apply {
+    this.duration = duration
+    this.addUpdateListener { elevation = it.animatedValue as Float }
+  }.start()
+}

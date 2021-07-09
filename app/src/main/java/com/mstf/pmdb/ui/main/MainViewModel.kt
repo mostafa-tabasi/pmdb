@@ -2,8 +2,10 @@ package com.mstf.pmdb.ui.main
 
 import android.os.Bundle
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import com.mstf.pmdb.R
 import com.mstf.pmdb.data.DataManager
 import com.mstf.pmdb.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(dataManager: DataManager) :
   BaseViewModel<MainNavigator>(dataManager), NavController.OnDestinationChangedListener {
 
-  val currentPage = ObservableField<Int>().apply { set(0) }
+  val currentPage = MutableLiveData(dataManager.getString(R.string.home_label))
   val isBottomToolbarVisible = ObservableField<Boolean>().apply { set(true) }
 
   override fun onDestinationChanged(
@@ -21,18 +23,13 @@ class MainViewModel @Inject constructor(dataManager: DataManager) :
     destination: NavDestination,
     arguments: Bundle?
   ) {
-    currentPage.set(
-      when (destination.label) {
-        "Home" -> 0
-        "Archive" -> 1
-        "Settings" -> 2
-        else -> currentPage.get()
-      }
-    )
-
+    navigator?.showBottomBar()
+    currentPage.postValue(destination.label.toString())
     isBottomToolbarVisible.set(
       when (destination.label) {
-        "Home", "Archive", "Settings" -> true
+        dataManager.getString(R.string.home_label),
+        dataManager.getString(R.string.archive_label),
+        dataManager.getString(R.string.settings_label) -> true
         else -> false
       }
     )

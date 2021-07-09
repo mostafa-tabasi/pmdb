@@ -9,12 +9,20 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.mstf.pmdb.R
 
-@BindingAdapter("imageUrl")
-fun ImageView.loadImage(url: String?) {
+@BindingAdapter(value = ["omdbImageUrl", "quality"], requireAll = false)
+fun ImageView.loadImage(url: String?, quality: Int?) {
+  Glide.with(context).clear(this)
   url?.let {
+    if (it == "N/A") {
+      Glide.with(context).load(R.drawable.ic_foreground).into(this)
+      return
+    }
+
     Glide.with(context)
       .asBitmap()
-      .load(it.replace("SX300", "SX750"))
+      .load(if (quality == null) it else it.replace("SX300", "SX$quality"))
+      .placeholder(R.drawable.ic_foreground)
+      .error(R.drawable.ic_foreground)
       .into(object : CustomTarget<Bitmap>() {
 
         override fun onLoadCleared(placeholder: Drawable?) {}
@@ -24,6 +32,7 @@ fun ImageView.loadImage(url: String?) {
         }
 
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+          // ذخیره ی فایل در حافظه ی داخلی برای استفاده ی بعدی
           setImageBitmap(resource)
         }
       })

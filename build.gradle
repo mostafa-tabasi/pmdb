@@ -3,6 +3,7 @@ buildscript {
     ext.kotlin_version = "1.4.31"
     ext.nav_version = "2.3.3"
     repositories {
+        maven { url "https://maven.google.com/"}
         google()
         jcenter()
     }
@@ -18,6 +19,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://maven.google.com/"}
         google()
         jcenter()
     }
@@ -44,11 +46,12 @@ ext {
     coroutine_version = '1.4.1'
     dagger_version = '2.31-alpha'
     hilt_version = '1.0.0-alpha03'
-    room_version = '2.2.6'
+    room_version = '2.3.0'
     gson_version = '2.8.6'
     glide_version = '4.11.0'
     retrofit_version = '2.9.0'
     dagger2Version = '2.16'
+    paging_version = '2.1.2'
 
     // Test dependencies
     junitVersion = '4.13.2'

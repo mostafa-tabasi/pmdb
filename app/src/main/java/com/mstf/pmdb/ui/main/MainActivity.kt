@@ -2,13 +2,15 @@ package com.mstf.pmdb.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
 import com.mstf.pmdb.databinding.ActivityMainBinding
 import com.mstf.pmdb.ui.base.BaseActivity
+import com.mstf.pmdb.ui.main.archive.ArchiveFragment
+import com.mstf.pmdb.ui.main.home.HomeFragment
+import com.mstf.pmdb.ui.main.settings.SettingsFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,23 +29,39 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   private fun setUp() {
     val navHostFragment =
       supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
     with(navHostFragment.navController) {
       NavigationUI.setupWithNavController(viewDataBinding!!.bottomNavigation, this)
       addOnDestinationChangedListener(viewModel)
-      setupFabClick()
     }
+    setupFab()
   }
 
-  private fun NavController.setupFabClick() {
-    viewDataBinding!!.fabMain.setOnClickListener {
-      when (currentDestination?.label) {
-        "Home" -> navigate(R.id.addMovieDialog)
-        "Archive" -> {
+  private fun setupFab() {
+    viewModel.currentPage.observe(this, {
+      viewDataBinding?.fabMain?.setImageResource(
+        when (it) {
+          getString(R.string.home_label) -> R.drawable.ic_add
+          getString(R.string.archive_label) -> R.drawable.ic_search
+          getString(R.string.settings_label) -> R.drawable.ic_info
+          else -> 0
         }
-        "Settings" -> {
+      )
+    })
+
+    viewDataBinding?.fabMain?.setOnClickListener {
+      val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+      with(navHostFragment!!.childFragmentManager.fragments[0]) {
+        when (this) {
+          is HomeFragment -> openAddMovieDialog()
+          is ArchiveFragment -> openSearchInArchiveDialog()
+          is SettingsFragment -> {
+          }
         }
       }
     }
+  }
+
+  override fun showBottomBar() {
+    viewDataBinding?.bottomBar?.performShow()
   }
 }

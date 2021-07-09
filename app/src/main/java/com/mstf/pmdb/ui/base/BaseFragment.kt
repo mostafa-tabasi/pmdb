@@ -19,7 +19,7 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
   var baseActivity: BaseActivity<*, *>? = null
     private set
   private var rootView: View? = null
-  private var viewDataBinding: T? = null
+  var viewDataBinding: T? = null
   abstract val viewModel: V?
   abstract val bindingVariable: Int
 

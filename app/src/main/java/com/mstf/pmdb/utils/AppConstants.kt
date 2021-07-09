@@ -26,4 +26,8 @@ object AppConstants {
   const val API_PARAM_YEAR = "y"
   const val API_PARAM_IMDB_ID = "i"
   const val API_PARAM_TYPE = "type"
+
+  // Archive display types
+  const val DISPLAY_TYPE_LIST = 1
+  const val DISPLAY_TYPE_TILE = 2
 }

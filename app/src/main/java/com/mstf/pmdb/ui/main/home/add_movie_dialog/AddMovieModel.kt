@@ -37,6 +37,7 @@ class AddMovieModel : BaseObservable() {
   val awards = ObservableField<String>()
   val comment = ObservableField<String>()
   val watched = ObservableField<Boolean>().apply { set(false) }
+  var watchAt: Long? = null
   val favorite = ObservableField<Boolean>().apply { set(false) }
   val canSave = ObservableField<Boolean>().apply { set(false) }
 
@@ -64,8 +65,12 @@ class AddMovieModel : BaseObservable() {
       it.forEach { rate ->
         when (rate.source) {
           RATING_SOURCE_IMDB -> imdbRate.set(rate.value.replace("/10", "").ifAvailable())
-          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate.set(rate.value.replace("%", "").ifAvailable())
-          RATING_SOURCE_METACRITIC -> metacriticRate.set(rate.value.replace("/100", "").ifAvailable())
+          RATING_SOURCE_ROTTEN_TOMATOES -> rottenTomatoesRate.set(
+            rate.value.replace("%", "").ifAvailable()
+          )
+          RATING_SOURCE_METACRITIC -> metacriticRate.set(
+            rate.value.replace("/100", "").ifAvailable()
+          )
         }
       }
     }
