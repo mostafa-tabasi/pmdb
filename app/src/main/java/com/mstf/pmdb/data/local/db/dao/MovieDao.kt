@@ -29,7 +29,37 @@ interface MovieDao {
   suspend fun getAllMovies(): List<MovieEntity>?
 
   @Query("SELECT * FROM movie ORDER BY created_at DESC")
+  fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE title LIKE '%' || :title || '%' AND year_start >= :fromYear AND year_start <= :toYear AND director LIKE '%' || :director || '%' ORDER BY created_at DESC")
+  fun filterAllArchive(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE type = 'movie' ORDER BY created_at DESC")
   fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE type = 'movie' AND title LIKE '%' || :title || '%' AND year_start >= :fromYear AND year_start <= :toYear AND director LIKE '%' || :director || '%' ORDER BY created_at DESC")
+  fun filterMovies(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE type = 'series' ORDER BY created_at DESC")
+  fun allTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE type = 'series' AND title LIKE '%' || :title || '%' AND year_start >= :fromYear AND year_start <= :toYear AND director LIKE '%' || :director || '%' ORDER BY created_at DESC")
+  fun filterTvSeries(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
 
   @Query("SELECT * FROM movie WHERE imdb_id = :id LIMIT 1")
   suspend fun getMovieByImdbId(id: String): MovieEntity?

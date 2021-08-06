@@ -27,7 +27,11 @@ object AppConstants {
   const val API_PARAM_IMDB_ID = "i"
   const val API_PARAM_TYPE = "type"
 
-  // Archive display types
-  const val DISPLAY_TYPE_LIST = 1
-  const val DISPLAY_TYPE_TILE = 2
+  // Bundle Keys
+  const val BUNDLE_KEY_DISPLAY_TYPE = "bundle_key_display_type"
+  const val BUNDLE_KEY_FILTER_TYPE = "bundle_key_filter_type"
+  const val BUNDLE_KEY_MOVIE_TITLE = "bundle_key_movie_title"
+  const val BUNDLE_KEY_FROM_YEAR = "bundle_key_from_year"
+  const val BUNDLE_KEY_TO_YEAR = "bundle_key_to_year"
+  const val BUNDLE_KEY_DIRECTOR = "bundle_key_director"
 }

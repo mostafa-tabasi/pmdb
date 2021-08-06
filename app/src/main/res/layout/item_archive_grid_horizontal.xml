@@ -41,6 +41,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_medium"
+        android:background="@drawable/bg_tv_radius"
+        android:minWidth="@dimen/space_massive"
+        android:minHeight="@dimen/space_massive"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/space_small"
+        android:visibility="@{viewModel.isTv() ? View.VISIBLE : View.GONE, default=visible}"
+        app:layout_constraintBottom_toBottomOf="@id/poster"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@id/poster"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+          android:layout_width="@dimen/space_very_large"
+          android:layout_height="@dimen/space_massive"
+          android:src="@drawable/ic_tv_accent" />
+
+        <View
+          android:layout_width="@dimen/space_massive"
+          android:layout_height="@dimen/space_massive"
+          android:visibility="@{(viewModel.imdbRate!=null || viewModel.rottenTomatoesRate!=null || viewModel.metacriticRate!=null) ? View.VISIBLE : View.GONE, default=visible}" />
+
+      </LinearLayout>
+
       <TextView
         android:id="@+id/rate"
         android:layout_width="wrap_content"
@@ -56,6 +83,7 @@
         android:textColor="@{(viewModel.imdbRate != null) ? @color/black : @color/white}"
         android:textSize="@dimen/font_x_large"
         android:textStyle="bold"
+        android:visibility="@{(viewModel.imdbRate!=null || viewModel.rottenTomatoesRate!=null || viewModel.metacriticRate!=null) ? View.VISIBLE : View.GONE, default=visible}"
         app:layout_constraintBottom_toBottomOf="@id/poster"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@id/poster"
@@ -77,6 +105,7 @@
         android:textSize="@dimen/font_medium"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/rate"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@id/poster"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

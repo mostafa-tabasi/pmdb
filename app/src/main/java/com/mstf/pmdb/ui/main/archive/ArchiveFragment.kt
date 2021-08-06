@@ -2,6 +2,7 @@ package com.mstf.pmdb.ui.main.archive
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,7 +14,15 @@ import com.mstf.pmdb.ui.base.BaseFragment
 import com.mstf.pmdb.ui.main.MainActivity
 import com.mstf.pmdb.ui.main.archive.adapter.ListArchiveAdapter
 import com.mstf.pmdb.ui.main.archive.adapter.TilesArchiveAdapter
-import com.mstf.pmdb.utils.AppConstants.DISPLAY_TYPE_LIST
+import com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveDialog
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_DIRECTOR
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_DISPLAY_TYPE
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_FILTER_TYPE
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_FROM_YEAR
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_MOVIE_TITLE
+import com.mstf.pmdb.utils.AppConstants.BUNDLE_KEY_TO_YEAR
+import com.mstf.pmdb.utils.enums.ArchiveDisplayType
+import com.mstf.pmdb.utils.enums.MediaFilterType
 import com.mstf.pmdb.utils.extensions.actionBarSize
 import com.mstf.pmdb.utils.extensions.isTablet
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,19 +79,22 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
       with(view.movies) {
         when (type) {
           // نمایش بصورت لیست
-          DISPLAY_TYPE_LIST -> {
-            layoutManager = GridLayoutManager(requireContext(), 2)
+          ArchiveDisplayType.LIST -> {
+            layoutManager =
+              GridLayoutManager(requireContext(), if (requireActivity().isTablet()) 2 else 1)
             adapter = listAdapter
             setPadding(0, 0, 0, 10)
           }
           // نمایش بصورت tile
-          else -> {
+          ArchiveDisplayType.TILE -> {
             layoutManager = StaggeredGridLayoutManager(
               if (requireActivity().isTablet()) 6 else 4,
               StaggeredGridLayoutManager.HORIZONTAL
             )
             adapter = tilesAdapter
             setPadding(0, 0, 0, requireActivity().actionBarSize())
+          }
+          else -> {
           }
         }
       }
@@ -113,7 +125,26 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
    * نمایش دیالوگ جهت جستجو در آرشیو فیلم ها
    */
   fun openSearchInArchiveDialog() {
-    val action = ArchiveFragmentDirections.actionArchiveFragmentToSearchDialog()
+    // دریافت اطلاعات برگشت داده شده از باتم شیت جستجو
+    setFragmentResultListener(SearchInArchiveDialog.REQUEST_KEY) { _, bundle ->
+      bundle.get(BUNDLE_KEY_DISPLAY_TYPE)
+        .let { viewModel.setDisplayType(it as ArchiveDisplayType?) }
+      val filterType: MediaFilterType? = bundle.get(BUNDLE_KEY_FILTER_TYPE) as MediaFilterType?
+      val movieTitle = bundle.getString(BUNDLE_KEY_MOVIE_TITLE)
+      val fromYear = bundle.getString(BUNDLE_KEY_FROM_YEAR)
+      val toYear = bundle.getString(BUNDLE_KEY_TO_YEAR)
+      val director = bundle.getString(BUNDLE_KEY_DIRECTOR)
+      viewModel.filterList(filterType, movieTitle, fromYear, toYear, director)
+    }
+
+    val action = ArchiveFragmentDirections.actionArchiveFragmentToSearchDialog(
+      displayType = viewModel.displayType.value!!.id,
+      filterType = viewModel.filter.value!!.type.id,
+      title = viewModel.filter.value!!.title,
+      fromYear = viewModel.filter.value!!.fromYear ?: -1,
+      toYear = viewModel.filter.value!!.toYear ?: -1,
+      director = viewModel.filter.value!!.director,
+    )
     findNavController().navigate(action)
   }
 
@@ -133,7 +164,8 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   }
 
   override fun onMovieLongTouch(movieId: Long): Boolean {
-    return viewModel.addOrRemoveMovieFromSelectedList(movieId)
+    //return viewModel.addOrRemoveMovieFromSelectedList(movieId)
+    return false
   }
 
   companion object {

@@ -21,9 +21,64 @@ interface DbHelper {
   suspend fun getAllMovies(): List<MovieEntity>?
 
   /**
+   * دریافت تمام فیلم و سریال های موجود در دیتابیس براساس تاریخ ثبت
+   */
+  fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت لیست فیلم و سریال های فیلتر شده ی آرشیو
+   *
+   * @param title عنوان فیلم و سریال جهت فیلتر
+   * @param fromYear حداقل سال تولید فیلم و سریال جهت فیلتر
+   * @param toYear حداکثر سال تولید فیلم و سریال جهت فیلتر
+   * @param director کارگردان فیلم و سریال جهت فیلتر
+   */
+  fun filterAllArchive(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
+
+  /**
    * دریافت تمام فیلم های موجود در دیتابیس براساس تاریخ ثبت
    */
   fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت لیست فیلم های فیلتر شده ی آرشیو
+   *
+   * @param title عنوان فیلم جهت فیلتر
+   * @param fromYear حداقل سال تولید فیلم جهت فیلتر
+   * @param toYear حداکثر سال تولید فیلم جهت فیلتر
+   * @param director کارگردان فیلم جهت فیلتر
+   */
+  fun filterMovies(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت تمام سریال های موجود در دیتابیس براساس تاریخ ثبت
+   */
+  fun allTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت لیست سریال های فیلتر شده ی آرشیو
+   *
+   * @param title عنوان سریال جهت فیلتر
+   * @param fromYear حداقل سال تولید سریال جهت فیلتر
+   * @param toYear حداکثر سال تولید سریال جهت فیلتر
+   * @param director کارگردان سریال جهت فیلتر
+   */
+  fun filterTvSeries(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity>
 
   /**
    * دریافت فیلم موردنظر براساس شناسه ی سایت imdb در صورت موجود بودن در دیتابیس

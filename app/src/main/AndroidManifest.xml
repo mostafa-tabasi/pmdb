@@ -11,10 +11,10 @@
     android:fullBackupContent="@xml/backup_descriptor"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:usesCleartextTraffic="true"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="false"
-    android:theme="@style/Theme.PMDb">
+    android:theme="@style/Theme.PMDb"
+    android:usesCleartextTraffic="true">
 
     <activity
       android:name=".ui.splash.SplashActivity"
@@ -28,7 +28,8 @@
 
     <activity
       android:name=".ui.main.MainActivity"
-      android:screenOrientation="portrait" />
+      android:screenOrientation="portrait"
+      android:windowSoftInputMode="adjustNothing" />
 
   </application>
 

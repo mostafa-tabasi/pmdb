@@ -58,7 +58,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   fun searchMovie(v: View? = null) {
     if (searchTitle.get().isNullOrEmptyAfterTrim() && searchID.get().isNullOrEmptyAfterTrim()) {
-      navigator?.showError("Enter movie title or id")
+      navigator?.showError("Enter movie title or ID")
       return
     }
 

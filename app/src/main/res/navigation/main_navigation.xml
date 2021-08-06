@@ -44,7 +44,39 @@
     android:id="@+id/searchInArchiveDialog"
     android:name="com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveDialog"
     android:label="@string/search_in_archive_label"
-    tools:layout="@layout/dialog_search_in_archive" />
+    tools:layout="@layout/dialog_search_in_archive">
+
+    <argument
+      android:name="display_type"
+      android:defaultValue="-1"
+      app:argType="integer" />
+
+    <argument
+      android:name="filter_type"
+      android:defaultValue="-1"
+      app:argType="integer" />
+
+    <argument
+      android:name="title"
+      app:argType="string"
+      app:nullable="true" />
+
+    <argument
+      android:name="from_year"
+      android:defaultValue="-1"
+      app:argType="integer" />
+
+    <argument
+      android:name="to_year"
+      android:defaultValue="-1"
+      app:argType="integer" />
+
+    <argument
+      android:name="director"
+      app:argType="string"
+      app:nullable="true" />
+
+  </dialog>
 
   <fragment
     android:id="@+id/settingsFragment"

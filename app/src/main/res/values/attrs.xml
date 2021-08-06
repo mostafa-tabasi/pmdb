@@ -20,6 +20,7 @@
   <attr name="colorBackgroundSimpleImdbRate" format="color" />
   <attr name="colorBackgroundSimpleRottenTomatoesRate" format="color" />
   <attr name="colorBackgroundSimpleMetacriticRate" format="color" />
+  <attr name="colorBackgroundTvIcon" format="color" />
 
   <attr name="colorBackgroundArchive" format="color" />
 </resources>

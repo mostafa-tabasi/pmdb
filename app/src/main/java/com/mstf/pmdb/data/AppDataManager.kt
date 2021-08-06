@@ -59,7 +59,36 @@ class AppDataManager @Inject constructor(
 
   override suspend fun getAllMovies() = dbHelper.getAllMovies()
 
+  override fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allMoviesAndTvSeriesByDate()
+
+  override fun filterAllArchive(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.filterAllArchive(title, fromYear, toYear, director)
+
   override fun allMoviesByDate(): DataSource.Factory<Int, MovieEntity> = dbHelper.allMoviesByDate()
+
+  override fun filterMovies(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity> = dbHelper.filterMovies(title, fromYear, toYear, director)
+
+  override fun allTvSeriesByDate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allTvSeriesByDate()
+
+  override fun filterTvSeries(
+    title: String?,
+    fromYear: Int?,
+    toYear: Int?,
+    director: String?
+  ): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.filterTvSeries(title, fromYear, toYear, director)
 
   override suspend fun getMovieByImdbId(id: String): MovieEntity? = dbHelper.getMovieByImdbId(id)
 

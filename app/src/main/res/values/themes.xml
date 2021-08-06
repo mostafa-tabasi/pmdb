@@ -31,57 +31,15 @@
     <item name="colorBackgroundSimpleImdbRate">@color/yellow_600</item>
     <item name="colorBackgroundSimpleRottenTomatoesRate">@color/red_700</item>
     <item name="colorBackgroundSimpleMetacriticRate">@color/grey_600</item>
+    <item name="colorBackgroundTvIcon">@color/grey_500</item>
 
     <item name="colorBackgroundArchive">@color/grey_100</item>
     <!-- BottomSheetDialog theme -->
     <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+    <item name="android:navigationBarColor">?colorPrimaryVariant</item>
   </style>
 
   <style name="Theme.PMDb.Splash">
     <item name="android:windowBackground">@drawable/launch_screen_background</item>
-  </style>
-
-  <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-    <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
-    <item name="android:windowIsFloating">false</item>
-  </style>
-
-  <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
-    <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
-    <item name="android:windowIsFloating">false</item>
-  </style>
-
-  <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSizeTopRight">16dp</item>
-    <item name="cornerSizeTopLeft">16dp</item>
-    <item name="cornerSizeBottomRight">0dp</item>
-    <item name="cornerSizeBottomLeft">0dp</item>
-  </style>
-
-  <style name="Theme.PMDb.MovieFormEditText" parent="Widget.AppCompat.EditText">
-    <item name="backgroundTint">@color/selector_color_movie_form_field_tint</item>
-    <item name="android:gravity">left</item>
-    <item name="android:textColor">@color/selector_color_movie_form_text</item>
-    <item name="android:selectAllOnFocus">true</item>
-    <item name="android:imeOptions">actionNext</item>
-  </style>
-
-  <style name="Theme.PMDb.MovieFormChip" parent="Widget.MaterialComponents.Chip.Filter">
-    <item name="checkedIconVisible">false</item>
-    <item name="chipBackgroundColor">@color/selector_color_genre_chips</item>
-    <item name="android:checkable">true</item>
-  </style>
-
-  <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_cardCustomCorners</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay_cardCustomCorners" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSizeTopRight">0dp</item>
-    <item name="cornerSizeTopLeft">@dimen/space_large</item>
-    <item name="cornerSizeBottomRight">@dimen/space_large</item>
-    <item name="cornerSizeBottomLeft">0dp</item>
   </style>
 </resources>

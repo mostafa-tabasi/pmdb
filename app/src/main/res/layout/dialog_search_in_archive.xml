@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
   <data>
 
@@ -7,19 +9,501 @@
       name="viewModel"
       type="com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveViewModel" />
 
+    <import type="com.mstf.pmdb.utils.AppConstants" />
+
+    <import type="com.mstf.pmdb.utils.enums.ArchiveDisplayType" />
+
+    <import type="com.mstf.pmdb.utils.enums.MediaFilterType" />
+
+    <import type="android.text.TextUtils" />
+
+    <import type="android.view.View" />
+
   </data>
 
-  <FrameLayout
-    android:id="@+id/layout_root"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/space_xx_large"
+    android:paddingVertical="@dimen/space_large">
 
-    <TextView
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_xx_large"
+        android:background="@drawable/bg_bottom_sheet"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:id="@+id/layout_display"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_x_large">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Display Type"
+            android:textSize="@dimen/font_x_large" />
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@{viewModel.displayType.toString()}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_x_large"
+            android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+          android:id="@+id/expandable_display"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_large"
+          app:el_duration="200"
+          app:el_expanded="false"
+          app:el_parallax="0.5"
+          tools:el_expanded="true">
+
+          <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:onCheckedChanged="@{viewModel.onDisplayTypeChanged}"
+            android:orientation="horizontal">
+
+            <RadioButton
+              android:id="@+id/display_tile"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_small"
+              android:background="?selectableItemBackground"
+              android:button="@null"
+              android:checked="@{viewModel.displayType == ArchiveDisplayType.TILE, default=true}"
+              android:drawableLeft="@drawable/ic_grid"
+              android:drawablePadding="@dimen/space_small"
+              android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.TILE)}"
+              android:padding="@dimen/space_large"
+              android:text="Tile"
+              app:buttonCompat="@null"
+              app:drawableTint="@color/selector_color_display_type_radio" />
+
+            <RadioButton
+              android:id="@+id/display_list"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_small"
+              android:background="?selectableItemBackground"
+              android:button="@null"
+              android:checked="@{viewModel.displayType == ArchiveDisplayType.LIST, default=false}"
+              android:drawableLeft="@drawable/ic_list"
+              android:drawablePadding="@dimen/space_small"
+              android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.LIST)}"
+              android:padding="@dimen/space_large"
+              android:text="List"
+              app:buttonCompat="@null"
+              app:drawableTint="@color/selector_color_display_type_radio" />
+
+          </RadioGroup>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <LinearLayout
+          android:id="@+id/layout_filter"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_x_large">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            android:textSize="@dimen/font_x_large" />
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@{viewModel.filterType.toString()}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_x_large"
+            android:textStyle="bold" />
+        </LinearLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+          android:id="@+id/expandable_filter"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_large"
+          app:el_duration="200"
+          app:el_expanded="false"
+          app:el_parallax="0.5"
+          tools:el_expanded="true">
+
+          <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:onCheckedChanged="@{viewModel.onFilterTypeChanged}"
+            android:orientation="horizontal">
+
+            <RadioButton
+              android:id="@+id/filter_both"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_small"
+              android:buttonTint="@color/selector_color_display_type_radio"
+              android:checked="@{viewModel.filterType == MediaFilterType.BOTH, default=true}"
+              android:gravity="center"
+              android:text="Both" />
+
+            <RadioButton
+              android:id="@+id/filter_movies"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_small"
+              android:buttonTint="@color/selector_color_display_type_radio"
+              android:checked="@{viewModel.filterType == MediaFilterType.MOVIES, default=false}"
+              android:gravity="center"
+              android:singleLine="true"
+              android:text="Movies" />
+
+            <RadioButton
+              android:id="@+id/filter_tv"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_small"
+              android:buttonTint="@color/selector_color_display_type_radio"
+              android:checked="@{viewModel.filterType == MediaFilterType.SERIES, default=false}"
+              android:gravity="center"
+              android:text="TV Series" />
+
+          </RadioGroup>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_medium">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search in"
+            android:textSize="@dimen/font_medium" />
+
+          <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/space_medium"
+            android:layout_weight="1"
+            android:alpha="0.2"
+            android:background="?colorPrimaryVariant" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:id="@+id/layout_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_x_large">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="@dimen/font_x_large" />
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@{viewModel.title}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_x_large"
+            android:textStyle="bold" />
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_medium"
+            android:background="?actionBarItemBackground"
+            android:onClick="@{() -> viewModel.clearTitle()}"
+            android:paddingHorizontal="@dimen/space_small"
+            android:src="@drawable/ic_clear"
+            android:visibility="@{TextUtils.isEmpty(viewModel.title) ? View.GONE : View.VISIBLE, default=visible}"
+            app:tint="@color/grey_400" />
+
+        </LinearLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+          android:id="@+id/expandable_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_massive"
+          app:el_duration="200"
+          app:el_expanded="false"
+          app:el_parallax="0.5"
+          tools:el_expanded="true">
+
+          <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_text_field"
+            android:gravity="center"
+            android:hint="Movie Title"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="@dimen/space_medium"
+            android:text="@={viewModel.title}"
+            android:textSize="@dimen/font_medium" />
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <LinearLayout
+          android:id="@+id/layout_year"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_x_large">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Year"
+            android:textSize="@dimen/font_x_large" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="right"
+              android:text="@{viewModel.fromYear}"
+              android:textColor="@color/black"
+              android:textSize="@dimen/font_x_large"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_medium"
+              android:gravity="right"
+              android:text="-"
+              android:textColor="@color/black"
+              android:textSize="@dimen/font_x_large"
+              android:textStyle="bold"
+              android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=gone}" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="right"
+              android:text="@{viewModel.toYear}"
+              android:textColor="@color/black"
+              android:textSize="@dimen/font_x_large"
+              android:textStyle="bold" />
+
+          </LinearLayout>
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_medium"
+            android:background="?actionBarItemBackground"
+            android:onClick="@{() -> viewModel.clearYear()}"
+            android:paddingHorizontal="@dimen/space_small"
+            android:src="@drawable/ic_clear"
+            android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=visible}"
+            app:tint="@color/grey_400" />
+
+        </LinearLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+          android:id="@+id/expandable_year"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_massive"
+          app:el_duration="200"
+          app:el_expanded="false"
+          app:el_parallax="0.5"
+          tools:el_expanded="true">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/bg_text_field"
+              android:gravity="center"
+              android:hint="From"
+              android:imeOptions="actionNext"
+              android:inputType="number"
+              android:maxLength="4"
+              android:minWidth="75dp"
+              android:padding="@dimen/space_medium"
+              android:text="@={viewModel.fromYear}"
+              android:textSize="@dimen/font_medium" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/space_medium"
+              android:gravity="right"
+              android:text="-"
+              android:textSize="@dimen/font_x_large"
+              android:textStyle="bold" />
+
+            <EditText
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/bg_text_field"
+              android:gravity="center"
+              android:hint="To"
+              android:imeOptions="actionDone"
+              android:inputType="number"
+              android:maxLength="4"
+              android:minWidth="75dp"
+              android:padding="@dimen/space_medium"
+              android:text="@={viewModel.toYear}"
+              android:textSize="@dimen/font_medium" />
+
+          </LinearLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <LinearLayout
+          android:id="@+id/layout_director"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingVertical="@dimen/space_x_large">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Director"
+            android:textSize="@dimen/font_x_large" />
+
+          <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@{viewModel.director}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_x_large"
+            android:textStyle="bold" />
+
+          <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_medium"
+            android:background="?actionBarItemBackground"
+            android:onClick="@{() -> viewModel.clearDirector()}"
+            android:paddingHorizontal="@dimen/space_small"
+            android:src="@drawable/ic_clear"
+            android:visibility="@{TextUtils.isEmpty(viewModel.director) ? View.GONE : View.VISIBLE, default=visible}"
+            app:tint="@color/grey_400" />
+
+        </LinearLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+          android:id="@+id/expandable_director"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/space_massive"
+          app:el_duration="200"
+          app:el_expanded="false"
+          app:el_parallax="0.5"
+          tools:el_expanded="true">
+
+          <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_text_field"
+            android:gravity="center"
+            android:hint="Director Name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="@dimen/space_medium"
+            android:text="@={viewModel.director}"
+            android:textSize="@dimen/font_medium" />
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+      </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+      android:id="@+id/layout_buttons"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingVertical="@dimen/space_massive"
-      android:text="HELLO WORLD" />
+      android:orientation="horizontal">
 
-  </FrameLayout>
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/clear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginRight="@dimen/space_medium"
+        android:layout_weight="1"
+        android:background="@drawable/bg_transparent_with_ripple_button"
+        android:onClick="@{() -> viewModel.clearAll()}"
+        android:stateListAnimator="@null"
+        android:text="Clear"
+        android:textColor="@color/grey_600"
+        android:textSize="@dimen/font_large"
+        android:textStyle="bold"
+        android:visibility="@{TextUtils.isEmpty(viewModel.title) &amp;&amp; TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) &amp;&amp; TextUtils.isEmpty(viewModel.director) ? View.GONE : View.VISIBLE, default=visible}" />
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="3"
+        android:background="@drawable/bg_confirm_yellow_button"
+        android:stateListAnimator="@null"
+        android:text="Apply"
+        android:textSize="@dimen/font_large"
+        android:textStyle="bold" />
+    </LinearLayout>
+  </LinearLayout>
 
 </layout>

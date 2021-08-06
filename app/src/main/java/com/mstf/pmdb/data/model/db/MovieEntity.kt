@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieModel
+import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -13,7 +14,7 @@ data class MovieEntity(
   @ColumnInfo(name = "year_end") var yearEnd: Int? = null,
   @ColumnInfo(name = "imdb_id") var imdbID: String? = null,
   var poster: String? = null,
-  var type: String? = null,
+  var type: String? = MEDIA_TYPE_TITLE_MOVIE,
   var runtime: Int? = null,
   var country: String? = null,
   @ColumnInfo(name = "imdb_rate") var imdbRate: Float? = null,
