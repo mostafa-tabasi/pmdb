@@ -9,19 +9,38 @@
 
     <import type="android.text.TextUtils" />
 
+    <import type="com.mstf.pmdb.utils.AppConstants" />
+
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.adapter.ArchiveItemViewModel" />
+      type="com.mstf.pmdb.ui.main.archive.archive_item_summary_dialog.ArchiveItemSummaryViewModel" />
 
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:padding="8dp">
+    android:paddingHorizontal="@dimen/space_medium"
+    android:paddingTop="@dimen/space_medium"
+    android:paddingBottom="@dimen/space_x_large">
+
+    <TextView
+      android:id="@+id/guide_to_full_description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:drawableLeft="@drawable/ic_arrow_up"
+      android:drawablePadding="@dimen/space_medium"
+      android:gravity="center"
+      android:text="Swipe up to view all information or edit"
+      android:textColor="@color/grey_500"
+      android:textSize="@dimen/font_medium"
+      app:drawableTint="@color/grey_500"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
       android:id="@+id/vGuideline"
@@ -33,9 +52,10 @@
     <FrameLayout
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_medium"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toLeftOf="@+id/vGuideline"
-      app:layout_constraintTop_toTopOf="parent">
+      app:layout_constraintTop_toBottomOf="@id/guide_to_full_description">
 
       <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -44,15 +64,15 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="3dp">
+        app:cardElevation="1dp">
 
         <ImageView
           android:id="@+id/img_poster"
-          omdbImageUrl="@{viewModel.poster}"
+          omdbImageUrl="@{viewModel.archiveItem.poster}"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:adjustViewBounds="true"
-          android:scaleType="centerCrop"
+          android:scaleType="fitStart"
           android:src="@drawable/ic_foreground" />
 
       </androidx.cardview.widget.CardView>
@@ -64,24 +84,26 @@
       android:layout_width="24dp"
       android:layout_height="24dp"
       android:layout_marginLeft="4dp"
+      android:layout_marginTop="@dimen/space_medium"
       android:src="@drawable/ic_tv_accent"
       android:visibility="@{viewModel.isTv ? View.VISIBLE : View.GONE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toBottomOf="@id/guide_to_full_description" />
 
     <TextView
       android:id="@+id/title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginHorizontal="4dp"
+      android:layout_marginTop="@dimen/space_medium"
       android:fontFamily="serif"
-      android:text="@{viewModel.title}"
+      android:text="@{viewModel.archiveItem.title}"
       android:textColor="@color/black"
       android:textSize="@dimen/font_x_large"
       android:textStyle="bold"
       app:layout_constraintLeft_toRightOf="@+id/tv"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/guide_to_full_description"
       tools:text="Movie Title" />
 
     <TextView
@@ -90,9 +112,10 @@
       android:layout_height="wrap_content"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
-      android:text="@{viewModel.isTv ? `(`+viewModel.yearStart+`–`+(TextUtils.isEmpty(viewModel.yearEnd) ? `` : viewModel.yearEnd)+`)` : `(`+viewModel.yearStart+`)`}"
+      android:text="@{viewModel.isTv ? `(`+viewModel.archiveItem.yearStart+` – `+ (viewModel.archiveItem.yearEnd == null ? `` : viewModel.archiveItem.yearEnd)+`)` : `(`+viewModel.archiveItem.yearStart+`)`}"
+      android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.yearStart) ? View.GONE : View.VISIBLE}"
+      android:visibility="@{viewModel.archiveItem.yearStart == null ? View.GONE : View.VISIBLE}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="(year)" />
@@ -105,7 +128,7 @@
       android:layout_marginLeft="8dp"
       android:alpha="0.5"
       android:background="?attr/colorMovieFormDivider"
-      android:visibility="@{TextUtils.isEmpty(viewModel.yearStart) || viewModel.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{viewModel.archiveItem.yearStart == null || viewModel.archiveItem.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintBottom_toBottomOf="@+id/year"
       app:layout_constraintLeft_toRightOf="@+id/year"
       app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -116,9 +139,10 @@
       android:layout_height="wrap_content"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="8dp"
-      android:text="@{viewModel.runtime +` min`}"
+      android:text="@{viewModel.archiveItem.runtime +` min`}"
+      android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{viewModel.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{viewModel.archiveItem.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/year_divider"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="runtime" />
@@ -131,9 +155,9 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{viewModel.genre}"
+      android:text="@{viewModel.archiveItem.genre}"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.genre) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(viewModel.archiveItem.genre) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/year"
@@ -146,7 +170,7 @@
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
       android:orientation="horizontal"
-      android:visibility="@{viewModel.imdbRate == null &amp;&amp; viewModel.rottenTomatoesRate == null &amp;&amp; viewModel.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{viewModel.archiveItem.imdbRate == null &amp;&amp; viewModel.archiveItem.rottenTomatoesRate == null &amp;&amp; viewModel.archiveItem.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
       android:weightSum="3"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -157,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{viewModel.archiveItem.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -169,7 +193,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.imdbRate == null ? `-` : viewModel.imdbRate+`/10`}"
+          android:text="@{viewModel.archiveItem.imdbRate == null ? `-` : viewModel.archiveItem.imdbRate+`/10`}"
+          android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
 
@@ -182,14 +207,14 @@
         android:layout_marginVertical="6dp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
-        android:visibility="@{viewModel.imdbRate == null || viewModel.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}" />
+        android:visibility="@{viewModel.archiveItem.imdbRate == null || viewModel.archiveItem.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}" />
 
       <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{viewModel.archiveItem.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -201,7 +226,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.rottenTomatoesRate == null ? `-` : viewModel.rottenTomatoesRate+`%`}"
+          android:text="@{viewModel.archiveItem.rottenTomatoesRate == null ? `-` : viewModel.archiveItem.rottenTomatoesRate+`%`}"
+          android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
 
@@ -214,14 +240,14 @@
         android:layout_marginVertical="6dp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
-        android:visibility="@{viewModel.rottenTomatoesRate == null || viewModel.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}" />
+        android:visibility="@{viewModel.archiveItem.rottenTomatoesRate == null || viewModel.archiveItem.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}" />
 
       <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{viewModel.archiveItem.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -233,7 +259,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.metacriticRate == null ? `-` : viewModel.metacriticRate+`/100`}"
+          android:text="@{viewModel.archiveItem.metacriticRate == null ? `-` : viewModel.archiveItem.metacriticRate+`/100`}"
+          android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
 
@@ -249,9 +276,10 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{viewModel.isTv ? viewModel.writer : viewModel.director}"
+      android:text="@{!TextUtils.isEmpty(viewModel.archiveItem.director) ? `Director: ` + viewModel.archiveItem.director : `Writer: ` + viewModel.archiveItem.writer}"
+      android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{(viewModel.isTv &amp;&amp; TextUtils.isEmpty(viewModel.writer)) || (!viewModel.isTv &amp;&amp; TextUtils.isEmpty(viewModel.director)) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(viewModel.archiveItem.writer) &amp;&amp; TextUtils.isEmpty(viewModel.archiveItem.director) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/ratings"
@@ -265,9 +293,10 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{viewModel.awards}"
+      android:text="@{viewModel.archiveItem.awards}"
+      android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.awards) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(viewModel.archiveItem.awards) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/director_writer"
@@ -280,10 +309,11 @@
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
-      android:singleLine="true"
-      android:text="@{viewModel.actors}"
+      android:maxLines="2"
+      android:text="@{ `Casts: ` + viewModel.archiveItem.actors}"
+      android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.actors) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(viewModel.archiveItem.actors) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/awards"
@@ -291,27 +321,27 @@
 
     <ImageView
       android:id="@+id/favorite"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
+      android:layout_width="@dimen/space_xxx_large"
+      android:layout_height="@dimen/space_xxx_large"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
       android:layout_marginRight="4dp"
       android:padding="2dp"
       android:src="@drawable/ic_favorite"
-      android:visibility="@{viewModel.favorite ? View.VISIBLE : View.GONE, default=visible}"
+      android:visibility="@{viewModel.archiveItem.favorite ? View.VISIBLE : View.GONE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@+id/actors"
       app:tint="@color/grey_500" />
 
     <ImageView
       android:id="@+id/watched"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
+      android:layout_width="@dimen/space_xxx_large"
+      android:layout_height="@dimen/space_xxx_large"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
       android:padding="2dp"
       android:src="@drawable/ic_eye"
-      android:visibility="@{viewModel.watched ? View.VISIBLE : View.GONE, default=visible}"
+      android:visibility="@{viewModel.archiveItem.watch ? View.VISIBLE : View.GONE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/favorite"
       app:layout_constraintTop_toBottomOf="@+id/actors"
       app:tint="@color/grey_500" />

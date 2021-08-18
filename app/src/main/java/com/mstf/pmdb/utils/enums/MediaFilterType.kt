@@ -7,7 +7,7 @@ enum class MediaFilterType {
   },
   SERIES {
     override val id = 2
-    override fun toString() = "Series"
+    override fun toString() = "TV Series"
   },
   BOTH {
     override val id = 3

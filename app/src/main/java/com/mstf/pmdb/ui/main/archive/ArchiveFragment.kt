@@ -1,6 +1,7 @@
 package com.mstf.pmdb.ui.main.archive
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -55,6 +56,7 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   private fun setUp() {
     viewDataBinding?.let {
       it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
+      it.changeFilter.setOnClickListener { openSearchInArchiveDialog() }
       /*  TODO: handle multi select for next release
       it.clearSelectedItems.setOnClickListener {
         viewModel.clearSelectedMovies()
@@ -148,7 +150,16 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
     findNavController().navigate(action)
   }
 
+  // متغیری جهت جلوگیری از باز شدن همزمان چند باتم شیت
+  private var preventMultiOpen = false
+
   override fun onMovieTapped(movieId: Long): Boolean {
+    if (preventMultiOpen) return false
+    preventMultiOpen = true
+    // 500 میلی ثانیه بعد از نمایش باتم شیت، امکان نمایش مجدد فراهم شود
+    Handler().postDelayed({ preventMultiOpen = false }, 500)
+    openArchiveItemSummaryDialog(movieId)
+
     /* TODO: handle multi select for next release
     // اگر در حالت انتخاب فیلم بودیم، با انتخاب هر فیلم، به لیست انتخاب شده ها اضافه یا از آن حذف میشود
     return if (viewModel.isInSelectMode.value == true)
@@ -166,6 +177,16 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   override fun onMovieLongTouch(movieId: Long): Boolean {
     //return viewModel.addOrRemoveMovieFromSelectedList(movieId)
     return false
+  }
+
+  /**
+   * نمایش دیالوگ خلاصه ی اطلاعات آیتم موردنظر در آرشیو
+   */
+  private fun openArchiveItemSummaryDialog(movieId: Long) {
+    val action = ArchiveFragmentDirections.actionArchiveFragmentToArchiveItemSummaryDialog(
+      archiveItemId = movieId
+    )
+    findNavController().navigate(action)
   }
 
   companion object {

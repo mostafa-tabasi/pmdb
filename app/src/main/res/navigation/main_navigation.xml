@@ -38,6 +38,10 @@
       android:id="@+id/action_archiveFragment_to_searchDialog"
       app:destination="@+id/searchInArchiveDialog" />
 
+    <action
+      android:id="@+id/action_archiveFragment_to_archiveItemSummaryDialog"
+      app:destination="@+id/ArchiveItemSummaryDialog" />
+
   </fragment>
 
   <dialog
@@ -75,6 +79,19 @@
       android:name="director"
       app:argType="string"
       app:nullable="true" />
+
+  </dialog>
+
+  <dialog
+    android:id="@+id/ArchiveItemSummaryDialog"
+    android:name="com.mstf.pmdb.ui.main.archive.archive_item_summary_dialog.ArchiveItemSummaryDialog"
+    android:label="@string/archive_item_summary_label"
+    tools:layout="@layout/dialog_archive_item_summary">
+
+    <argument
+      android:name="archive_item_id"
+      android:defaultValue="-1L"
+      app:argType="long" />
 
   </dialog>
 

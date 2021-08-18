@@ -24,14 +24,17 @@
       android:id="@+id/txt_search_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
       android:layout_alignParentTop="true"
-      android:layout_alignParentRight="true"
+      android:layout_centerHorizontal="true"
       android:layout_gravity="center_horizontal"
       android:layout_marginBottom="16dp"
+      android:drawableLeft="@drawable/ic_arrow_up"
+      android:drawablePadding="@dimen/space_medium"
       android:gravity="center_horizontal"
       android:text="find your movie or swipe up for a blank form"
-      android:textSize="@dimen/font_large" />
+      android:textColor="@color/grey_500"
+      android:textSize="@dimen/font_large"
+      app:drawableTint="@color/grey_500" />
 
     <LinearLayout
       android:layout_width="match_parent"
