@@ -13,7 +13,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.archive_item_summary_dialog.ArchiveItemSummaryViewModel" />
+      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
 
   </data>
 

@@ -1,4 +1,4 @@
-package com.mstf.pmdb.ui.main.archive.archive_item_summary_dialog
+package com.mstf.pmdb.ui.main.archive.archive_item_info_dialog
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ArchiveItemSummaryViewModel @Inject constructor(dataManager: DataManager) :
-  BaseViewModel<ArchiveItemSummaryNavigator>(dataManager) {
+class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
+  BaseViewModel<ArchiveItemInfoNavigator>(dataManager) {
 
   private val _archiveItem = MutableLiveData<MovieEntity>()
   val archiveItem: LiveData<MovieEntity> = _archiveItem

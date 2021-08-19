@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -20,6 +21,8 @@ import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
 import com.mstf.pmdb.data.model.api.MatchedMovieCompact
 import com.mstf.pmdb.databinding.DialogAddMovieBinding
+import com.mstf.pmdb.databinding.LayoutMatchedMovieListBinding
+import com.mstf.pmdb.databinding.LayoutMovieFormBinding
 import com.mstf.pmdb.ui.base.BaseBottomSheetDialog
 import com.mstf.pmdb.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 import com.mstf.pmdb.utils.extensions.*
@@ -53,25 +56,51 @@ class AddMovieDialog :
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setUp()
+    viewDataBinding?.root?.post { setUp() }
   }
+
+  private lateinit var matchedMovieListBinding: LayoutMatchedMovieListBinding
+  private lateinit var movieFormBinding: LayoutMovieFormBinding
 
   private fun setUp() {
     viewDataBinding?.let {
+
+      // اضافه کردن لایه ی لیست فیلم های پیدا شده متناسب با جستجو
+      matchedMovieListBinding = DataBindingUtil.inflate(
+        layoutInflater,
+        R.layout.layout_matched_movie_list,
+        it.root as FrameLayout,
+        false
+      )
+      matchedMovieListBinding.viewModel = viewModel
+      matchedMovieListBinding.lifecycleOwner = this
+      (it.root as FrameLayout).addView(matchedMovieListBinding.root)
+
+      // اضافه کردن لایه ی فرم خالی فیلم
+      movieFormBinding = DataBindingUtil.inflate(
+        layoutInflater,
+        R.layout.layout_movie_form,
+        it.root as FrameLayout,
+        false
+      )
+      movieFormBinding.viewModel = viewModel
+      movieFormBinding.lifecycleOwner = this
+      (it.root as FrameLayout).addView(movieFormBinding.root)
+
       // لایه ی فرم خالی بصورت پیش فرض دیده نمیشود
-      it.includeMovieForm.root.gone()
+      movieFormBinding.root.gone()
       // لایه ی نتیجه ی فیلم جستجو شده بصورت پیش فرض دیده نمیشود
-      it.includeMatchedMovieList.root.gone()
+      matchedMovieListBinding.root.gone()
 
       it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
       it.includeFindMovie.edtSearchId.onFocusChangeListener = this
 
-      it.includeMovieForm.imgMoviePoster.setOnClickListener {
+      movieFormBinding.imgMoviePoster.setOnClickListener {
         if (viewModel.isEditing.get() == true) getContent.launch("image/*")
       }
 
-      it.includeMovieForm.btnClear.setOnClickListener { showClearFormConfirm() }
-      it.includeMovieForm.btnDelete.setOnClickListener { showDeleteConfirm() }
+      movieFormBinding.btnClear.setOnClickListener { showClearFormConfirm() }
+      movieFormBinding.btnDelete.setOnClickListener { showDeleteConfirm() }
     }
 
     setUpMatchedMovieList()
@@ -86,7 +115,7 @@ class AddMovieDialog :
   private fun showClearFormConfirm() {
     viewDataBinding?.let {
       showConfirmFor(
-        it.includeMovieForm.btnConfirmClearDelete,
+        movieFormBinding.btnConfirmClearDelete,
         "Clear?",
         R.drawable.bg_confirm_red_button
       ) { viewModel.clearForm(); dismissConfirm() }
@@ -99,7 +128,7 @@ class AddMovieDialog :
   private fun showDeleteConfirm() {
     viewDataBinding?.let {
       showConfirmFor(
-        it.includeMovieForm.btnConfirmClearDelete,
+        movieFormBinding.btnConfirmClearDelete,
         "Delete?",
         R.drawable.bg_confirm_red_button
       ) { viewModel.deleteMovie(); dismissConfirm() }
@@ -112,7 +141,7 @@ class AddMovieDialog :
   override fun showOverwriteConfirm() {
     viewDataBinding?.let {
       showConfirmFor(
-        it.includeMovieForm.btnConfirmOverwrite,
+        movieFormBinding.btnConfirmOverwrite,
         "Already archived, overwrite?",
         R.drawable.bg_confirm_green_button
       ) { viewModel.updateMovie(); dismissConfirm() }
@@ -173,7 +202,7 @@ class AddMovieDialog :
       }
 
       // افزودن لایه ی تاییدیه به صفحه
-      it.includeMovieForm.layoutMovieForm.addView(confirmLayout)
+      movieFormBinding.layoutMovieForm.addView(confirmLayout)
 
       //نمایش لایه ی عنوان تاییدیه و دکمه ی کنسل همراه با انیمیشن
       with(confirmLayout!!) {
@@ -212,19 +241,19 @@ class AddMovieDialog :
 
   override fun dismissConfirm(animate: Boolean) {
     viewDataBinding?.let {
-      with(it.includeMovieForm.btnConfirmClearDelete) {
+      with(movieFormBinding.btnConfirmClearDelete) {
         if (!animate) gone()
         else animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
       }
-      with(it.includeMovieForm.btnConfirmOverwrite) {
+      with(movieFormBinding.btnConfirmOverwrite) {
         if (!animate) gone()
         else animateAlpha(1F, 0F, 100, afterAnimate = { gone() })
       }
       confirmLayout?.let { layout ->
-        if (!animate) it.includeMovieForm.layoutMovieForm.removeView(layout)
+        if (!animate) movieFormBinding.layoutMovieForm.removeView(layout)
         else layout.animateAlpha(1F, 0F, 100, afterAnimate = {
           // بعد از اتمام انیمیشن، لایه ی مربوط به عنوان تاییدیه حذف شود
-          it.includeMovieForm.layoutMovieForm.removeView(layout)
+          movieFormBinding.layoutMovieForm.removeView(layout)
         })
       }
     }
@@ -241,7 +270,7 @@ class AddMovieDialog :
             viewModel.getMovieDetails(movie, itemPosition)
           }
         })
-        it.includeMatchedMovieList.moviesRecyclerView.adapter = this
+        matchedMovieListBinding.moviesRecyclerView.adapter = this
       }
     }
   }
@@ -251,7 +280,7 @@ class AddMovieDialog :
    */
   private fun setUpMovieFormHeaderToolbar() {
     viewDataBinding?.let { it ->
-      with(it.includeMovieForm) {
+      with(movieFormBinding) {
         layoutScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
 
           val location = IntArray(2)
@@ -281,14 +310,14 @@ class AddMovieDialog :
 
   override fun showItemLoadingAtPosition(itemPosition: Int) {
     viewDataBinding?.let {
-      (it.includeMatchedMovieList.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
+      (matchedMovieListBinding.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
           as MatchedMoviesAdapter.MatchedMovieViewHolder).showLoading(itemPosition)
     }
   }
 
   override fun hideItemLoadingAtPosition(itemPosition: Int) {
     viewDataBinding?.let {
-      (it.includeMatchedMovieList.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
+      (matchedMovieListBinding.moviesRecyclerView.findViewHolderForAdapterPosition(itemPosition)
           as MatchedMoviesAdapter.MatchedMovieViewHolder).hideLoading(itemPosition)
     }
   }
@@ -327,7 +356,7 @@ class AddMovieDialog :
             setMovieFormLoadingWidth()
           }
           BottomSheetBehavior.STATE_COLLAPSED -> {
-            it.includeMovieForm.root.gone()
+            movieFormBinding.root.gone()
             viewModel.clearForm()
             dismissConfirm()
           }
@@ -342,8 +371,8 @@ class AddMovieDialog :
      */
     private fun setMovieFormLoadingWidth() {
       viewDataBinding?.let {
-        with(it.includeMovieForm.btnSave) {
-          post { it.includeMovieForm.pbLoading.layoutParams.width = width }
+        with(movieFormBinding.btnSave) {
+          post { movieFormBinding.pbLoading.layoutParams.width = width }
         }
       }
     }
@@ -364,23 +393,23 @@ class AddMovieDialog :
     private fun calculateLayoutsAlpha(slideOffset: Float) {
       viewDataBinding?.let {
         it.includeFindMovie.root.visible()
-        it.includeMovieForm.root.visible()
+        movieFormBinding.root.visible()
         it.includeFindMovie.root.alpha = 1 - (slideOffset * 5)
-        it.includeMovieForm.root.alpha = slideOffset * 5
+        movieFormBinding.root.alpha = slideOffset * 5
       }
     }
   }
 
   override fun showMatchedMovieList() {
     viewDataBinding?.let {
-      it.includeMatchedMovieList.root.alpha = 0F
-      it.includeMatchedMovieList.root.visible()
-      it.includeMatchedMovieList.root.post {
+      matchedMovieListBinding.root.alpha = 0F
+      matchedMovieListBinding.root.visible()
+      matchedMovieListBinding.root.post {
         // باتم شیت قابل درگ کردن نباشد
         bottomSheetBehavior.isDraggable = false
         // نمایش لایه ی نتایج جستجو
         toggleSearchAndResultLayoutVisibility(
-          it.includeMatchedMovieList.root,
+          matchedMovieListBinding.root,
           it.includeFindMovie.root
         )
       }
@@ -389,7 +418,7 @@ class AddMovieDialog :
 
   override fun hideMatchedMovieList() {
     viewDataBinding?.let {
-      it.includeMatchedMovieList.root.gone()
+      matchedMovieListBinding.root.gone()
       it.includeFindMovie.root.visible()
       it.includeFindMovie.root.post {
         // باتم شیت قابل درگ مردن باشد
@@ -409,7 +438,7 @@ class AddMovieDialog :
         // نمایش لایه ی فیلد های جستجو
         toggleSearchAndResultLayoutVisibility(
           it.includeFindMovie.root,
-          it.includeMatchedMovieList.root
+          matchedMovieListBinding.root
         )
       }
     }
@@ -509,7 +538,7 @@ class AddMovieDialog :
         android.R.layout.simple_dropdown_item_1line,
         items
       )
-      with(it.includeMovieForm.edtGenre) {
+      with(movieFormBinding.edtGenre) {
         setAdapter(adapter)
         setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
         threshold = 1
@@ -525,24 +554,24 @@ class AddMovieDialog :
 
   override fun addGenreChip(label: String, animate: Boolean) {
     viewDataBinding?.let {
-      it.includeMovieForm.layoutGenreChips.addChip(label, true, animate) {
+      movieFormBinding.layoutGenreChips.addChip(label, true, animate) {
         viewModel.removeGenre("$it,")
       }
       // اگر انیمیشن فعال بود، بعد از اضافه شدن چیپِ جدید، به سمت راست اسکرول، تا چیپ دیده شود
       if (animate) Handler().postDelayed({
-        it.includeMovieForm.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        movieFormBinding.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
       }, 200L)
     }
   }
 
   override fun removeGenreChip(label: String) {
-    viewDataBinding?.includeMovieForm?.layoutGenreChips?.removeChip(label)
+    movieFormBinding.layoutGenreChips.removeChip(label)
   }
 
   override fun removeAllGenreChips() {
     viewDataBinding?.let {
-      it.includeMovieForm.layoutGenreChips.removeAllChips()
-      it.includeMovieForm.layoutGenres.invalidate()
+      movieFormBinding.layoutGenreChips.removeAllChips()
+      movieFormBinding.layoutGenres.invalidate()
     }
   }
 

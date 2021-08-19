@@ -4,9 +4,15 @@
 
   <data>
 
+    <import type="android.view.View" />
+
+    <import type="android.text.TextUtils" />
+
+    <import type="com.mstf.pmdb.utils.AppConstants" />
+
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieViewModel" />
+      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
 
   </data>
 
@@ -16,8 +22,8 @@
     android:layout_height="match_parent">
 
     <include
-      android:id="@+id/include_find_movie"
-      layout="@layout/layout_find_movie"
+      android:id="@+id/include_movie_summary"
+      layout="@layout/layout_movie_summary"
       bind:viewModel="@{viewModel}" />
 
   </FrameLayout>

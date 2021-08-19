@@ -84,9 +84,9 @@
 
   <dialog
     android:id="@+id/ArchiveItemSummaryDialog"
-    android:name="com.mstf.pmdb.ui.main.archive.archive_item_summary_dialog.ArchiveItemSummaryDialog"
-    android:label="@string/archive_item_summary_label"
-    tools:layout="@layout/dialog_archive_item_summary">
+    android:name="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoDialog"
+    android:label="@string/archive_item_info_label"
+    tools:layout="@layout/dialog_archive_item_info">
 
     <argument
       android:name="archive_item_id"

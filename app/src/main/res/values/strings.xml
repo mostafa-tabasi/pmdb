@@ -10,5 +10,5 @@
   <string name="settings_label" translatable="false">Settings</string>
   <string name="add_movie_label" translatable="false">Add Movie Dialog</string>
   <string name="search_in_archive_label" translatable="false">Search in Archive Dialog</string>
-  <string name="archive_item_summary_label" translatable="false">Archive Item Summary Dialog</string>
+  <string name="archive_item_info_label" translatable="false">Archive Item Info Dialog</string>
 </resources>
