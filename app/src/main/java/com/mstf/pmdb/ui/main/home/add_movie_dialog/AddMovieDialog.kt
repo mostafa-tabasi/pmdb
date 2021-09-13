@@ -49,6 +49,9 @@ class AddMovieDialog :
   // مثل حذف فیلم از آرشیو یا پاک کردن اطلاعات ثبت شده در فرم
   private var confirmLayout: View? = null
 
+  private lateinit var matchedMovieListBinding: LayoutMatchedMovieListBinding
+  private lateinit var movieFormBinding: LayoutMovieFormBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
@@ -58,9 +61,6 @@ class AddMovieDialog :
     super.onViewCreated(view, savedInstanceState)
     viewDataBinding?.root?.post { setUp() }
   }
-
-  private lateinit var matchedMovieListBinding: LayoutMatchedMovieListBinding
-  private lateinit var movieFormBinding: LayoutMovieFormBinding
 
   private fun setUp() {
     viewDataBinding?.let {

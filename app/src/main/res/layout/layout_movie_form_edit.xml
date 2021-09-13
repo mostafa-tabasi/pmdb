@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <import type="android.text.TextUtils" />
+
+    <import type="com.mstf.pmdb.utils.AppConstants" />
+
+    <import type="android.view.Gravity" />
+
+    <import type="android.view.ViewGroup.LayoutParams" />
+
+    <import type="com.mstf.pmdb.R" />
+
+    <import type="android.view.inputmethod.EditorInfo" />
+
+    <variable
+      name="viewModel"
+      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+
+  </data>
+
+  <FrameLayout
+    android:id="@+id/layout_movie_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+      android:id="@+id/layout_scroll_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout
+        editTextsEditingEnable="@{viewModel.isEditing}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="?actionBarSize">
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+          <ImageView
+            android:id="@+id/img_movie_poster"
+            omdbImageUrl="@{viewModel.movie.poster}"
+            quality="@{750}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_foreground" />
+
+          <View
+            android:id="@+id/view_center_align"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_centerVertical="true" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_movie_poster"
+            android:background="@drawable/bg_movie_title"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp"
+            android:paddingTop="70dp"
+            android:paddingRight="4dp"
+            android:weightSum="@{viewModel.movie.tv ? (4.2f) : (4f)}">
+
+            <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="3"
+              android:animateLayoutChanges="true">
+
+              <ImageView
+                android:id="@+id/img_tv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/layout_title"
+                android:layout_alignBottom="@+id/layout_title"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_tv_accent"
+                android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
+                app:tint="?colorSelectedIconsTint" />
+
+              <FrameLayout
+                android:id="@+id/layout_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_tv">
+
+                <EditText
+                  android:id="@+id/edt_title"
+                  style="@style/Theme.PMDb.MovieFormEditText"
+                  multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:fontFamily="serif"
+                  android:hint="Title"
+                  android:inputType="text"
+                  android:nextFocusForward="@id/edt_year"
+                  android:text="@={viewModel.movie.title}"
+                  android:textSize="@dimen/font_xx_large"
+                  android:textStyle="bold"
+                  android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.INVISIBLE, default=visible}" />
+
+                <TextView
+                  android:id="@+id/txt_title"
+                  selected="@{!viewModel.isEditing}"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:ellipsize="marquee"
+                  android:focusable="true"
+                  android:focusableInTouchMode="true"
+                  android:fontFamily="serif"
+                  android:marqueeRepeatLimit="marquee_forever"
+                  android:maxEms="@{viewModel.movie.tv ? 11 : 14}"
+                  android:paddingLeft="4dp"
+                  android:singleLine="true"
+                  android:text="@{viewModel.movie.title}"
+                  android:textSize="@dimen/font_xx_large"
+                  android:textStyle="bold"
+                  android:visibility="@{viewModel.isEditing ? View.GONE : View.VISIBLE, default=gone}" />
+
+              </FrameLayout>
+
+              <LinearLayout
+                android:id="@+id/layout_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_title"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal">
+
+                <EditText
+                  android:id="@+id/edt_runtime"
+                  style="@style/Theme.PMDb.MovieFormEditText"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:hint="@{TextUtils.isEmpty(viewModel.movie.runtime) ? `Runtime` : ``, default=`Runtime`}"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:nextFocusForward="@id/edt_country"
+                  android:padding="8dp"
+                  android:text="@={viewModel.movie.runtime}"
+                  android:textSize="@dimen/font_large" />
+
+                <TextView
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="left"
+                  android:paddingLeft="2dp"
+                  android:text="min"
+                  android:textSize="@dimen/font_medium"
+                  android:visibility="@{TextUtils.isEmpty(viewModel.movie.runtime) ? View.GONE : View.VISIBLE, default=visible}" />
+
+              </LinearLayout>
+
+              <View
+                android:id="@+id/view_divider"
+                android:layout_width="0.1dp"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/layout_runtime"
+                android:layout_alignBottom="@+id/layout_runtime"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/layout_runtime"
+                android:alpha="0.5"
+                android:background="?attr/colorMovieFormDivider" />
+
+              <EditText
+                android:id="@+id/edt_country"
+                style="@style/Theme.PMDb.MovieFormEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/layout_runtime"
+                android:layout_alignBottom="@+id/layout_runtime"
+                android:layout_toRightOf="@+id/view_divider"
+                android:hint="Country"
+                android:inputType="text"
+                android:nextFocusForward="@id/edt_imdb_id"
+                android:padding="8dp"
+                android:text="@={viewModel.movie.country}"
+                android:textSize="@dimen/font_large" />
+
+            </RelativeLayout>
+
+            <View
+              android:layout_width="0.1dp"
+              android:layout_height="match_parent"
+              android:layout_marginRight="4dp"
+              android:alpha="0.5"
+              android:background="?attr/colorMovieFormDivider" />
+
+            <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="@{viewModel.movie.tv ? (1.2f) : (1f), default=1}"
+              android:orientation="vertical">
+
+              <LinearLayout
+                android:id="@+id/layout_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:animateLayoutChanges="true"
+                android:gravity="@{viewModel.movie.tv ? Gravity.CENTER : Gravity.LEFT, default=center}"
+                android:orientation="horizontal">
+
+                <EditText
+                  android:id="@+id/edt_year"
+                  style="@style/Theme.PMDb.MovieFormEditText"
+                  android:layout_width="@{!viewModel.movie.tv, default=wrap_content}"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:hint="@{viewModel.movie.tv ? `Start` : `Year`, default=`Year`}"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:nextFocusForward="@{viewModel.movie.tv ? @id/edt_year_end : @id/edt_runtime}"
+                  android:text="@={viewModel.movie.yearStart}"
+                  android:textSize="@dimen/font_x_large" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="3dp"
+                  android:text="–"
+                  android:textSize="@dimen/font_medium"
+                  android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}" />
+
+                <EditText
+                  android:id="@+id/edt_year_end"
+                  style="@style/Theme.PMDb.MovieFormEditText"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:hint="@{viewModel.movie.tv ? `End` : ``, default=`Year`}"
+                  android:inputType="number"
+                  android:maxLength="4"
+                  android:nextFocusForward="@id/edt_runtime"
+                  android:text="@={viewModel.movie.yearEnd}"
+                  android:textSize="@dimen/font_x_large"
+                  android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE, default=visible}" />
+
+              </LinearLayout>
+
+              <EditText
+                android:id="@+id/edt_imdb_id"
+                style="@style/Theme.PMDb.MovieFormEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_year"
+                android:gravity="left"
+                android:hint="IMDb ID"
+                android:inputType="text"
+                android:maxLength="10"
+                android:nextFocusForward="@id/edt_genre"
+                android:padding="8dp"
+                android:text="@={viewModel.movie.imdbID}"
+                android:textSize="@dimen/font_large" />
+
+            </LinearLayout>
+
+          </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Genre"
+            android:textSize="@dimen/font_small" />
+
+          <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/layout_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            app:alignContent="center"
+            app:alignItems="center"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_around">
+
+            <HorizontalScrollView
+              android:id="@+id/layout_genre_chips_parent"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:scrollbars="none">
+
+              <com.google.android.material.chip.ChipGroup
+                android:id="@+id/layout_genre_chips"
+                chipsRemovable="@{viewModel.isEditing}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                app:singleLine="true" />
+
+            </HorizontalScrollView>
+
+            <MultiAutoCompleteTextView
+              android:id="@+id/edt_genre"
+              style="@style/Theme.PMDb.MovieFormEditText"
+              multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="8dp"
+              android:gravity="center"
+              android:hint="Enter Movie Genres"
+              android:inputType="textMultiLine"
+              android:nextFocusForward="@id/edt_imdb_rate"
+              android:textSize="@dimen/font_x_large"
+              android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.GONE}" />
+
+          </com.google.android.flexbox.FlexboxLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:baselineAligned="false"
+          android:orientation="horizontal"
+          android:padding="4dp"
+          android:weightSum="3">
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="IMDb"
+              android:textSize="@dimen/font_small" />
+
+            <LinearLayout
+              android:id="@+id/layout_imdb_rate"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:gravity="center"
+              android:orientation="horizontal">
+
+              <EditText
+                android:id="@+id/edt_imdb_rate"
+                style="@style/Theme.PMDb.MovieFormEditText"
+                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.imdbRate), default=wrap_content}"
+                android:layout_height="wrap_content"
+                android:gravity="@{TextUtils.isEmpty(viewModel.movie.imdbRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:hint="Rate"
+                android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:nextFocusForward="@id/edt_imdb_votes"
+                android:paddingRight="2dp"
+                android:text="@={viewModel.movie.imdbRate}"
+                android:textSize="@dimen/font_xx_large" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="2dp"
+                android:text="/10"
+                android:textSize="@dimen/font_x_large"
+                android:visibility="@{TextUtils.isEmpty(viewModel.movie.imdbRate) ? View.GONE : View.VISIBLE, default=visible}" />
+
+            </LinearLayout>
+
+            <EditText
+              android:id="@+id/edt_imdb_votes"
+              style="@style/Theme.PMDb.MovieFormEditText"
+              numberSeparator="@{true}"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:hint="Votes"
+              android:inputType="number"
+              android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
+              android:text="@={viewModel.movie.imdbVotes}"
+              android:textColor="?colorPrimaryVariant"
+              android:textSize="@dimen/font_medium" />
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorMovieFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Rotten Tomatoes"
+              android:textSize="@dimen/font_small" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:gravity="center"
+              android:orientation="horizontal">
+
+              <EditText
+                android:id="@+id/edt_rotten_tomatoes_rate"
+                style="@style/Theme.PMDb.MovieFormEditText"
+                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate), default=wrap_content}"
+                android:layout_height="wrap_content"
+                android:gravity="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:hint="Rate"
+                android:inputType="number"
+                android:maxLength="3"
+                android:nextFocusForward="@id/edt_metacritic_rate"
+                android:text="@={viewModel.movie.rottenTomatoesRate}"
+                android:textSize="@dimen/font_xx_large" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="2dp"
+                android:text="%"
+                android:textSize="@dimen/font_x_large"
+                android:visibility="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate) ? View.GONE : View.VISIBLE, default=visible}" />
+
+            </LinearLayout>
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorMovieFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Metacritic"
+              android:textSize="@dimen/font_small" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:gravity="center"
+              android:orientation="horizontal">
+
+              <EditText
+                android:id="@+id/edt_metacritic_rate"
+                style="@style/Theme.PMDb.MovieFormEditText"
+                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.metacriticRate), default=wrap_content}"
+                android:layout_height="wrap_content"
+                android:gravity="@{TextUtils.isEmpty(viewModel.movie.metacriticRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:hint="Rate"
+                android:inputType="number"
+                android:maxLength="3"
+                android:nextFocusForward="@id/edt_awards"
+                android:text="@={viewModel.movie.metacriticRate}"
+                android:textSize="@dimen/font_xx_large" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="2dp"
+                android:text="/100"
+                android:textSize="@dimen/font_x_large"
+                android:visibility="@{TextUtils.isEmpty(viewModel.movie.metacriticRate) ? View.GONE : View.VISIBLE, default=visible}" />
+
+            </LinearLayout>
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Awards"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_awards"
+            style="@style/Theme.PMDb.MovieFormEditText"
+            multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Enter Movie Awards"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_director"
+            android:text="@={viewModel.movie.awards}"
+            android:textSize="@dimen/font_x_large" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:baselineAligned="false"
+          android:orientation="horizontal"
+          android:padding="4dp"
+          android:weightSum="2">
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Director"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_director"
+              style="@style/Theme.PMDb.MovieFormEditText"
+              multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:hint="Name"
+              android:inputType="textMultiLine"
+              android:nextFocusForward="@id/edt_writer"
+              android:text="@={viewModel.movie.director}"
+              android:textSize="@dimen/font_x_large" />
+
+          </LinearLayout>
+
+          <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="0.5"
+            android:background="?attr/colorMovieFormDivider" />
+
+          <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="Writer"
+              android:textSize="@dimen/font_small" />
+
+            <EditText
+              android:id="@+id/edt_writer"
+              style="@style/Theme.PMDb.MovieFormEditText"
+              multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:hint="Name"
+              android:inputType="textMultiLine"
+              android:nextFocusForward="@id/edt_actors"
+              android:text="@={viewModel.movie.writer}"
+              android:textSize="@dimen/font_x_large" />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Actors"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_actors"
+            style="@style/Theme.PMDb.MovieFormEditText"
+            multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Names"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_plot"
+            android:text="@={viewModel.movie.actors}"
+            android:textSize="@dimen/font_x_large" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Plot"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_plot"
+            style="@style/Theme.PMDb.MovieFormEditText"
+            multiLineWithAction="@{EditorInfo.IME_ACTION_NEXT}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Enter Movie Plot"
+            android:inputType="textMultiLine"
+            android:nextFocusForward="@id/edt_comment"
+            android:text="@={viewModel.movie.plot}"
+            android:textSize="@dimen/font_x_large" />
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/space_between_fields"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:padding="4dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Comment"
+            android:textSize="@dimen/font_small" />
+
+          <EditText
+            android:id="@+id/edt_comment"
+            style="@style/Theme.PMDb.MovieFormEditText"
+            multiLineWithAction="@{EditorInfo.IME_ACTION_DONE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Write Your Comment"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:text="@={viewModel.movie.comment}"
+            android:textSize="@dimen/font_x_large" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+      android:id="@+id/layout_header_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:layout_gravity="top"
+      android:animateLayoutChanges="true"
+      android:background="?colorPrimary"
+      android:clickable="true"
+      android:elevation="4dp"
+      android:gravity="left|center_vertical"
+      android:orientation="horizontal"
+      android:padding="4dp"
+      android:visibility="invisible">
+
+      <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_tv_accent"
+        android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
+        app:tint="?colorSelectedIconsTint" />
+
+      <TextView
+        android:id="@+id/txt_header_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:fontFamily="serif"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxEms="@{viewModel.movie.tv ? 11 : 14}"
+        android:paddingLeft="4dp"
+        android:singleLine="true"
+        android:text="@{viewModel.movie.title}"
+        android:textSize="@dimen/font_xx_large"
+        android:textStyle="bold" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:singleLine="true"
+        android:text="@{viewModel.movie.tv ? `(`+viewModel.movie.yearStart+`–`+(TextUtils.isEmpty(viewModel.movie.yearEnd) ? `` : viewModel.movie.yearEnd)+`)` : `(`+viewModel.movie.yearStart+`)`}"
+        android:textSize="@dimen/font_large"
+        android:visibility="@{TextUtils.isEmpty(viewModel.movie.yearStart) ? View.GONE : View.VISIBLE}" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_footer_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:layout_gravity="bottom"
+      android:animateLayoutChanges="true"
+      android:background="?attr/colorMovieFormToolbarBackground"
+      android:clickable="true"
+      android:elevation="8dp"
+      android:gravity="right|center_vertical"
+      android:orientation="horizontal"
+      android:padding="8dp">
+
+      <ImageView
+        isActivated="@{viewModel.movie.tv}"
+        android:layout_width="?actionBarSize"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginVertical="4dp"
+        android:layout_marginRight="8dp"
+        android:background="?android:actionBarItemBackground"
+        android:clickable="true"
+        android:onClick="@{viewModel.toggleMovieType}"
+        android:paddingHorizontal="8dp"
+        android:src="@drawable/ic_tv_accent"
+        android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.GONE, default=visible}" />
+
+      <ImageView
+        activatedIcon="@{ @drawable/ic_eye }"
+        deactivatedIcon="@{ @drawable/ic_eye_outline }"
+        isActivated="@{viewModel.movie.watched}"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:actionBarItemBackground"
+        android:clickable="true"
+        android:onClick="@{viewModel.toggleWatchState}"
+        android:paddingHorizontal="8dp"
+        android:src="@drawable/ic_eye_outline"
+        app:tint="?colorSelectedIconsTint" />
+
+      <ImageView
+        activatedIcon="@{ @drawable/ic_favorite }"
+        deactivatedIcon="@{ @drawable/ic_favorite_outline }"
+        isActivated="@{viewModel.movie.favorite}"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
+        android:background="?android:actionBarItemBackground"
+        android:clickable="true"
+        android:onClick="@{viewModel.toggleFavoriteState}"
+        android:paddingHorizontal="8dp"
+        android:src="@drawable/ic_favorite_outline"
+        app:tint="?colorSelectedIconsTint" />
+
+      <View
+        android:layout_width="0.1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:alpha="0.5"
+        android:background="?attr/colorMovieFormDivider" />
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp">
+
+        <ImageView
+          android:id="@+id/btn_delete"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:background="?android:actionBarItemBackground"
+          android:clickable="true"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_delete"
+          app:tint="?colorSelectedIconsTint" />
+
+        <ImageView
+          android:id="@+id/btn_confirm_clear_delete"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:alpha="0"
+          android:background="@drawable/bg_confirm_red_button"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_check"
+          android:visibility="gone"
+          app:tint="@color/white" />
+      </FrameLayout>
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="32dp">
+
+        <ImageView
+          android:id="@+id/btn_save"
+          activatedIcon="@{ @drawable/ic_save }"
+          deactivatedIcon="@{ @drawable/ic_save_outline }"
+          isActivated="@{viewModel.movie.canSave}"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:background="?android:actionBarItemBackground"
+          android:clickable="true"
+          android:onClick="@{viewModel.saveProcess}"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_save_outline"
+          android:visibility="@{(viewModel.saveLoading || !viewModel.isEditing) ? View.GONE : View.VISIBLE, default=visible}"
+          app:tint="?colorSelectedIconsTint" />
+
+        <ImageView
+          android:id="@+id/btn_edit"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:background="?android:actionBarItemBackground"
+          android:clickable="true"
+          android:onClick="@{viewModel.editMovie}"
+          android:paddingHorizontal="8dp"
+          android:src="@drawable/ic_edit"
+          android:visibility="@{(viewModel.saveLoading || viewModel.isEditing) ? View.GONE : View.VISIBLE, default=gone}"
+          app:tint="?colorSelectedIconsTint" />
+
+        <ProgressBar
+          android:id="@+id/pb_loading"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center"
+          android:indeterminateTint="?colorSelectedIconsTint"
+          android:padding="5dp"
+          android:visibility="@{viewModel.saveLoading ? View.VISIBLE : View.GONE, default=gone}" />
+
+      </FrameLayout>
+
+    </LinearLayout>
+
+  </FrameLayout>
+
+</layout>

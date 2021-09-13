@@ -71,4 +71,6 @@ abstract class BaseDialog<T : ViewDataBinding?, V : BaseViewModel<*>?> :
   }
 
   override fun showError(message: String) = requireContext().toast(message)
+
+  override fun back() = requireActivity().onBackPressed()
 }

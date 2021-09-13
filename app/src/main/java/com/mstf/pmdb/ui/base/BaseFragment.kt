@@ -70,4 +70,6 @@ abstract class BaseFragment<T : ViewDataBinding?, V : BaseViewModel<*>?> : Fragm
   }
 
   override fun showError(message: String) = requireContext().toast(message)
+
+  override fun back() = requireActivity().onBackPressed()
 }

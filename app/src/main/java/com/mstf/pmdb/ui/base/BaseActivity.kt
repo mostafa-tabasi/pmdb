@@ -72,4 +72,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
   }
 
   override fun showError(message: String) = toast(message)
+
+  override fun back() = onBackPressed()
 }

@@ -4,6 +4,7 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import com.mstf.pmdb.data.model.api.MatchedMovie
+import com.mstf.pmdb.data.model.db.MovieEntity
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.mstf.pmdb.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.mstf.pmdb.utils.AppConstants.RATING_SOURCE_IMDB
@@ -90,6 +91,35 @@ class AddMovieModel : BaseObservable() {
     comment.set(null)
     watched.set(false)
     favorite.set(false)
+  }
+
+  fun update(movie: MovieEntity) {
+    dbId = movie.id!!
+    dbCreatedAt = movie.createdAt
+    title.set(movie.title.ifAvailable())
+    movie.yearStart?.let { yearStart.set(it.toString()) }
+    movie.yearEnd?.let { yearEnd.set(it.toString()) }
+    imdbID.set(movie.imdbID.ifAvailable())
+    poster.set(movie.poster)
+    type.set(movie.type.ifAvailable())
+    tv.set(type.get() == MEDIA_TYPE_TITLE_SERIES)
+    movie.runtime?.let { runtime.set(it.toString()) }
+    country.set(movie.country.ifAvailable())
+    movie.imdbRate?.let { imdbRate.set(it.toString()) }
+    movie.imdbVotes?.let { imdbVotes.set(it.toString()) }
+    movie.rottenTomatoesRate?.let { rottenTomatoesRate.set(it.toString()) }
+    movie.metacriticRate?.let { metacriticRate.set(it.toString()) }
+    genre.set(movie.genre.ifAvailable())
+    director.set(movie.director.ifAvailable())
+    writer.set(movie.writer.ifAvailable())
+    actors.set(movie.actors.ifAvailable())
+    plot.set(movie.plot.ifAvailable())
+    awards.set(movie.awards.ifAvailable())
+    comment.set(movie.comment)
+    watched.set(movie.watch)
+    watchAt = movie.watchedAt
+    favorite.set(movie.favorite)
+
   }
 
   fun clear() {
