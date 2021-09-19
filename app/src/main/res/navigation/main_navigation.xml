@@ -15,6 +15,10 @@
       android:id="@+id/action_homeFragment_to_addMovieDialog"
       app:destination="@+id/addMovieDialog"
       app:launchSingleTop="true" />
+
+    <action
+      android:id="@+id/action_homeFragment_to_archiveItemSummaryDialog"
+      app:destination="@+id/ArchiveItemSummaryDialog" />
   </fragment>
 
   <dialog

@@ -26,6 +26,16 @@ interface DbHelper {
   fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
 
   /**
+   * دریافت تمام فیلم و سریال های موجود در دیتابیس به ترتیب امتیاز imdb
+   */
+  fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت تمام فیلم و سریال های موجود در دیتابیس به ترتیب زمان دیده شدن
+   */
+  fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
    * دریافت لیست فیلم و سریال های فیلتر شده ی آرشیو
    *
    * @param title عنوان فیلم و سریال جهت فیلتر

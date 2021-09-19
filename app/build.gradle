@@ -102,4 +102,7 @@ dependencies {
 
     // ExpandableLayout
     implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
+
+    // Gravity Snap Helper
+    implementation 'com.github.rubensousa:gravitysnaphelper:2.2.2'
 }

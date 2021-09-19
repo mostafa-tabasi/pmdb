@@ -31,6 +31,12 @@ interface MovieDao {
   @Query("SELECT * FROM movie ORDER BY created_at DESC")
   fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity>
 
+  @Query("SELECT * FROM movie WHERE imdb_rate IS NOT NULL ORDER BY imdb_rate DESC")
+  fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE watch = 1 ORDER BY watched_at DESC")
+  fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity>
+
   @Query("SELECT * FROM movie WHERE title LIKE '%' || :title || '%' AND year_start >= :fromYear AND year_start <= :toYear AND director LIKE '%' || :director || '%' ORDER BY created_at DESC")
   fun filterAllArchive(
     title: String?,

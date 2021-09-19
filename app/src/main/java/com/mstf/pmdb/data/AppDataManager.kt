@@ -62,6 +62,12 @@ class AppDataManager @Inject constructor(
   override fun allMoviesAndTvSeriesByDate(): DataSource.Factory<Int, MovieEntity> =
     dbHelper.allMoviesAndTvSeriesByDate()
 
+  override fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allMoviesAndTvSeriesByImdbRate()
+
+  override fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allMoviesAndTvSeriesByWatchDate()
+
   override fun filterAllArchive(
     title: String?,
     fromYear: Int?,

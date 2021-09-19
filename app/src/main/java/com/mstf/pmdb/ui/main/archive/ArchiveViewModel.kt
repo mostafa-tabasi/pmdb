@@ -28,7 +28,7 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
   val isInSelectMode: LiveData<Boolean> = _isInSelectMode
   */
 
-  private val _displayType = MutableLiveData(ArchiveDisplayType.TILE)
+  private val _displayType = MutableLiveData(ArchiveDisplayType.LIST)
   val displayType: LiveData<ArchiveDisplayType> = _displayType
 
   lateinit var movies: LiveData<PagedList<MovieEntity>>
