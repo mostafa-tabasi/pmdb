@@ -9,6 +9,8 @@
 
     <import type="android.text.TextUtils" />
 
+    <import type="com.mstf.pmdb.utils.enums.RatingSite" />
+
     <variable
       name="viewModel"
       type="com.mstf.pmdb.ui.main.archive.adapter.ArchiveItemViewModel" />
@@ -64,7 +66,7 @@
         <View
           android:layout_width="@dimen/space_massive"
           android:layout_height="@dimen/space_massive"
-          android:visibility="@{(viewModel.imdbRate!=null || viewModel.rottenTomatoesRate!=null || viewModel.metacriticRate!=null) ? View.VISIBLE : View.GONE, default=visible}" />
+          android:visibility="@{viewModel.isRateVisible ? View.VISIBLE : View.GONE, default=visible}" />
 
       </LinearLayout>
 
@@ -73,17 +75,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_medium"
-        android:background="@{(viewModel.imdbRate != null) ? @drawable/bg_imdb_rating_radius : (viewModel.rottenTomatoesRate != null) ? @drawable/bg_rotten_tomatoes_rating_radius : (viewModel.metacriticRate != null) ? @drawable/bg_metacritic_rating_radius : null, default = @drawable/bg_imdb_rating_radius}"
+        android:background="@{(viewModel.ratingSite == RatingSite.IMDB) ? @drawable/bg_imdb_rating_radius : (viewModel.ratingSite == RatingSite.ROTTEN_TOMATOES) ? @drawable/bg_rotten_tomatoes_rating_radius : (viewModel.ratingSite == RatingSite.METACRITIC) ? @drawable/bg_metacritic_rating_radius : null, default = @drawable/bg_imdb_rating_radius}"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:minWidth="@dimen/space_massive"
         android:minHeight="@dimen/space_massive"
         android:paddingHorizontal="@dimen/space_small"
-        android:text="@{(viewModel.imdbRate != null) ? String.valueOf(viewModel.imdbRate) : (viewModel.rottenTomatoesRate != null) ? (viewModel.rottenTomatoesRate+`%`) : (viewModel.metacriticRate != null) ? String.valueOf(viewModel.metacriticRate) : ``}"
-        android:textColor="@{(viewModel.imdbRate != null) ? @color/black : @color/white}"
+        android:text="@{viewModel.rate}"
+        android:textColor="@{(viewModel.ratingSite == RatingSite.IMDB) ? @color/black : @color/white}"
         android:textSize="@dimen/font_x_large"
         android:textStyle="bold"
-        android:visibility="@{(viewModel.imdbRate!=null || viewModel.rottenTomatoesRate!=null || viewModel.metacriticRate!=null) ? View.VISIBLE : View.GONE, default=visible}"
+        android:visibility="@{viewModel.isRateVisible ? View.VISIBLE : View.GONE, default=visible}"
         app:layout_constraintBottom_toBottomOf="@id/poster"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@id/poster"

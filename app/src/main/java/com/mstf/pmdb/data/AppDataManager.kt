@@ -39,6 +39,48 @@ class AppDataManager @Inject constructor(
       getApiHeader().protectedApiHeader.accessToken = accessToken
     }
 
+  override var isRecentMoviesEnable: Boolean
+    get() = preferencesHelper.isRecentMoviesEnable
+    set(value) {
+      preferencesHelper.isRecentMoviesEnable = value
+    }
+
+  override var isRecentSeriesEnable: Boolean
+    get() = preferencesHelper.isRecentSeriesEnable
+    set(value) {
+      preferencesHelper.isRecentSeriesEnable = value
+    }
+
+  override var isTopRatedEnable: Boolean
+    get() = preferencesHelper.isTopRatedEnable
+    set(value) {
+      preferencesHelper.isTopRatedEnable = value
+    }
+
+  override var topRatedMethod: String
+    get() = preferencesHelper.topRatedMethod
+    set(value) {
+      preferencesHelper.topRatedMethod = value
+    }
+
+  override var isRecentlyWatchedEnable: Boolean
+    get() = preferencesHelper.isRecentlyWatchedEnable
+    set(value) {
+      preferencesHelper.isRecentlyWatchedEnable = value
+    }
+
+  override var archiveDefaultItemRate: String
+    get() = preferencesHelper.archiveDefaultItemRate
+    set(value) {
+      preferencesHelper.archiveDefaultItemRate = value
+    }
+
+  override var archiveDefaultItemViewType: String
+    get() = preferencesHelper.archiveDefaultItemViewType
+    set(value) {
+      preferencesHelper.archiveDefaultItemViewType = value
+    }
+
   override fun getApiHeader(): ApiHeader = apiHelper.getApiHeader()
 
   override suspend fun findMovieByTitle(title: String): Response<MatchedMovieList> =
@@ -48,6 +90,8 @@ class AppDataManager @Inject constructor(
     apiHelper.findMovieByImdbId(id)
 
   override fun getString(resourceId: Int) = resourceHelper.getString(resourceId)
+
+  override fun getArrayString(resourceId: Int) = resourceHelper.getArrayString(resourceId)
 
   override fun getMovieGenreList() = resourceHelper.getMovieGenreList()
 
@@ -64,6 +108,12 @@ class AppDataManager @Inject constructor(
 
   override fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity> =
     dbHelper.allMoviesAndTvSeriesByImdbRate()
+
+  override fun allMoviesAndTvSeriesByRottenTomatoesRate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allMoviesAndTvSeriesByRottenTomatoesRate()
+
+  override fun allMoviesAndTvSeriesByMetacriticRate(): DataSource.Factory<Int, MovieEntity> =
+    dbHelper.allMoviesAndTvSeriesByMetacriticRate()
 
   override fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity> =
     dbHelper.allMoviesAndTvSeriesByWatchDate()

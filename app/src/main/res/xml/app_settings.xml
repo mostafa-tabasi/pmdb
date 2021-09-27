@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <Preference
+    android:layout="@layout/layout_preference_category"
+    android:summary="Will be available in the next version"
+    android:title="Theme"
+    app:iconSpaceReserved="false"
+    app:selectable="false" />
+
+  <SwitchPreferenceCompat
+    android:enabled="false"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_theme_system_default"
+    app:summary="Set app theme based on system default"
+    app:title="Device default" />
+
+  <ListPreference
+    android:enabled="false"
+    android:title="Choose theme"
+    app:defaultValue="1"
+    app:entries="@array/theme_entries"
+    app:entryValues="@array/theme_values"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_theme_method"
+    app:useSimpleSummaryProvider="true" />
+
+  <Preference
+    android:layout="@layout/layout_preference_category"
+    android:title="Home Screen"
+    app:iconSpaceReserved="false"
+    app:selectable="false" />
+
+  <SwitchPreferenceCompat
+    app:iconSpaceReserved="false"
+    app:key="@string/key_recently_added_movies"
+    app:summary="Show recently added movies"
+    app:title="Recent movies" />
+
+  <SwitchPreferenceCompat
+    android:summary="Show recently added TV series"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_recently_added_series"
+    app:title="Recent TV series" />
+
+  <SwitchPreferenceCompat
+    app:iconSpaceReserved="false"
+    app:key="@string/key_top_rated"
+    app:summary="Show top rated movies and TV series"
+    app:title="Top rated" />
+
+  <ListPreference
+    android:title="Top rated sort method"
+    app:defaultValue="1"
+    app:entries="@array/top_rated_entries"
+    app:entryValues="@array/top_rated_values"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_top_rated_method"
+    app:useSimpleSummaryProvider="true" />
+
+  <SwitchPreferenceCompat
+    android:summary="Show recently watched movies and TV series"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_recently_watched"
+    app:title="Recently watched" />
+
+  <Preference
+    android:layout="@layout/layout_preference_category"
+    android:title="Archive Screen"
+    app:iconSpaceReserved="false"
+    app:selectable="false" />
+
+  <ListPreference
+    android:title="Default display type"
+    app:defaultValue="1"
+    app:entries="@array/display_entries"
+    app:entryValues="@array/display_values"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_display_type"
+    app:useSimpleSummaryProvider="true" />
+
+  <ListPreference
+    android:title="Default item rate"
+    app:defaultValue="1"
+    app:entries="@array/default_rate_entries"
+    app:entryValues="@array/default_rate_values"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_archive_default_item_rate"
+    app:useSimpleSummaryProvider="true" />
+
+  <Preference />
+
+</androidx.preference.PreferenceScreen>

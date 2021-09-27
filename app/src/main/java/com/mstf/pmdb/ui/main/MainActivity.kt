@@ -64,4 +64,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   override fun showBottomBar() {
     viewDataBinding?.bottomBar?.performShow()
   }
+
+  override fun hideBottomBar() {
+    viewDataBinding?.bottomBar?.performHide()
+  }
+
+  /**
+   * تغییر تب انتخاب شده در صفحه ی اصلی
+   *
+   * @param tabId شناسه ی تب موردنظر جهت تغییر
+   */
+  fun changeBottomNavigationTab(tabId: Int) {
+    viewDataBinding?.bottomNavigation?.selectedItemId = tabId
+  }
 }

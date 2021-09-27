@@ -11,4 +11,16 @@
   <string name="add_movie_label" translatable="false">Add Movie Dialog</string>
   <string name="search_in_archive_label" translatable="false">Search in Archive Dialog</string>
   <string name="archive_item_info_label" translatable="false">Archive Item Info Dialog</string>
+
+  <string name="key_current_user_id" translatable="false">key_current_user_id</string>
+  <string name="key_access_token" translatable="false">key_access_token</string>
+  <string name="key_theme_system_default" translatable="false">key_theme_system_default</string>
+  <string name="key_theme_method" translatable="false">key_theme_method</string>
+  <string name="key_recently_added_movies" translatable="false">key_recently_added_movies</string>
+  <string name="key_recently_added_series" translatable="false">key_recently_added_series</string>
+  <string name="key_top_rated" translatable="false">key_top_rated</string>
+  <string name="key_top_rated_method" translatable="false">key_top_rated_method</string>
+  <string name="key_recently_watched" translatable="false">key_recently_watched</string>
+  <string name="key_display_type" translatable="false">key_display_type</string>
+  <string name="key_archive_default_item_rate" translatable="false">key_archive_default_item_rate</string>
 </resources>

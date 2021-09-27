@@ -9,9 +9,11 @@
       name="viewModel"
       type="com.mstf.pmdb.ui.main.home.HomeViewModel" />
 
+    <import type="android.view.View" />
+
   </data>
 
-  <ScrollView
+  <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorBackgroundArchive"
@@ -20,13 +22,16 @@
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/space_medium"
       android:orientation="vertical">
 
       <LinearLayout
+        android:id="@+id/recently_added_movies_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_medium"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+        tools:visibility="visible">
 
         <TextView
           android:layout_width="wrap_content"
@@ -54,13 +59,18 @@
         android:layout_height="200dp"
         android:layout_marginBottom="@dimen/space_xx_large"
         android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal" />
+        tools:listitem="@layout/item_archive_grid_horizontal"
+        tools:visibility="visible" />
 
       <LinearLayout
+        android:id="@+id/recently_added_series_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+        tools:visibility="visible">
 
         <TextView
           android:layout_width="wrap_content"
@@ -88,13 +98,18 @@
         android:layout_height="200dp"
         android:layout_marginBottom="@dimen/space_xx_large"
         android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal" />
+        tools:listitem="@layout/item_archive_grid_horizontal"
+        tools:visibility="visible" />
 
       <LinearLayout
+        android:id="@+id/top_rated_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+        tools:visibility="visible">
 
         <TextView
           android:layout_width="wrap_content"
@@ -122,13 +137,18 @@
         android:layout_height="200dp"
         android:layout_marginBottom="@dimen/space_xx_large"
         android:orientation="horizontal"
+        android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal" />
+        tools:listitem="@layout/item_archive_grid_horizontal"
+        tools:visibility="visible" />
 
       <LinearLayout
+        android:id="@+id/recently_watched_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+        tools:visibility="visible">
 
         <TextView
           android:layout_width="wrap_content"
@@ -156,15 +176,13 @@
         android:layout_height="200dp"
         android:layout_marginBottom="@dimen/space_xx_large"
         android:orientation="horizontal"
+        android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal" />
-
-      <View
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize" />
+        tools:listitem="@layout/item_archive_grid_horizontal"
+        tools:visibility="visible" />
 
     </LinearLayout>
 
-  </ScrollView>
+  </androidx.core.widget.NestedScrollView>
 
 </layout>

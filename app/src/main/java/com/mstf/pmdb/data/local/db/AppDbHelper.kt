@@ -18,6 +18,12 @@ class AppDbHelper @Inject constructor(private val appDatabase: AppDatabase) : Db
   override fun allMoviesAndTvSeriesByImdbRate() =
     appDatabase.movieDao().allMoviesAndTvSeriesByImdbRate()
 
+  override fun allMoviesAndTvSeriesByRottenTomatoesRate() =
+    appDatabase.movieDao().allMoviesAndTvSeriesByRottenTomatoesRate()
+
+  override fun allMoviesAndTvSeriesByMetacriticRate() =
+    appDatabase.movieDao().allMoviesAndTvSeriesByMetacriticRate()
+
   override fun allMoviesAndTvSeriesByWatchDate() =
     appDatabase.movieDao().allMoviesAndTvSeriesByWatchDate()
 

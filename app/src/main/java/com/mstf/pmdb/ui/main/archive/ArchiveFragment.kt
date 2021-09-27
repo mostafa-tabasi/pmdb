@@ -70,6 +70,11 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   private fun setUpList(view: FragmentArchiveBinding) {
     tilesAdapter.setListener(this)
     listAdapter.setListener(this)
+    // ست کردن امتیاز پیش فرضی که برای هر آیتم باید نمایش داده شود
+    viewModel.defaultItemRate?.let { site ->
+      tilesAdapter.ratingSite = site
+      listAdapter.setRatingSite(site)
+    }
     // دیتای موردنظر جهت نمایش در لیست
     viewModel.movies.observe(viewLifecycleOwner, {
       tilesAdapter.submitList(it)

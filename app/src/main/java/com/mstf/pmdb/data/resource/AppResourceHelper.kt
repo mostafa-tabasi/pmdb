@@ -11,6 +11,9 @@ class AppResourceHelper @Inject constructor(private val context: Context) : Reso
 
   override fun getString(resourceId: Int): String = context.getString(resourceId)
 
+  override fun getArrayString(resourceId: Int): Array<out String> =
+    context.resources.getStringArray(resourceId)
+
   override fun getMovieGenreList(): List<String> = MovieGenre.list()
 
   override fun getTvSeriesGenreList(): List<String> = TvGenre.list()

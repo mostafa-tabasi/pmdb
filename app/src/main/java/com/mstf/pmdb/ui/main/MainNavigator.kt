@@ -5,4 +5,6 @@ import com.mstf.pmdb.ui.base.BaseNavigator
 interface MainNavigator : BaseNavigator {
 
   fun showBottomBar()
+
+  fun hideBottomBar()
 }

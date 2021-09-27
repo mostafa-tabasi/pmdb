@@ -12,6 +12,7 @@ import com.mstf.pmdb.data.model.db.MovieEntity
 import com.mstf.pmdb.ui.base.BaseViewModel
 import com.mstf.pmdb.utils.enums.ArchiveDisplayType
 import com.mstf.pmdb.utils.enums.MediaFilterType
+import com.mstf.pmdb.utils.enums.RatingSite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,13 +29,16 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
   val isInSelectMode: LiveData<Boolean> = _isInSelectMode
   */
 
-  private val _displayType = MutableLiveData(ArchiveDisplayType.LIST)
+  private val _displayType =
+    MutableLiveData(ArchiveDisplayType.withId(dataManager.archiveDefaultItemViewType.toInt())!!)
   val displayType: LiveData<ArchiveDisplayType> = _displayType
 
   lateinit var movies: LiveData<PagedList<MovieEntity>>
 
   private val _filter = MutableLiveData(ArchiveFilterModel())
   val filter: LiveData<ArchiveFilterModel> = _filter
+
+  val defaultItemRate: RatingSite? = RatingSite.withId(dataManager.archiveDefaultItemRate.toInt())
 
   init {
     viewModelScope.launch {

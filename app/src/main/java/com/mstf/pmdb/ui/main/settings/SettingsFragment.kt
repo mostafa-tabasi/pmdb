@@ -1,20 +1,16 @@
 package com.mstf.pmdb.ui.main.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.viewModels
-import com.mstf.pmdb.BR
+import androidx.preference.ListPreference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.mstf.pmdb.R
-import com.mstf.pmdb.databinding.FragmentHomeBinding
-import com.mstf.pmdb.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<FragmentHomeBinding, SettingsViewModel>(), SettingsNavigator {
-
-  override val viewModel: SettingsViewModel by viewModels()
-  override val bindingVariable: Int get() = BR.viewModel
-  override val layoutId: Int get() = R.layout.fragment_settings
+class SettingsFragment : PreferenceFragmentCompat(),
+  SharedPreferences.OnSharedPreferenceChangeListener {
 
   companion object {
     const val TAG = "SettingsFragment"
@@ -26,9 +22,33 @@ class SettingsFragment : BaseFragment<FragmentHomeBinding, SettingsViewModel>(),
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    viewModel.setNavigator(this)
+  override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    setPreferencesFromResource(R.xml.app_settings, rootKey)
+    handleTopRatedSortMethodEnable()
   }
 
+  override fun onResume() {
+    super.onResume()
+    preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+  }
+
+  override fun onPause() {
+    preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    super.onPause()
+  }
+
+  override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+    when (key) {
+      getString(R.string.key_top_rated) -> handleTopRatedSortMethodEnable()
+      else -> {
+      }
+    }
+  }
+
+  private fun handleTopRatedSortMethodEnable() {
+    val topRatedMethodPref =
+      findPreference<ListPreference>(getString(R.string.key_top_rated_method))
+    val topRatedPref = findPreference<SwitchPreferenceCompat>(getString(R.string.key_top_rated))
+    topRatedMethodPref?.isEnabled = topRatedPref?.isChecked ?: false
+  }
 }

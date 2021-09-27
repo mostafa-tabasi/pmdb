@@ -31,6 +31,16 @@ interface DbHelper {
   fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity>
 
   /**
+   * دریافت تمام فیلم و سریال های موجود در دیتابیس به ترتیب امتیاز Rotten Tomatoes
+   */
+  fun allMoviesAndTvSeriesByRottenTomatoesRate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
+   * دریافت تمام فیلم و سریال های موجود در دیتابیس به ترتیب امتیاز Metacritic
+   */
+  fun allMoviesAndTvSeriesByMetacriticRate(): DataSource.Factory<Int, MovieEntity>
+
+  /**
    * دریافت تمام فیلم و سریال های موجود در دیتابیس به ترتیب زمان دیده شدن
    */
   fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity>

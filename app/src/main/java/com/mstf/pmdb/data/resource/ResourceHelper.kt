@@ -4,6 +4,8 @@ interface ResourceHelper {
 
   fun getString(resourceId: Int): String
 
+  fun getArrayString(resourceId: Int): Array<out String>
+
   /**
    * لیست ژانرهای موجود مربوط به فیلم های سینمایی
    */

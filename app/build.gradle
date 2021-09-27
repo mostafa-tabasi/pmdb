@@ -105,4 +105,7 @@ dependencies {
 
     // Gravity Snap Helper
     implementation 'com.github.rubensousa:gravitysnaphelper:2.2.2'
+
+    // Settings preferences
+    implementation "androidx.preference:preference-ktx:$rootProject.preference_version"
 }

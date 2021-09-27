@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
@@ -11,6 +12,7 @@ import com.mstf.pmdb.BR
 import com.mstf.pmdb.R
 import com.mstf.pmdb.databinding.FragmentHomeBinding
 import com.mstf.pmdb.ui.base.BaseFragment
+import com.mstf.pmdb.ui.main.MainActivity
 import com.mstf.pmdb.ui.main.archive.ArchiveListener
 import com.mstf.pmdb.ui.main.archive.adapter.TilesArchiveAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,61 +46,84 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
   }
 
   private fun setUp() {
+    setUpRecentMovies()
+    setUpRecentSeries()
+    setUpTopRated()
+    setUpRecentWatch()
     viewDataBinding?.let {
-      //(it.root as ScrollView)
-      setUpRecentMovies(it)
-      setUpRecentSeries(it)
-      setUpTopRated(it)
-      setUpRecentWatch(it)
+      (it.root as NestedScrollView).setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+        if (scrollY > oldScrollY) {
+          (requireActivity() as MainActivity).hideBottomBar()
+        } else {
+          (requireActivity() as MainActivity).showBottomBar()
+        }
+      })
     }
   }
 
   /**
    * راه اندازی لیست فیلم های اخیرا اضافه شده
    */
-  private fun setUpRecentMovies(it: FragmentHomeBinding) {
-    recentlyAddedMoviesAdapter.setListener(this)
-    it.recentlyAddedMovies.adapter = recentlyAddedMoviesAdapter
-    GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedMovies) }
-    viewModel.recentlyAddedMovies.observe(
-      viewLifecycleOwner,
-      { recentlyAddedMoviesAdapter.submitList(it) })
+  private fun setUpRecentMovies() {
+    if (!viewModel.isRecentMoviesEnable.get()) return
+
+    viewDataBinding?.let {
+      recentlyAddedMoviesAdapter.setListener(this)
+      it.recentlyAddedMovies.adapter = recentlyAddedMoviesAdapter
+      GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedMovies) }
+      viewModel.recentlyAddedMovies.observe(viewLifecycleOwner, { items ->
+        recentlyAddedMoviesAdapter.submitList(items)
+      })
+    }
   }
 
   /**
    * راه اندازی لیست سریال های اخیرا اضافه شده
    */
-  private fun setUpRecentSeries(it: FragmentHomeBinding) {
-    recentlyAddedSeriesAdapter.setListener(this)
-    it.recentlyAddedSeries.adapter = recentlyAddedSeriesAdapter
-    GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedSeries) }
-    viewModel.recentlyAddedSeries.observe(
-      viewLifecycleOwner,
-      { recentlyAddedSeriesAdapter.submitList(it) })
+  private fun setUpRecentSeries() {
+    if (!viewModel.isRecentSeriesEnable.get()) return
+
+    viewDataBinding?.let {
+      recentlyAddedSeriesAdapter.setListener(this)
+      it.recentlyAddedSeries.adapter = recentlyAddedSeriesAdapter
+      GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedSeries) }
+      viewModel.recentlyAddedSeries.observe(viewLifecycleOwner, { items ->
+        recentlyAddedSeriesAdapter.submitList(items)
+      })
+    }
   }
 
   /**
    * راه اندازی لیست فیلم و سریال های با ترتیب امتیاز (نزولی)
    */
-  private fun setUpTopRated(it: FragmentHomeBinding) {
-    topRatedAdapter.setListener(this)
-    it.topRated.adapter = topRatedAdapter
-    GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedSeries) }
-    viewModel.topRated.observe(
-      viewLifecycleOwner,
-      { topRatedAdapter.submitList(it) })
+  private fun setUpTopRated() {
+    if (!viewModel.isTopRatedEnable.get()) return
+
+    viewDataBinding?.let {
+      topRatedAdapter.setListener(this)
+      viewModel.topRatedMethod?.let { site -> topRatedAdapter.ratingSite = site }
+      it.topRated.adapter = topRatedAdapter
+      GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.topRated) }
+      viewModel.topRated.observe(viewLifecycleOwner, { items ->
+        topRatedAdapter.submitList(items)
+      })
+    }
   }
 
   /**
    * راه اندازی لیست فیلم و سریال های اخیرا دیده شده
    */
-  private fun setUpRecentWatch(it: FragmentHomeBinding) {
-    recentlyWatchedAdapter.setListener(this)
-    it.recentlyWatched.adapter = recentlyWatchedAdapter
-    GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedSeries) }
-    viewModel.recentlyWatched.observe(
-      viewLifecycleOwner,
-      { recentlyWatchedAdapter.submitList(it) })
+  private fun setUpRecentWatch() {
+    if (!viewModel.isRecentlyWatchedEnable.get()) return
+
+    viewDataBinding?.let {
+      recentlyWatchedAdapter.setListener(this)
+      it.recentlyWatched.adapter = recentlyWatchedAdapter
+      GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyWatched) }
+      viewModel.recentlyWatched.observe(viewLifecycleOwner, { items ->
+        recentlyWatchedAdapter.submitList(items)
+      })
+    }
   }
 
   /**
@@ -107,6 +132,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
   fun openAddMovieDialog() {
     val action = HomeFragmentDirections.actionHomeFragmentToAddMovieDialog()
     findNavController().navigate(action)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.refresh()
+  }
+
+  override fun refreshPage() {
+    (requireActivity() as MainActivity).changeBottomNavigationTab(R.id.homeFragment)
   }
 
   // متغیری جهت جلوگیری از باز شدن همزمان چند باتم شیت

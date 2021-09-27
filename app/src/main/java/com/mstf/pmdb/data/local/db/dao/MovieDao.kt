@@ -34,6 +34,12 @@ interface MovieDao {
   @Query("SELECT * FROM movie WHERE imdb_rate IS NOT NULL ORDER BY imdb_rate DESC")
   fun allMoviesAndTvSeriesByImdbRate(): DataSource.Factory<Int, MovieEntity>
 
+  @Query("SELECT * FROM movie WHERE rotten_tomatoes_rate IS NOT NULL ORDER BY rotten_tomatoes_rate DESC")
+  fun allMoviesAndTvSeriesByRottenTomatoesRate(): DataSource.Factory<Int, MovieEntity>
+
+  @Query("SELECT * FROM movie WHERE metacritic_rate IS NOT NULL ORDER BY metacritic_rate DESC")
+  fun allMoviesAndTvSeriesByMetacriticRate(): DataSource.Factory<Int, MovieEntity>
+
   @Query("SELECT * FROM movie WHERE watch = 1 ORDER BY watched_at DESC")
   fun allMoviesAndTvSeriesByWatchDate(): DataSource.Factory<Int, MovieEntity>
 
