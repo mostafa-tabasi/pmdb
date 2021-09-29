@@ -51,7 +51,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
     setUpTopRated()
     setUpRecentWatch()
     viewDataBinding?.let {
-      (it.root as NestedScrollView).setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+      it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
+      it.changeSettings.setOnClickListener { goToSettings() }
+      it.scrollRoot.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
         if (scrollY > oldScrollY) {
           (requireActivity() as MainActivity).hideBottomBar()
         } else {
@@ -132,6 +134,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
   fun openAddMovieDialog() {
     val action = HomeFragmentDirections.actionHomeFragmentToAddMovieDialog()
     findNavController().navigate(action)
+  }
+
+  /**
+   * نمایش صفحه ی تنظیمات
+   */
+  private fun goToSettings() {
+    (requireActivity() as MainActivity).changeBottomNavigationTab(R.id.settingsFragment)
   }
 
   override fun onResume() {

@@ -13,176 +13,239 @@
 
   </data>
 
-  <androidx.core.widget.NestedScrollView
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorBackgroundArchive"
-    android:scrollbars="none">
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+      android:id="@+id/scroll_root"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="?colorBackgroundArchive"
+      android:scrollbars="none">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/space_medium"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:id="@+id/recently_added_movies_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          tools:visibility="visible">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_large"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Recently Added Movies"
+            android:textColor="@color/grey_500"
+            android:textSize="@dimen/font_x_large" />
+
+          <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_small"
+            android:layout_weight="1"
+            android:background="@color/grey_400" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recently_added_movies"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:layout_marginBottom="@dimen/space_xx_large"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_archive_grid_horizontal"
+          tools:visibility="visible" />
+
+        <LinearLayout
+          android:id="@+id/recently_added_series_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          tools:visibility="visible">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_large"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Recently Added TV Series"
+            android:textColor="@color/grey_500"
+            android:textSize="@dimen/font_x_large" />
+
+          <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_small"
+            android:layout_weight="1"
+            android:background="@color/grey_400" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recently_added_series"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:layout_marginBottom="@dimen/space_xx_large"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_archive_grid_horizontal"
+          tools:visibility="visible" />
+
+        <LinearLayout
+          android:id="@+id/top_rated_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          tools:visibility="visible">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_large"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Top Rated"
+            android:textColor="@color/grey_500"
+            android:textSize="@dimen/font_x_large" />
+
+          <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_small"
+            android:layout_weight="1"
+            android:background="@color/grey_400" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/top_rated"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:layout_marginBottom="@dimen/space_xx_large"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_archive_grid_horizontal"
+          tools:visibility="visible" />
+
+        <LinearLayout
+          android:id="@+id/recently_watched_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          tools:visibility="visible">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_large"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Recently Watched"
+            android:textColor="@color/grey_500"
+            android:textSize="@dimen/font_x_large" />
+
+          <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_small"
+            android:layout_weight="1"
+            android:background="@color/grey_400" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recently_watched"
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:layout_marginBottom="@dimen/space_xx_large"
+          android:orientation="horizontal"
+          android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+          tools:listitem="@layout/item_archive_grid_horizontal"
+          tools:visibility="visible" />
+
+      </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="@dimen/space_medium"
-      android:orientation="vertical">
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:visibility="@{((viewModel.recentlyAddedMovies == null || viewModel.recentlyAddedMovies.size() == 0) &amp;&amp; (viewModel.recentlyAddedSeries == null || viewModel.recentlyAddedSeries.size() == 0)  &amp;&amp; (viewModel.topRated == null || viewModel.topRated.size() == 0)  &amp;&amp; (viewModel.recentlyWatched == null || viewModel.recentlyWatched.size() == 0)) || (!viewModel.isRecentMoviesEnable &amp;&amp; !viewModel.isRecentSeriesEnable &amp;&amp; !viewModel.isTopRatedEnable &amp;&amp; !viewModel.isRecentlyWatchedEnable) ? View.VISIBLE : View.GONE, default=gone}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
 
-      <LinearLayout
-        android:id="@+id/recently_added_movies_title"
-        android:layout_width="match_parent"
+      <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        tools:visibility="visible">
+        android:text="There is nothing to show :("
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_xx_large" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="@dimen/space_large"
-          android:fontFamily="sans-serif-smallcaps"
-          android:text="Recently Added Movies"
-          android:textColor="@color/grey_500"
-          android:textSize="@dimen/font_x_large" />
-
-        <View
-          android:layout_width="0dp"
-          android:layout_height="0.5dp"
-          android:layout_gravity="bottom"
-          android:layout_marginLeft="@dimen/space_small"
-          android:layout_marginBottom="@dimen/space_small"
-          android:layout_weight="1"
-          android:background="@color/grey_400" />
-
-      </LinearLayout>
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recently_added_movies"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="@dimen/space_xx_large"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal"
-        tools:visibility="visible" />
-
-      <LinearLayout
-        android:id="@+id/recently_added_series_title"
-        android:layout_width="match_parent"
+      <TextView
+        android:id="@+id/add_first_movie"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        tools:visibility="visible">
+        android:layout_margin="8dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_add"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Add your first movie"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_xx_large" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="@dimen/space_large"
-          android:fontFamily="sans-serif-smallcaps"
-          android:text="Recently Added TV Series"
-          android:textColor="@color/grey_500"
-          android:textSize="@dimen/font_x_large" />
-
-        <View
-          android:layout_width="0dp"
-          android:layout_height="0.5dp"
-          android:layout_gravity="bottom"
-          android:layout_marginLeft="@dimen/space_small"
-          android:layout_marginBottom="@dimen/space_small"
-          android:layout_weight="1"
-          android:background="@color/grey_400" />
-
-      </LinearLayout>
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recently_added_series"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="@dimen/space_xx_large"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal"
-        tools:visibility="visible" />
-
-      <LinearLayout
-        android:id="@+id/top_rated_title"
-        android:layout_width="match_parent"
+      <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        tools:visibility="visible">
+        android:text="or"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_xx_large" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="@dimen/space_large"
-          android:fontFamily="sans-serif-smallcaps"
-          android:text="Top Rated"
-          android:textColor="@color/grey_500"
-          android:textSize="@dimen/font_x_large" />
-
-        <View
-          android:layout_width="0dp"
-          android:layout_height="0.5dp"
-          android:layout_gravity="bottom"
-          android:layout_marginLeft="@dimen/space_small"
-          android:layout_marginBottom="@dimen/space_small"
-          android:layout_weight="1"
-          android:background="@color/grey_400" />
-
-      </LinearLayout>
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/top_rated"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="@dimen/space_xx_large"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal"
-        tools:visibility="visible" />
-
-      <LinearLayout
-        android:id="@+id/recently_watched_title"
-        android:layout_width="match_parent"
+      <TextView
+        android:id="@+id/change_settings"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        tools:visibility="visible">
-
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="@dimen/space_large"
-          android:fontFamily="sans-serif-smallcaps"
-          android:text="Recently Watched"
-          android:textColor="@color/grey_500"
-          android:textSize="@dimen/font_x_large" />
-
-        <View
-          android:layout_width="0dp"
-          android:layout_height="0.5dp"
-          android:layout_gravity="bottom"
-          android:layout_marginLeft="@dimen/space_small"
-          android:layout_marginBottom="@dimen/space_small"
-          android:layout_weight="1"
-          android:background="@color/grey_400" />
-
-      </LinearLayout>
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recently_watched"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="@dimen/space_xx_large"
-        android:orientation="horizontal"
-        android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_archive_grid_horizontal"
-        tools:visibility="visible" />
+        android:layout_margin="8dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_settings_outline"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Change settings"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_xx_large" />
 
     </LinearLayout>
 
-  </androidx.core.widget.NestedScrollView>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
