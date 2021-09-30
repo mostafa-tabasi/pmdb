@@ -27,6 +27,7 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
   // درحال حاضر اطلاعات فیلم امکان ادیت شدن دارند یا خیر
   val isEditing = ObservableField<Boolean>().apply { set(false) }
 
+  // ژانرهای مربوط به فیلم موردنظر
   private val _genres: MutableLiveData<ArrayList<String>> = MutableLiveData(arrayListOf())
   val genres: LiveData<ArrayList<String>> = _genres
 
@@ -54,7 +55,6 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
   fun toggleMovieType(v: View? = null) {
     with(movie) {
       type.set(if (tv.get() == true) AppConstants.MEDIA_TYPE_TITLE_MOVIE else AppConstants.MEDIA_TYPE_TITLE_SERIES)
-      //navigator?.setUpMovieGenres(getGenreItems())
       checkRedundantGenres()
     }
   }
@@ -64,7 +64,10 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun toggleWatchState(v: View? = null) {
     if (isEditing.get() != true) return
-    with(movie) { watched.set(!watched.get()!!) }
+    with(movie) {
+      watched.set(!watched.get()!!)
+      if (watched.get() == false) watchAt = null
+    }
   }
 
   /**
@@ -89,16 +92,11 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun onGenreSelect(label: String) {
     // اگر از قبل این ژانر اضافه شده بود، مجدد اضافه نشود
-    //if (movie.genre.get()!!.contains(label)) return
     if (_genres.value!!.contains(label)) return
     // افزودن ژانر به لیست ژانرهای انتخاب شده
     val currentGenres = _genres.value ?: arrayListOf()
     currentGenres.add(label)
     _genres.postValue(currentGenres)
-
-    //movie.genre.set(movie.genre.get() + "$label,")
-    // نمایش چیپ مربوط به ژانر انتخاب شده
-    //navigator?.addGenreChip(label, true)
   }
 
   /**
@@ -172,7 +170,7 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
   /**
    *بروزرسانی فیلم در دیتابیس
    */
-  fun updateMovie() {
+  private fun updateMovie() {
     viewModelScope.launch {
       saveLoading.set(true)
       isEditing.set(false)

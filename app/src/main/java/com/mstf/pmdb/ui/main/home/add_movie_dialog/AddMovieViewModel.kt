@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mstf.pmdb.data.DataManager
@@ -23,7 +24,6 @@ import com.mstf.pmdb.utils.enums.TvGenre
 import com.mstf.pmdb.utils.extensions.isNullOrEmptyAfterTrim
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -47,6 +47,10 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   // درحال حاضر فیلم موردنظر در دیتابیس آرشیو شده است یا خیر
   val isArchived = ObservableField<Boolean>().apply { set(false) }
+
+  // ژانرهای مربوط به فیلم موردنظر
+  private val _genres: MutableLiveData<ArrayList<String>> = MutableLiveData(arrayListOf())
+  val genres: LiveData<ArrayList<String>> = _genres
 
   /**
    *اگر جستجویی در حال انجام بود، کنسل شود
@@ -115,16 +119,10 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * تغییر وضعیت دیدن فیلم (کاربر فیلم را دیده است یا خیر)
    */
   fun toggleWatchState(v: View? = null) {
+    if (isEditing.get() != true) return
     with(movie) {
       watched.set(!watched.get()!!)
-      // اگر فیلم آرشیو شده بود، وضعیتِ موردنظر بروزرسانی شود
-      if (isArchived.get() == true) {
-        updateWatchJob?.cancel()
-        updateWatchJob = viewModelScope.launch {
-          delay(300)
-          dataManager.updateWatchState(dbId, watched.get()!!)
-        }
-      }
+      if (watched.get() == false) watchAt = null
     }
   }
 
@@ -132,17 +130,8 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * تغییر وضعیت مورد علاقه بودن فیلم
    */
   fun toggleFavoriteState(v: View? = null) {
-    with(movie) {
-      favorite.set(!favorite.get()!!)
-      // اگر فیلم آرشیو شده بود، وضعیتِ موردنظر بروزرسانی شود
-      if (isArchived.get() == true) {
-        updateFavoriteJob?.cancel()
-        updateFavoriteJob = viewModelScope.launch {
-          delay(300)
-          dataManager.updateFavoriteState(dbId, favorite.get()!!)
-        }
-      }
-    }
+    if (isEditing.get() != true) return
+    with(movie) { favorite.set(!favorite.get()!!) }
   }
 
   /**
@@ -157,38 +146,30 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * @param label عنوان ژانر انتخاب شده
    */
   fun onGenreSelect(label: String) {
-    // اگر از قبل ای ژانر اضافه شده بود، مجدد اضافه نشود
-    if (movie.genre.get()!!.contains(label)) return
+    // اگر از قبل این ژانر اضافه شده بود، مجدد اضافه نشود
+    if (_genres.value!!.contains(label)) return
     // افزودن ژانر به لیست ژانرهای انتخاب شده
-    movie.genre.set(movie.genre.get() + "$label,")
-    // نمایش چیپ مربوط به ژانر انتخاب شده
-    navigator?.addGenreChip(label, true)
+    val currentGenres = _genres.value ?: arrayListOf()
+    currentGenres.add(label)
+    _genres.postValue(currentGenres)
   }
 
   /**
    * حذف ژانرهای بلااستفاده در لیست ژانرهای انتخاب شده متناسب با نوع مدیا (فیلم یا سریال)
    */
   private fun checkRedundantGenres() {
-    movie.genre.get()?.let {
-      when (movie.type.get()) {
-        // اگر نوع فیلم سینمایی بود، تمام ژانرهای مربوط به سریال حذف شوند
-        MEDIA_TYPE_TITLE_MOVIE -> {
-          removeGenre(TvGenre.GAME_SHOW.labelWithSeparator())
-          { navigator?.removeGenreChip(TvGenre.GAME_SHOW.label()) }
-          removeGenre(TvGenre.NEWS.labelWithSeparator())
-          { navigator?.removeGenreChip(TvGenre.NEWS.label()) }
-          removeGenre(TvGenre.REALITY_TV.labelWithSeparator())
-          { navigator?.removeGenreChip(TvGenre.REALITY_TV.label()) }
-          removeGenre(TvGenre.TALK_SHOW.labelWithSeparator())
-          { navigator?.removeGenreChip(TvGenre.TALK_SHOW.label()) }
-        }
-        // اگر نوع فیلم سریال بود، تمام ژانرهای مربوط به سینمایی حذف شوند
-        else -> {
-          removeGenre(MovieGenre.FILM_NOIR.labelWithSeparator())
-          { navigator?.removeGenreChip(MovieGenre.FILM_NOIR.label()) }
-          removeGenre(MovieGenre.SHORT.labelWithSeparator())
-          { navigator?.removeGenreChip(MovieGenre.SHORT.label()) }
-        }
+    when (movie.type.get()) {
+      // اگر نوع فیلم سینمایی بود، تمام ژانرهای مربوط به سریال حذف شوند
+      MEDIA_TYPE_TITLE_MOVIE -> {
+        removeGenre(TvGenre.GAME_SHOW.label())
+        removeGenre(TvGenre.NEWS.label())
+        removeGenre(TvGenre.REALITY_TV.label())
+        removeGenre(TvGenre.TALK_SHOW.label())
+      }
+      // اگر نوع فیلم سریال بود، تمام ژانرهای مربوط به سینمایی حذف شوند
+      else -> {
+        removeGenre(MovieGenre.FILM_NOIR.label())
+        removeGenre(MovieGenre.SHORT.label())
       }
     }
   }
@@ -197,14 +178,13 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    * حذف ژانر موردنظر از لیست ژانرهای انتخاب شده
    *
    * @param label عنوان ژانر موردنظر
-   * @param afterRemove عملیاتی که بعد از حذف شدن لازم است انحام شود
    */
-  fun removeGenre(label: String, afterRemove: (() -> Unit)? = null) {
-    movie.genre.get()?.let {
-      if (!it.contains(label)) return
-      movie.genre.set(it.replace(label, ""))
-      afterRemove?.invoke()
-    }
+  fun removeGenre(label: String) {
+    if (!_genres.value!!.contains(label)) return
+
+    val currentGenres = _genres.value!!
+    currentGenres.remove(label)
+    _genres.postValue(currentGenres)
   }
 
   /**
@@ -343,6 +323,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun clearForm(v: View? = null) {
     navigator?.removeAllGenreChips()
     movie.clear()
+    _genres.postValue(arrayListOf())
     isEditing.set(true)
     isArchived.set(false)
   }
@@ -402,6 +383,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     viewModelScope.launch {
       saveLoading.set(true)
       isEditing.set(false)
+      movie.genre.set(_genres.value!!.joinToString(", "))
       dataManager.updateMovie(MovieEntity.from(movie)).run {
         saveLoading.set(false)
         isArchived.set(true)
@@ -416,6 +398,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
     viewModelScope.launch {
       saveLoading.set(true)
       isEditing.set(false)
+      movie.genre.set(_genres.value!!.joinToString(", "))
       dataManager.insertMovie(MovieEntity.from(movie)).run {
         saveLoading.set(false)
         isArchived.set(true)

@@ -92,7 +92,7 @@ class ArchiveItemInfoDialog :
    *هندل کردن تولبار موجود در هدرِ فرم مربوط به وارد کردن اطلاعات فیلم
    */
   private fun setUpMovieFormHeaderToolbar() {
-    viewDataBinding?.let { it ->
+    viewDataBinding?.let { _ ->
       with(movieFormEditBinding) {
         layoutScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, _, _, _ ->
 
@@ -156,6 +156,8 @@ class ArchiveItemInfoDialog :
           else -> {
           }
         }
+        // کیبورد در صورت باز بودن، با تغییر وضعیت باتم شیت، بسته شود
+        requireContext().hideKeyboard(bottomSheet)
       }
     }
 
@@ -171,8 +173,6 @@ class ArchiveItemInfoDialog :
     }
 
     override fun onSlide(bottomSheet: View, slideOffset: Float) {
-      // کیبورد در صورت باز بودن، با تغییر وضعیت باتم شیت، بسته شود
-      requireContext().hideKeyboard(bottomSheet)
       calculateLayoutsAlpha(slideOffset)
     }
 
@@ -193,6 +193,7 @@ class ArchiveItemInfoDialog :
 
   private fun setUpMovieGenres() {
     viewDataBinding?.let {
+      initGenres()
       // رصد لیست ژانرهای مربوط به فیلم جهت نمایش
       viewModel.genres.observe(viewLifecycleOwner) {
         movieFormEditBinding.layoutGenreChips.removeAllViews()
@@ -210,26 +211,29 @@ class ArchiveItemInfoDialog :
       viewModel.movie.tv.addOnPropertyChangedCallback(object :
         Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-          // فیلد مربوط به وارد کردن ژانرهای فیلم
-          val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            viewModel.getGenreItems()
-          )
-          with(movieFormEditBinding.edtGenre) {
-            setAdapter(adapter)
-            setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
-            threshold = 1
-            onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, pos, _ ->
-              clear()
-              // عنوان ژانر انتخاب شده
-              val label: String = adapterView.getItemAtPosition(pos) as String
-              viewModel.onGenreSelect(label)
-            }
-          }
+          initGenres()
         }
       })
     }
+  }
+
+  /**
+   * راه اندازه فیلد مربوط به ژانرهای فیلم و سریال
+   */
+  private fun initGenres() {
+    movieFormEditBinding.edtGenre.setItems(
+      items = viewModel.getGenreItems(),
+      onFocusChangeListener = { _, hasFocus ->
+        if (hasFocus) Handler().postDelayed({
+          movieFormEditBinding.layoutScrollView.smoothScrollBy(0, 100)
+        }, 250)
+      },
+      onItemClickListener = { adapterView, _, pos, _ ->
+        // عنوان ژانر انتخاب شده
+        val label: String = adapterView.getItemAtPosition(pos) as String
+        viewModel.onGenreSelect(label)
+      }
+    )
   }
 
   /**

@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -363,6 +364,8 @@ class AddMovieDialog :
           else -> {
           }
         }
+        // کیبورد در صورت باز بودن، با تغییر وضعیت باتم شیت، بسته شود
+        requireContext().hideKeyboard(bottomSheet)
       }
     }
 
@@ -378,8 +381,6 @@ class AddMovieDialog :
     }
 
     override fun onSlide(bottomSheet: View, slideOffset: Float) {
-      // کیبورد در صورت باز بودن، با تغییر وضعیت باتم شیت، بسته شود
-      requireContext().hideKeyboard(bottomSheet)
       // اگر جستجویی در حال انجام بود، با تغییر وضعیت باتم شیت، کنسل شود
       viewModel.cancelSearching()
       calculateLayoutsAlpha(slideOffset)
@@ -533,23 +534,47 @@ class AddMovieDialog :
 
   override fun setUpMovieGenres(items: List<String>) {
     viewDataBinding?.let {
-      val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-        requireContext(),
-        android.R.layout.simple_dropdown_item_1line,
-        items
-      )
-      with(movieFormBinding.edtGenre) {
-        setAdapter(adapter)
-        setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
-        threshold = 1
-        onItemClickListener = AdapterView.OnItemClickListener { adapterView, _, pos, _ ->
-          clear()
-          // عنوان ژانر انتخاب شده
-          val label: String = adapterView.getItemAtPosition(pos) as String
-          viewModel.onGenreSelect(label)
-        }
+      initGenres()
+      // رصد لیست ژانرهای مربوط به فیلم جهت نمایش
+      viewModel.genres.observe(viewLifecycleOwner) {
+        movieFormBinding.layoutGenreChips.removeAllViews()
+        if (it.isEmpty()) return@observe
+        for (genre in it) movieFormBinding.layoutGenreChips.addChip(
+          genre, viewModel.isEditing.get() == true,
+          animate = false
+        ) { viewModel.removeGenre(genre) }
+        // بعد از اضافه شدن چیپِ جدید، به سمت راست اسکرول، تا چیپ دیده شود
+        Handler().postDelayed({
+          movieFormBinding.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+        }, 200L)
       }
+
+      viewModel.movie.tv.addOnPropertyChangedCallback(object :
+        Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+          initGenres()
+        }
+      })
     }
+  }
+
+  /**
+   * راه اندازه فیلد مربوط به ژانرهای فیلم و سریال
+   */
+  private fun initGenres() {
+    movieFormBinding.edtGenre.setItems(
+      items = viewModel.getGenreItems(),
+      onFocusChangeListener = { _, hasFocus ->
+        if (hasFocus) Handler().postDelayed({
+          movieFormBinding.layoutScrollView.smoothScrollBy(0, 100)
+        }, 250)
+      },
+      onItemClickListener = { adapterView, _, pos, _ ->
+        // عنوان ژانر انتخاب شده
+        val label: String = adapterView.getItemAtPosition(pos) as String
+        viewModel.onGenreSelect(label)
+      }
+    )
   }
 
   override fun addGenreChip(label: String, animate: Boolean) {
