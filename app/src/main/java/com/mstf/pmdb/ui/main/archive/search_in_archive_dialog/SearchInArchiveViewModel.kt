@@ -1,5 +1,6 @@
 package com.mstf.pmdb.ui.main.archive.search_in_archive_dialog
 
+import android.view.View
 import android.widget.RadioGroup
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -69,20 +70,20 @@ class SearchInArchiveViewModel @Inject constructor(dataManager: DataManager) :
     director?.let { this.director.set(it) }
   }
 
-  fun clearTitle() {
+  fun clearTitle(v: View? = null) {
     this.title.set("")
   }
 
-  fun clearYear() {
+  fun clearYear(v: View? = null) {
     this.fromYear.set("")
     this.toYear.set("")
   }
 
-  fun clearDirector() {
+  fun clearDirector(v: View? = null) {
     this.director.set("")
   }
 
-  fun clearAll() {
+  fun clearAll(v: View? = null) {
     clearTitle()
     clearYear()
     clearDirector()

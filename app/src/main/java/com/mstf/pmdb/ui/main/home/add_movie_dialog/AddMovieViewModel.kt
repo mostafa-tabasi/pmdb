@@ -34,10 +34,9 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
 
   val matchedMovieList: MutableLiveData<List<MatchedMovieCompact>> = MutableLiveData()
   private var searchJob: Job? = null
-  private var updateFavoriteJob: Job? = null
-  private var updateWatchJob: Job? = null
   val searchTitle = ObservableField<String>()
   val searchID = ObservableField<String>()
+  val genreField = ObservableField<String>()
   val searchLoading = ObservableField<Boolean>().apply { set(false) }
   val saveLoading = ObservableField<Boolean>().apply { set(false) }
   val movie = AddMovieModel()
@@ -323,6 +322,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun clearForm(v: View? = null) {
     navigator?.removeAllGenreChips()
     movie.clear()
+    genreField.set("")
     _genres.postValue(arrayListOf())
     isEditing.set(true)
     isArchived.set(false)

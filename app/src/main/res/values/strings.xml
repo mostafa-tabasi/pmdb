@@ -1,5 +1,15 @@
 <resources>
-  <string name="app_name">PMDb</string>
+  <string name="app_name" translatable="false">PMDb</string>
+
+  <string name="app_name_full" translatable="false">Pocket Movie Database</string>
+  <string name="developed_by">Developed by</string>
+  <string name="app_developer_name">Mostafa Tabasi</string>
+  <string name="developer_mail" translatable="false">imostafa70@gmail.com</string>
+  <string name="developer_linkedin" translatable="false">https://www.linkedin.com/in/mostafa-tabasi/</string>
+  <string name="mail_subject">Feedback to PMDb</string>
+  <string name="mail_chooser_title">Send feedback…</string>
+  <string name="mail_app_not_found">Sorry…You don\'t have any mail app</string>
+  <string name="version">Version</string>
 
   <!--play store-->
   <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
@@ -11,6 +21,7 @@
   <string name="add_movie_label" translatable="false">Add Movie Dialog</string>
   <string name="search_in_archive_label" translatable="false">Search in Archive Dialog</string>
   <string name="archive_item_info_label" translatable="false">Archive Item Info Dialog</string>
+  <string name="about_label" translatable="false">About Dialog</string>
 
   <string name="key_current_user_id" translatable="false">key_current_user_id</string>
   <string name="key_access_token" translatable="false">key_access_token</string>

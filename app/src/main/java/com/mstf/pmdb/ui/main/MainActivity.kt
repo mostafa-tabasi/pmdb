@@ -54,8 +54,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
         when (this) {
           is HomeFragment -> openAddMovieDialog()
           is ArchiveFragment -> openSearchInArchiveDialog()
-          is SettingsFragment -> {
-          }
+          is SettingsFragment -> openAboutDialog()
         }
       }
     }

@@ -2,6 +2,7 @@ package com.mstf.pmdb.ui.main.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -50,5 +51,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
       findPreference<ListPreference>(getString(R.string.key_top_rated_method))
     val topRatedPref = findPreference<SwitchPreferenceCompat>(getString(R.string.key_top_rated))
     topRatedMethodPref?.isEnabled = topRatedPref?.isChecked ?: false
+  }
+
+  /**
+   * نمایش دیالوگ اطلاعات اپلیکیشن
+   */
+  fun openAboutDialog() {
+    val action = SettingsFragmentDirections.actionSettingsFragmentToAboutDialog()
+    findNavController().navigate(action)
   }
 }

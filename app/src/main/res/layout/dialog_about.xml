@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.mstf.pmdb.ui.main.settings.about_dialog.AboutViewModel" />
+
+  </data>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/space_medium"
+    android:paddingTop="@dimen/space_large"
+    android:paddingBottom="@dimen/space_xxx_large">
+
+    <ImageView
+      android:id="@+id/app_icon"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/ic_foreground" />
+
+    <View
+      android:id="@+id/divider"
+      android:layout_width="2dp"
+      android:layout_height="150dp"
+      android:layout_marginRight="@dimen/space_medium"
+      android:layout_toRightOf="@id/app_icon"
+      android:background="?colorOnPrimary" />
+
+    <TextView
+      android:id="@+id/app_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_marginTop="@dimen/space_medium"
+      android:layout_toRightOf="@id/divider"
+      android:fontFamily="sans-serif"
+      android:text="@string/app_name"
+      android:textColor="@color/black"
+      android:textSize="@dimen/font_x_large"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/app_full_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@+id/app_name"
+      android:layout_marginLeft="@dimen/space_medium"
+      android:layout_toRightOf="@id/app_name"
+      android:fontFamily="sans-serif-light"
+      android:text="@{`(`+ @string/app_name_full +`)`}"
+      android:textColor="@color/grey_700"
+      android:textSize="@dimen/font_medium"
+      tools:text="(Pocket Movie Database)" />
+
+    <TextView
+      android:id="@+id/developed_by"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/app_name"
+      android:layout_marginTop="@dimen/space_medium"
+      android:layout_toRightOf="@id/divider"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/developed_by"
+      android:textColor="@color/grey_700"
+      android:textSize="@dimen/font_medium" />
+
+    <TextView
+      android:id="@+id/me"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/developed_by"
+      android:layout_marginLeft="@dimen/space_medium"
+      android:layout_toRightOf="@id/developed_by"
+      android:fontFamily="sans-serif"
+      android:text="@string/app_developer_name"
+      android:textColor="@color/black"
+      android:textSize="@dimen/font_large"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/version_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/developed_by"
+      android:layout_marginTop="@dimen/space_medium"
+      android:layout_toRightOf="@id/divider"
+      android:fontFamily="sans-serif-light"
+      android:text="@string/version"
+      android:textColor="@color/grey_700"
+      android:textSize="@dimen/font_medium" />
+
+    <TextView
+      android:id="@+id/version_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/version_title"
+      android:layout_marginLeft="@dimen/space_medium"
+      android:layout_toRightOf="@id/version_title"
+      android:fontFamily="sans-serif"
+      android:text="@{viewModel.version}"
+      android:textColor="@color/black"
+      android:textSize="@dimen/font_large"
+      android:textStyle="bold"
+      tools:text="1.0" />
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@id/divider"
+      android:layout_marginTop="@dimen/space_medium"
+      android:layout_toRightOf="@id/divider"
+      android:orientation="horizontal">
+
+      <ImageView
+        android:id="@+id/linkedin"
+        android:layout_width="@dimen/space_very_large"
+        android:layout_height="@dimen/space_very_large"
+        android:layout_marginRight="@dimen/space_small"
+        android:background="?actionBarItemBackground"
+        android:clickable="true"
+        android:padding="@dimen/space_small"
+        android:src="@drawable/ic_linkedin"
+        app:tint="@color/grey_500" />
+
+      <ImageView
+        android:id="@+id/email"
+        android:layout_width="@dimen/space_very_large"
+        android:layout_height="@dimen/space_very_large"
+        android:layout_marginRight="@dimen/space_small"
+        android:background="?actionBarItemBackground"
+        android:clickable="true"
+        android:padding="@dimen/space_small"
+        android:src="@drawable/ic_email"
+        app:tint="@color/grey_500" />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/about_whatsNewTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/app_icon"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="@dimen/space_x_large"
+      android:layout_marginTop="@dimen/space_x_large"
+      android:fontFamily="sans-serif-light"
+      android:text="Change logs:"
+      android:textColor="@color/grey_700"
+      android:textSize="@dimen/font_medium" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/about_whatsNewTitle"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="@dimen/space_x_large"
+      android:layout_marginTop="@dimen/space_medium"
+      android:fontFamily="sans-serif"
+      android:text="v1.0 - Archive movies in your pocket :)"
+      android:textColor="@color/black"
+      android:textSize="@dimen/font_large" />
+
+  </RelativeLayout>
+
+</layout>

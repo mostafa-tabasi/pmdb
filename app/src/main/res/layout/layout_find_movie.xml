@@ -91,7 +91,7 @@
         android:layout_weight="0.75"
         android:background="?android:actionBarItemBackground"
         android:clickable="true"
-        android:onClick="@{viewModel.searchMovie}"
+        android:onClick="@{viewModel::searchMovie}"
         android:padding="4dp"
         android:src="@drawable/ic_search"
         android:visibility="@{viewModel.searchLoading ? View.GONE : View.VISIBLE}"
