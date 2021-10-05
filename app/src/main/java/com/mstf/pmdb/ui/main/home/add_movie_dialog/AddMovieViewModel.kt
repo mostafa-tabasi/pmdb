@@ -260,9 +260,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
       navigator?.showFormLayout()
       navigator?.setUpMovieGenres(getGenreItems())
       // نمایش چیپ های مربوط به ژانر فیلم
-      movie.genre.get()?.let {
-        it.split(", ").forEach { genre -> navigator?.addGenreChip(genre, false) }
-      }
+      movie.genre.get()?.let { it.split(", ").forEach { genre -> onGenreSelect(genre) } }
       clearMatchedMovieList()
     }
   }

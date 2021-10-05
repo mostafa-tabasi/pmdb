@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class NetworkConnectionInterceptor @Inject constructor(
-    private val context: Context
+  private val context: Context
 ) : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {
@@ -29,6 +29,7 @@ class NetworkConnectionInterceptor @Inject constructor(
       val actNw =
         connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
       result = when {
+        actNw.hasTransport(NetworkCapabilities.TRANSPORT_VPN) -> true
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
@@ -38,9 +39,10 @@ class NetworkConnectionInterceptor @Inject constructor(
       connectivityManager.run {
         connectivityManager.activeNetworkInfo?.run {
           result = when (type) {
-              ConnectivityManager.TYPE_WIFI -> true
-              ConnectivityManager.TYPE_MOBILE -> true
-              ConnectivityManager.TYPE_ETHERNET -> true
+            ConnectivityManager.TYPE_VPN -> true
+            ConnectivityManager.TYPE_WIFI -> true
+            ConnectivityManager.TYPE_MOBILE -> true
+            ConnectivityManager.TYPE_ETHERNET -> true
             else -> false
           }
         }

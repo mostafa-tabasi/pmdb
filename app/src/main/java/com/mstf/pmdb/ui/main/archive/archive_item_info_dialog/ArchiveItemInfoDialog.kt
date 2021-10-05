@@ -198,7 +198,7 @@ class ArchiveItemInfoDialog :
       viewModel.genres.observe(viewLifecycleOwner) {
         movieFormEditBinding.layoutGenreChips.removeAllViews()
         if (it.isEmpty()) return@observe
-        for (genre in it) movieFormEditBinding.layoutGenreChips.addChip(
+        for (genre in it) if (genre.isNotEmpty()) movieFormEditBinding.layoutGenreChips.addChip(
           genre, viewModel.isEditing.get() == true,
           animate = false
         ) { viewModel.removeGenre(genre) }

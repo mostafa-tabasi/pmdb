@@ -48,6 +48,7 @@
       app:layout_constraintGuide_percent="0.35" />
 
     <FrameLayout
+      android:id="@+id/poster_layout"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/space_medium"
@@ -324,7 +325,8 @@
       android:id="@+id/layout_icons"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="4dp"
+      android:layout_marginLeft="@dimen/space_small"
+      android:layout_marginBottom="@dimen/space_medium"
       android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"

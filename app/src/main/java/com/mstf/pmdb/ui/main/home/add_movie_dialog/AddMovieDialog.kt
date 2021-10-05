@@ -539,7 +539,7 @@ class AddMovieDialog :
       viewModel.genres.observe(viewLifecycleOwner) {
         movieFormBinding.layoutGenreChips.removeAllViews()
         if (it.isEmpty()) return@observe
-        for (genre in it) movieFormBinding.layoutGenreChips.addChip(
+        for (genre in it) if (genre.isNotEmpty()) movieFormBinding.layoutGenreChips.addChip(
           genre, viewModel.isEditing.get() == true,
           animate = false
         ) { viewModel.removeGenre(genre) }
@@ -575,22 +575,6 @@ class AddMovieDialog :
         viewModel.onGenreSelect(label)
       }
     )
-  }
-
-  override fun addGenreChip(label: String, animate: Boolean) {
-    viewDataBinding?.let {
-      movieFormBinding.layoutGenreChips.addChip(label, true, animate) {
-        viewModel.removeGenre("$it,")
-      }
-      // اگر انیمیشن فعال بود، بعد از اضافه شدن چیپِ جدید، به سمت راست اسکرول، تا چیپ دیده شود
-      if (animate) Handler().postDelayed({
-        movieFormBinding.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
-      }, 200L)
-    }
-  }
-
-  override fun removeGenreChip(label: String) {
-    movieFormBinding.layoutGenreChips.removeChip(label)
   }
 
   override fun removeAllGenreChips() {
