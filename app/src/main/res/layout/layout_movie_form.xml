@@ -103,7 +103,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:fontFamily="serif"
-                  android:hint="Title"
+                  android:hint="@string/title"
                   android:inputType="text"
                   android:nextFocusForward="@id/edt_year"
                   android:text="@={viewModel.movie.title}"
@@ -159,7 +159,7 @@
                   android:layout_weight="1"
                   android:gravity="left"
                   android:paddingLeft="2dp"
-                  android:text="min"
+                  android:text="@string/min"
                   android:textSize="@dimen/font_medium"
                   android:visibility="@{TextUtils.isEmpty(viewModel.movie.runtime) ? View.GONE : View.VISIBLE, default=visible}" />
 
@@ -185,7 +185,7 @@
                 android:layout_alignTop="@+id/layout_runtime"
                 android:layout_alignBottom="@+id/layout_runtime"
                 android:layout_toRightOf="@+id/view_divider"
-                android:hint="Country"
+                android:hint="@string/country"
                 android:inputType="text"
                 android:nextFocusForward="@id/edt_imdb_id"
                 android:padding="8dp"
@@ -261,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_year"
                 android:gravity="left"
-                android:hint="IMDb ID"
+                android:hint="@string/imdb_id"
                 android:inputType="text"
                 android:maxLength="10"
                 android:nextFocusForward="@id/edt_genre"
@@ -287,7 +287,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Genre"
+            android:text="@string/genre"
             android:textSize="@dimen/font_small" />
 
           <com.google.android.flexbox.FlexboxLayout
@@ -325,7 +325,7 @@
               android:layout_height="wrap_content"
               android:layout_marginHorizontal="8dp"
               android:gravity="center"
-              android:hint="Enter Movie Genres"
+              android:hint="@string/enter_movie_genres"
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_imdb_rate"
               android:text="@={viewModel.genreField}"
@@ -356,7 +356,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="IMDb"
+              android:text="@string/imdb"
               android:textSize="@dimen/font_small" />
 
             <LinearLayout
@@ -373,7 +373,7 @@
                 android:layout_width="@{TextUtils.isEmpty(viewModel.movie.imdbRate), default=wrap_content}"
                 android:layout_height="wrap_content"
                 android:gravity="@{TextUtils.isEmpty(viewModel.movie.imdbRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
-                android:hint="Rate"
+                android:hint="@string/rate"
                 android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_imdb_votes"
@@ -400,7 +400,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:hint="Votes"
+              android:hint="@string/votes"
               android:inputType="number"
               android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
               android:text="@={viewModel.movie.imdbVotes}"
@@ -427,7 +427,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="Rotten Tomatoes"
+              android:text="@string/rotten_tomatoes"
               android:textSize="@dimen/font_small" />
 
             <LinearLayout
@@ -443,7 +443,7 @@
                 android:layout_width="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate), default=wrap_content}"
                 android:layout_height="wrap_content"
                 android:gravity="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
-                android:hint="Rate"
+                android:hint="@string/rate"
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_metacritic_rate"
@@ -482,7 +482,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="Metacritic"
+              android:text="@string/metacritic"
               android:textSize="@dimen/font_small" />
 
             <LinearLayout
@@ -498,7 +498,7 @@
                 android:layout_width="@{TextUtils.isEmpty(viewModel.movie.metacriticRate), default=wrap_content}"
                 android:layout_height="wrap_content"
                 android:gravity="@{TextUtils.isEmpty(viewModel.movie.metacriticRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
-                android:hint="Rate"
+                android:hint="@string/rate"
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_awards"
@@ -533,7 +533,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Awards"
+            android:text="@string/awards"
             android:textSize="@dimen/font_small" />
 
           <EditText
@@ -543,7 +543,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="Enter Movie Awards"
+            android:hint="@string/enter_movie_awards"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_director"
             android:text="@={viewModel.movie.awards}"
@@ -571,7 +571,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="Director"
+              android:text="@string/director"
               android:textSize="@dimen/font_small" />
 
             <EditText
@@ -581,7 +581,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:hint="Name"
+              android:hint="@string/name"
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_writer"
               android:text="@={viewModel.movie.director}"
@@ -608,7 +608,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:text="Writer"
+              android:text="@string/writer"
               android:textSize="@dimen/font_small" />
 
             <EditText
@@ -618,7 +618,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:hint="Name"
+              android:hint="@string/name"
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_actors"
               android:text="@={viewModel.movie.writer}"
@@ -640,7 +640,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Actors"
+            android:text="@string/actors"
             android:textSize="@dimen/font_small" />
 
           <EditText
@@ -650,7 +650,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="Names"
+            android:hint="@string/names"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_plot"
             android:text="@={viewModel.movie.actors}"
@@ -670,7 +670,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Plot"
+            android:text="@string/plot"
             android:textSize="@dimen/font_small" />
 
           <EditText
@@ -680,7 +680,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="Enter Movie Plot"
+            android:hint="@string/enter_movie_plot"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_comment"
             android:text="@={viewModel.movie.plot}"
@@ -700,7 +700,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Comment"
+            android:text="@string/comment"
             android:textSize="@dimen/font_small" />
 
           <EditText
@@ -710,7 +710,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:hint="Write Your Comment"
+            android:hint="@string/write_your_comment"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:text="@={viewModel.movie.comment}"

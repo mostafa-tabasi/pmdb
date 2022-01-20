@@ -9,18 +9,21 @@
     app:selectable="false" />
 
   <SwitchPreferenceCompat
+    android:defaultValue="true"
     app:iconSpaceReserved="false"
     app:key="@string/key_recently_added_movies"
     app:summary="Show recently added movies"
     app:title="Recent movies" />
 
   <SwitchPreferenceCompat
+    android:defaultValue="true"
     android:summary="Show recently added TV series"
     app:iconSpaceReserved="false"
     app:key="@string/key_recently_added_series"
     app:title="Recent TV series" />
 
   <SwitchPreferenceCompat
+    android:defaultValue="true"
     app:iconSpaceReserved="false"
     app:key="@string/key_top_rated"
     app:summary="Show top rated movies and TV series"
@@ -28,7 +31,7 @@
 
   <ListPreference
     android:title="Top rated sort method"
-    app:defaultValue="1"
+    app:defaultValue="2"
     app:entries="@array/top_rated_entries"
     app:entryValues="@array/top_rated_values"
     app:iconSpaceReserved="false"
@@ -36,6 +39,7 @@
     app:useSimpleSummaryProvider="true" />
 
   <SwitchPreferenceCompat
+    android:defaultValue="true"
     android:summary="Show recently watched movies and TV series"
     app:iconSpaceReserved="false"
     app:key="@string/key_recently_watched"

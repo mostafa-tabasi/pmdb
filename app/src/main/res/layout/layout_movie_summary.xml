@@ -32,7 +32,7 @@
       android:drawableLeft="@drawable/ic_arrow_up"
       android:drawablePadding="@dimen/space_medium"
       android:gravity="center"
-      android:text="Swipe up to view all information or edit"
+      android:text="@string/swipe_up_to_view_all_information_or_edit"
       android:textColor="@color/grey_500"
       android:textSize="@dimen/font_medium"
       app:drawableTint="@color/grey_500"

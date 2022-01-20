@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.mstf.pmdb.R
-import com.mstf.pmdb.di.annotation.PreferenceInfo
 import javax.inject.Inject
 
 class AppPreferencesHelper @Inject constructor(
   val context: Context,
-  @PreferenceInfo prefFileName: String?
 ) : PreferencesHelper {
 
   private val mPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

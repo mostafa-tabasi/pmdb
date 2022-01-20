@@ -50,7 +50,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Display Type"
+            android:text="@string/display_type"
             android:textSize="@dimen/font_x_large" />
 
           <TextView
@@ -94,7 +94,7 @@
               android:drawablePadding="@dimen/space_small"
               android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.TILE)}"
               android:padding="@dimen/space_large"
-              android:text="Tile"
+              android:text="@string/tile"
               app:buttonCompat="@null"
               app:drawableTint="@color/selector_color_display_type_radio" />
 
@@ -110,7 +110,7 @@
               android:drawablePadding="@dimen/space_small"
               android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.LIST)}"
               android:padding="@dimen/space_large"
-              android:text="List"
+              android:text="@string/list"
               app:buttonCompat="@null"
               app:drawableTint="@color/selector_color_display_type_radio" />
 
@@ -129,7 +129,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filter"
+            android:text="@string/filter"
             android:textSize="@dimen/font_x_large" />
 
           <TextView
@@ -169,7 +169,7 @@
               android:buttonTint="@color/selector_color_display_type_radio"
               android:checked="@{viewModel.filterType == MediaFilterType.BOTH, default=true}"
               android:gravity="center"
-              android:text="Both" />
+              android:text="@string/both" />
 
             <RadioButton
               android:id="@+id/filter_movies"
@@ -180,7 +180,7 @@
               android:checked="@{viewModel.filterType == MediaFilterType.MOVIES, default=false}"
               android:gravity="center"
               android:singleLine="true"
-              android:text="Movies" />
+              android:text="@string/movies" />
 
             <RadioButton
               android:id="@+id/filter_tv"
@@ -190,7 +190,7 @@
               android:buttonTint="@color/selector_color_display_type_radio"
               android:checked="@{viewModel.filterType == MediaFilterType.SERIES, default=false}"
               android:gravity="center"
-              android:text="TV Series" />
+              android:text="@string/tv_series" />
 
           </RadioGroup>
 
@@ -206,7 +206,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search in"
+            android:text="@string/search_in"
             android:textSize="@dimen/font_medium" />
 
           <View
@@ -230,7 +230,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="@string/title"
             android:textSize="@dimen/font_x_large" />
 
           <TextView
@@ -272,7 +272,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_text_field"
             android:gravity="center"
-            android:hint="Movie Title"
+            android:hint="@string/movie_title"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:padding="@dimen/space_medium"
@@ -292,7 +292,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Year"
+            android:text="@string/year"
             android:textSize="@dimen/font_x_large" />
 
           <LinearLayout
@@ -368,7 +368,7 @@
               android:layout_height="wrap_content"
               android:background="@drawable/bg_text_field"
               android:gravity="center"
-              android:hint="From"
+              android:hint="@string/from"
               android:imeOptions="actionNext"
               android:inputType="number"
               android:maxLength="4"
@@ -391,7 +391,7 @@
               android:layout_height="wrap_content"
               android:background="@drawable/bg_text_field"
               android:gravity="center"
-              android:hint="To"
+              android:hint="@string/to"
               android:imeOptions="actionDone"
               android:inputType="number"
               android:maxLength="4"
@@ -415,7 +415,7 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Director"
+            android:text="@string/director"
             android:textSize="@dimen/font_x_large" />
 
           <TextView
@@ -457,7 +457,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_text_field"
             android:gravity="center"
-            android:hint="Director Name"
+            android:hint="@string/director_name"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:padding="@dimen/space_medium"
@@ -486,7 +486,7 @@
         android:background="@drawable/bg_transparent_with_ripple_button"
         android:onClick="@{viewModel::clearAll}"
         android:stateListAnimator="@null"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textColor="@color/grey_600"
         android:textSize="@dimen/font_large"
         android:textStyle="bold"
@@ -500,7 +500,7 @@
         android:layout_weight="3"
         android:background="@drawable/bg_confirm_yellow_button"
         android:stateListAnimator="@null"
-        android:text="Apply"
+        android:text="@string/apply"
         android:textSize="@dimen/font_large"
         android:textStyle="bold" />
     </LinearLayout>

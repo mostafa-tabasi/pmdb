@@ -1,20 +1,16 @@
 <resources>
   <string name="app_name" translatable="false">PMDb</string>
-
   <string name="app_name_full" translatable="false">Pocket Movie Database</string>
   <string name="developed_by">Developed by</string>
   <string name="app_developer_name">Mostafa Tabasi</string>
-  <string name="developer_mail" translatable="false">imostafa70@gmail.com</string>
+  <string name="developer_mail" translatable="false">dev.mostafatabasi@gmail.com</string>
   <string name="developer_linkedin" translatable="false">https://www.linkedin.com/in/mostafa-tabasi/</string>
-  <string name="mail_subject">Feedback to PMDb</string>
-  <string name="mail_chooser_title">Send feedback…</string>
-  <string name="mail_app_not_found">Sorry…You don\'t have any mail app</string>
-  <string name="version">Version</string>
 
   <!--play store-->
   <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
   <string name="app_market_link">"market://details?id="</string>
 
+  <!--navigation screen labels-->
   <string name="home_label" translatable="false">Home</string>
   <string name="archive_label" translatable="false">Archive</string>
   <string name="settings_label" translatable="false">Settings</string>
@@ -23,6 +19,7 @@
   <string name="archive_item_info_label" translatable="false">Archive Item Info Dialog</string>
   <string name="about_label" translatable="false">About Dialog</string>
 
+  <!--preference keys-->
   <string name="key_current_user_id" translatable="false">key_current_user_id</string>
   <string name="key_access_token" translatable="false">key_access_token</string>
   <string name="key_theme_system_default" translatable="false">key_theme_system_default</string>
@@ -34,4 +31,60 @@
   <string name="key_recently_watched" translatable="false">key_recently_watched</string>
   <string name="key_display_type" translatable="false">key_display_type</string>
   <string name="key_archive_default_item_rate" translatable="false">key_archive_default_item_rate</string>
+
+  <!--strings-->
+  <string name="mail_subject">Feedback to PMDb</string>
+  <string name="mail_chooser_title">Send feedback…</string>
+  <string name="mail_app_not_found">Sorry…You don\'t have any mail app</string>
+  <string name="version">Version</string>
+
+  <string name="display_type">Display Type</string>
+  <string name="tile">Tile</string>
+  <string name="list">List</string>
+  <string name="filter">Filter</string>
+  <string name="both">Both</string>
+  <string name="movies">Movies</string>
+  <string name="tv_series">TV Series</string>
+  <string name="search_in">Search in</string>
+  <string name="movie_title">Movie Title</string>
+  <string name="year">Year</string>
+  <string name="from">From</string>
+  <string name="to">To</string>
+  <string name="director">Director</string>
+  <string name="director_name">Director Name</string>
+  <string name="clear">Clear</string>
+  <string name="apply">Apply</string>
+  <string name="change_filter_settings">Change filter settings</string>
+  <string name="or">or</string>
+  <string name="add_your_first_movie">Add your first movie</string>
+  <string name="there_is_nothing_to_show">There is nothing to show :(</string>
+  <string name="recently_added_movies">Recently Added Movies</string>
+  <string name="recently_added_tv_series">Recently Added TV Series</string>
+  <string name="top_rated">Top Rated</string>
+  <string name="recently_watched">Recently Watched</string>
+  <string name="change_settings">Change settings</string>
+  <string name="search_your_movie_or_swipe_up_for_a_blank_form">Search your movie or swipe up for a blank form</string>
+  <string name="title">Title</string>
+  <string name="imdb_id">IMDb ID</string>
+  <string name="select_your_movie">Select your movie</string>
+  <string name="min">min</string>
+  <string name="country">Country</string>
+  <string name="genre">Genre</string>
+  <string name="enter_movie_genres">Enter movie genres</string>
+  <string name="imdb">IMDb</string>
+  <string name="rotten_tomatoes">Rotten Tomatoes</string>
+  <string name="metacritic">Metacritic</string>
+  <string name="rate">Rate</string>
+  <string name="votes">Votes</string>
+  <string name="awards">Awards</string>
+  <string name="enter_movie_awards">Enter movie awards</string>
+  <string name="name">Name</string>
+  <string name="writer">Writer</string>
+  <string name="actors">Actors</string>
+  <string name="names">Names</string>
+  <string name="plot">Plot</string>
+  <string name="enter_movie_plot">Enter movie plot</string>
+  <string name="comment">Comment</string>
+  <string name="write_your_comment">Write your comment</string>
+  <string name="swipe_up_to_view_all_information_or_edit">Swipe up to view all information or edit</string>
 </resources>

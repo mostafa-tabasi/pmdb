@@ -25,7 +25,9 @@ class HomeViewModel @Inject constructor(dataManager: DataManager) :
     dataManager.allTvSeriesByDate().toLiveData(pageSize = 50)
 
   val isTopRatedEnable = ObservableBoolean(dataManager.isTopRatedEnable)
-  var topRatedMethod: RatingSite? = RatingSite.withId(dataManager.topRatedMethod.toInt())
+  private val _topRatedMethod =
+    MutableLiveData(RatingSite.withId(dataManager.topRatedMethod.toInt()))
+  var topRatedMethod: LiveData<RatingSite?> = _topRatedMethod
   val topRated: LiveData<PagedList<MovieEntity>> =
     when (RatingSite.withId(dataManager.topRatedMethod.toInt())) {
       RatingSite.IMDB ->
@@ -45,25 +47,20 @@ class HomeViewModel @Inject constructor(dataManager: DataManager) :
    * بروزرسانی متغیرها؛ اگر هر متغیری مقدارش تغییر کرده بود، صفحه مجدد بارگزاری باید شود
    */
   fun refresh() {
-    if (isRecentMoviesEnable.get() != dataManager.isRecentMoviesEnable) {
-      navigator?.refreshPage()
-      return
+    dataManager.isRecentMoviesEnable.let {
+      if (isRecentMoviesEnable.get() != it) isRecentMoviesEnable.set(it)
     }
-    if (isRecentSeriesEnable.get() != dataManager.isRecentSeriesEnable) {
-      navigator?.refreshPage()
-      return
+    dataManager.isRecentSeriesEnable.let {
+      if (isRecentSeriesEnable.get() != it) isRecentSeriesEnable.set(it)
     }
-    if (isTopRatedEnable.get() != dataManager.isTopRatedEnable) {
-      navigator?.refreshPage()
-      return
+    dataManager.isTopRatedEnable.let {
+      if (isTopRatedEnable.get() != it) isTopRatedEnable.set(it)
     }
-    if (isRecentlyWatchedEnable.get() != dataManager.isRecentlyWatchedEnable) {
-      navigator?.refreshPage()
-      return
+    dataManager.isRecentlyWatchedEnable.let {
+      if (isRecentlyWatchedEnable.get() != it) isRecentlyWatchedEnable.set(it)
     }
-    if (topRatedMethod != RatingSite.withId(dataManager.topRatedMethod.toInt())) {
-      navigator?.refreshPage()
-      return
+    RatingSite.withId(dataManager.topRatedMethod.toInt()).let {
+      if (_topRatedMethod.value != it) _topRatedMethod.value = it
     }
   }
 }

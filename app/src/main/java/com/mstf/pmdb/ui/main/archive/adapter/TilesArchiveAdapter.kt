@@ -18,6 +18,10 @@ class TilesArchiveAdapter :
 
   //سایت موردنظری که امتیاز دادن براساس آن باید باشه
   var ratingSite: RatingSite? = null
+    set(value) {
+      field = value
+      notifyDataSetChanged()
+    }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveViewHolder {
     val binding =
@@ -42,23 +46,7 @@ class TilesArchiveAdapter :
         val viewModel = ArchiveItemViewModel(this)
         ratingSite?.let { viewModel.setRatingSite(it) }
         binding.viewModel = viewModel
-        binding.parent.setOnClickListener {
-          listener?.onMovieTapped(item.id!!)
-
-          /*  TODO: handle multi select for next release
-          viewModel.changeSelected(listener?.onMovieTapped(item.id!!))
-          */
-        }
-        /*  TODO: handle multi select for next release
-        binding.parent.setOnLongClickListener {
-          viewModel.changeSelected(listener?.onMovieLongTouch(item.id!!))
-          true
-        }
-        viewModel.isSelected.observe(binding.lifecycleOwner!!, { isSelected ->
-          if (isSelected) (binding.root as CardView).animateElevation(0f, 32f, 100)
-          else (binding.root as CardView).animateElevation(32f, 0f, 100)
-        })
-        */
+        binding.parent.setOnClickListener { listener?.onMovieTapped(item.id!!) }
         binding.executePendingBindings()
       }
     }

@@ -21,7 +21,6 @@ import com.mstf.pmdb.data.resource.AppResourceHelper
 import com.mstf.pmdb.data.resource.ResourceHelper
 import com.mstf.pmdb.di.annotation.ApiInfo
 import com.mstf.pmdb.di.annotation.DatabaseInfo
-import com.mstf.pmdb.di.annotation.PreferenceInfo
 import com.mstf.pmdb.ui.main.archive.adapter.ListArchiveAdapter
 import com.mstf.pmdb.ui.main.archive.adapter.TilesArchiveAdapter
 import com.mstf.pmdb.utils.AppConstants
@@ -101,10 +100,6 @@ object AppModule {
   @Provides
   @Singleton
   fun provideGson(): Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-
-  @Provides
-  @PreferenceInfo
-  fun providePreferenceName(): String = AppConstants.PREF_NAME
 
   @Provides
   @Singleton

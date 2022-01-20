@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:orientation="horizontal">
@@ -14,9 +15,9 @@
     android:paddingHorizontal="12dp"
     android:paddingTop="2dp"
     android:paddingBottom="4dp"
-    android:text="title"
     android:textColor="@color/white"
-    android:textSize="@dimen/font_x_large" />
+    android:textSize="@dimen/font_x_large"
+    tools:text="title" />
 
   <ImageView
     android:id="@+id/btn_cancel"

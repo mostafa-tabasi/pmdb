@@ -50,16 +50,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
     setUpRecentSeries()
     setUpTopRated()
     setUpRecentWatch()
+    setUpBottomBarVisibility()
     viewDataBinding?.let {
       it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
       it.changeSettings.setOnClickListener { goToSettings() }
-      it.scrollRoot.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-        if (scrollY > oldScrollY) {
-          (requireActivity() as MainActivity).hideBottomBar()
-        } else {
-          (requireActivity() as MainActivity).showBottomBar()
-        }
-      })
     }
   }
 
@@ -67,8 +61,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
    * راه اندازی لیست فیلم های اخیرا اضافه شده
    */
   private fun setUpRecentMovies() {
-    if (!viewModel.isRecentMoviesEnable.get()) return
-
     viewDataBinding?.let {
       recentlyAddedMoviesAdapter.setListener(this)
       it.recentlyAddedMovies.adapter = recentlyAddedMoviesAdapter
@@ -83,8 +75,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
    * راه اندازی لیست سریال های اخیرا اضافه شده
    */
   private fun setUpRecentSeries() {
-    if (!viewModel.isRecentSeriesEnable.get()) return
-
     viewDataBinding?.let {
       recentlyAddedSeriesAdapter.setListener(this)
       it.recentlyAddedSeries.adapter = recentlyAddedSeriesAdapter
@@ -99,11 +89,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
    * راه اندازی لیست فیلم و سریال های با ترتیب امتیاز (نزولی)
    */
   private fun setUpTopRated() {
-    if (!viewModel.isTopRatedEnable.get()) return
-
     viewDataBinding?.let {
       topRatedAdapter.setListener(this)
-      viewModel.topRatedMethod?.let { site -> topRatedAdapter.ratingSite = site }
+      // سایتی که معیار امتیاز فیلم ها قرار است باشد
+      viewModel.topRatedMethod.observe(
+        viewLifecycleOwner,
+        { site -> topRatedAdapter.ratingSite = site })
       it.topRated.adapter = topRatedAdapter
       GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.topRated) }
       viewModel.topRated.observe(viewLifecycleOwner, { items ->
@@ -116,8 +107,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
    * راه اندازی لیست فیلم و سریال های اخیرا دیده شده
    */
   private fun setUpRecentWatch() {
-    if (!viewModel.isRecentlyWatchedEnable.get()) return
-
     viewDataBinding?.let {
       recentlyWatchedAdapter.setListener(this)
       it.recentlyWatched.adapter = recentlyWatchedAdapter
@@ -126,6 +115,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
         recentlyWatchedAdapter.submitList(items)
       })
     }
+  }
+
+  /**
+   * هندل کردن وضعیت نمایش نوار پایین صفحه متناسب با اسکرول لیست
+   */
+  private fun setUpBottomBarVisibility() {
+    viewDataBinding?.scrollRoot?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+      if (scrollY > oldScrollY) {
+        (requireActivity() as MainActivity).hideBottomBar()
+      } else {
+        (requireActivity() as MainActivity).showBottomBar()
+      }
+    })
   }
 
   /**

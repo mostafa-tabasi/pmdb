@@ -142,33 +142,6 @@
 
     </LinearLayout>
 
-    <TextView
-      android:id="@+id/about_whatsNewTitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/app_icon"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentLeft="true"
-      android:layout_marginLeft="@dimen/space_x_large"
-      android:layout_marginTop="@dimen/space_x_large"
-      android:fontFamily="sans-serif-light"
-      android:text="Change logs:"
-      android:textColor="@color/grey_700"
-      android:textSize="@dimen/font_medium" />
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/about_whatsNewTitle"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentLeft="true"
-      android:layout_marginLeft="@dimen/space_x_large"
-      android:layout_marginTop="@dimen/space_medium"
-      android:fontFamily="sans-serif"
-      android:text="v1.0 - Archive movies in your pocket :)"
-      android:textColor="@color/black"
-      android:textSize="@dimen/font_large" />
-
   </RelativeLayout>
 
 </layout>

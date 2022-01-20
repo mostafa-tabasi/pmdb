@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_large"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Recently Added Movies"
+            android:text="@string/recently_added_movies"
             android:textColor="@color/grey_500"
             android:textSize="@dimen/font_x_large" />
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_large"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Recently Added TV Series"
+            android:text="@string/recently_added_tv_series"
             android:textColor="@color/grey_500"
             android:textSize="@dimen/font_x_large" />
 
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_large"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Top Rated"
+            android:text="@string/top_rated"
             android:textColor="@color/grey_500"
             android:textSize="@dimen/font_x_large" />
 
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_large"
             android:fontFamily="sans-serif-smallcaps"
-            android:text="Recently Watched"
+            android:text="@string/recently_watched"
             android:textColor="@color/grey_500"
             android:textSize="@dimen/font_x_large" />
 
@@ -205,7 +205,7 @@
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="There is nothing to show :("
+        android:text="@string/there_is_nothing_to_show"
         android:textColor="@color/black"
         android:textSize="@dimen/font_xx_large" />
 
@@ -219,14 +219,14 @@
         android:drawableLeft="@drawable/ic_add"
         android:drawablePadding="8dp"
         android:padding="8dp"
-        android:text="Add your first movie"
+        android:text="@string/add_your_first_movie"
         android:textColor="@color/black"
         android:textSize="@dimen/font_xx_large" />
 
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="or"
+        android:text="@string/or"
         android:textColor="@color/black"
         android:textSize="@dimen/font_xx_large" />
 
@@ -240,7 +240,7 @@
         android:drawableLeft="@drawable/ic_settings_outline"
         android:drawablePadding="8dp"
         android:padding="8dp"
-        android:text="Change settings"
+        android:text="@string/change_settings"
         android:textColor="@color/black"
         android:textSize="@dimen/font_xx_large" />
 
