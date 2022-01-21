@@ -8,19 +8,19 @@
 
     <import type="android.text.TextUtils" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
     <import type="android.view.Gravity" />
 
     <import type="android.view.ViewGroup.LayoutParams" />
 
-    <import type="com.mstf.pmdb.R" />
+    <import type="com.pmdb.android.R" />
 
     <import type="android.view.inputmethod.EditorInfo" />
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieViewModel" />
+      type="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieViewModel" />
 
   </data>
 

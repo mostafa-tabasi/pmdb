@@ -6,7 +6,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieViewModel" />
+      type="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieViewModel" />
 
   </data>
 

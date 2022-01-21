@@ -7,13 +7,13 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveViewModel" />
+      type="com.pmdb.android.ui.main.archive.search_in_archive_dialog.SearchInArchiveViewModel" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
-    <import type="com.mstf.pmdb.utils.enums.ArchiveDisplayType" />
+    <import type="com.pmdb.android.utils.enums.ArchiveDisplayType" />
 
-    <import type="com.mstf.pmdb.utils.enums.MediaFilterType" />
+    <import type="com.pmdb.android.utils.enums.MediaFilterType" />
 
     <import type="android.text.TextUtils" />
 

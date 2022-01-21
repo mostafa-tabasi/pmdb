@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.settings.about_dialog.AboutViewModel" />
+      type="com.pmdb.android.ui.main.settings.about_dialog.AboutViewModel" />
 
   </data>
 

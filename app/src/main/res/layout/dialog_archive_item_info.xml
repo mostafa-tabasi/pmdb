@@ -8,11 +8,15 @@
 
     <import type="android.text.TextUtils" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+      type="com.pmdb.android.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+
+    <variable
+      name="movie"
+      type="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieModel" />
 
   </data>
 
@@ -24,7 +28,8 @@
     <include
       android:id="@+id/include_movie_summary"
       layout="@layout/layout_movie_summary"
-      bind:viewModel="@{viewModel}" />
+      bind:viewModel="@{viewModel}"
+      bind:movie="@{movie}" />
 
   </FrameLayout>
 

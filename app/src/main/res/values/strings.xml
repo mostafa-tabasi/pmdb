@@ -87,4 +87,10 @@
   <string name="comment">Comment</string>
   <string name="write_your_comment">Write your comment</string>
   <string name="swipe_up_to_view_all_information_or_edit">Swipe up to view all information or edit</string>
+  <string name="title_cant_be_empty">Title can\'t be empty</string>
+  <string name="enter_movie_title_id">Enter movie title or ID</string>
+  <string name="check_internet_connection">Check internet connection</string>
+  <string name="movie_not_found">Movie not found</string>
+  <string name="something_wrong_try_again">Something wrong! try again</string>
+  <string name="item_has_problem_try_again">Item has problem right now, try again later</string>
 </resources>

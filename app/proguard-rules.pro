@@ -20,4 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.mstf.pmdb.data.model.** { *; }
+-keep class com.pmdb.android.data.model.** { *; }

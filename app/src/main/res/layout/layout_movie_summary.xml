@@ -9,11 +9,15 @@
 
     <import type="android.text.TextUtils" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+      type="com.pmdb.android.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+
+    <variable
+      name="movie"
+      type="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieModel" />
 
   </data>
 
@@ -68,7 +72,7 @@
 
         <ImageView
           android:id="@+id/img_poster"
-          omdbImageUrl="@{viewModel.movie.poster}"
+          omdbImageUrl="@{movie.poster}"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:adjustViewBounds="true"
@@ -86,7 +90,7 @@
       android:layout_marginLeft="4dp"
       android:layout_marginTop="@dimen/space_medium"
       android:src="@drawable/ic_tv_accent"
-      android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE, default=visible}"
+      android:visibility="@{movie.tv ? View.VISIBLE : View.GONE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@id/guide_to_full_description" />
 
@@ -97,7 +101,7 @@
       android:layout_marginHorizontal="4dp"
       android:layout_marginTop="@dimen/space_medium"
       android:fontFamily="serif"
-      android:text="@{viewModel.movie.title}"
+      android:text="@{movie.title}"
       android:textColor="@color/black"
       android:textSize="@dimen/font_x_large"
       android:textStyle="bold"
@@ -112,10 +116,10 @@
       android:layout_height="wrap_content"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
-      android:text="@{viewModel.movie.tv ? `(`+viewModel.movie.yearStart+` – `+ (viewModel.movie.yearEnd == null ? `` : viewModel.movie.yearEnd)+`)` : `(`+viewModel.movie.yearStart+`)`}"
+      android:text="@{movie.tv ? `(`+movie.yearStart+` – `+ (movie.yearEnd == null ? `` : movie.yearEnd)+`)` : `(`+movie.yearStart+`)`}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{viewModel.movie.yearStart == null ? View.GONE : View.VISIBLE}"
+      android:visibility="@{movie.yearStart == null ? View.GONE : View.VISIBLE}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="(year)" />
@@ -128,7 +132,7 @@
       android:layout_marginLeft="8dp"
       android:alpha="0.5"
       android:background="?attr/colorMovieFormDivider"
-      android:visibility="@{viewModel.movie.yearStart == null || viewModel.movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{movie.yearStart == null || movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintBottom_toBottomOf="@+id/year"
       app:layout_constraintLeft_toRightOf="@+id/year"
       app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -139,10 +143,10 @@
       android:layout_height="wrap_content"
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="8dp"
-      android:text="@{viewModel.movie.runtime +` min`}"
+      android:text="@{movie.runtime +` min`}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{viewModel.movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/year_divider"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="runtime" />
@@ -155,9 +159,9 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{viewModel.movie.genre}"
+      android:text="@{movie.genre}"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.movie.genre) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.genre) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/year"
@@ -170,7 +174,7 @@
       android:layout_marginVertical="2dp"
       android:layout_marginLeft="4dp"
       android:orientation="horizontal"
-      android:visibility="@{viewModel.movie.imdbRate == null &amp;&amp; viewModel.movie.rottenTomatoesRate == null &amp;&amp; viewModel.movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{movie.imdbRate == null &amp;&amp; movie.rottenTomatoesRate == null &amp;&amp; movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
       android:weightSum="3"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -181,7 +185,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.movie.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -193,7 +197,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.movie.imdbRate == null ? `-` : viewModel.movie.imdbRate+`/10`}"
+          android:text="@{movie.imdbRate == null ? `-` : movie.imdbRate+`/10`}"
           android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
@@ -207,14 +211,14 @@
         android:layout_marginVertical="6dp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
-        android:visibility="@{viewModel.movie.imdbRate == null || viewModel.movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}" />
+        android:visibility="@{movie.imdbRate == null || movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}" />
 
       <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -226,7 +230,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.movie.rottenTomatoesRate == null ? `-` : viewModel.movie.rottenTomatoesRate+`%`}"
+          android:text="@{movie.rottenTomatoesRate == null ? `-` : movie.rottenTomatoesRate+`%`}"
           android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
@@ -240,14 +244,14 @@
         android:layout_marginVertical="6dp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
-        android:visibility="@{viewModel.movie.rottenTomatoesRate == null || viewModel.movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}" />
+        android:visibility="@{movie.rottenTomatoesRate == null || movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}" />
 
       <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{viewModel.movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}">
 
         <ImageView
           android:layout_width="match_parent"
@@ -259,7 +263,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center"
-          android:text="@{viewModel.movie.metacriticRate == null ? `-` : viewModel.movie.metacriticRate+`/100`}"
+          android:text="@{movie.metacriticRate == null ? `-` : movie.metacriticRate+`/100`}"
           android:textColor="@color/grey_600"
           android:textSize="@dimen/font_small"
           tools:text="rate" />
@@ -276,10 +280,10 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{!TextUtils.isEmpty(viewModel.movie.director) ? `Director: ` + viewModel.movie.director : `Writer: ` + viewModel.movie.writer}"
+      android:text="@{!TextUtils.isEmpty(movie.director) ? `Director: ` + movie.director : `Writer: ` + movie.writer}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.movie.writer) &amp;&amp; TextUtils.isEmpty(viewModel.movie.director) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.writer) &amp;&amp; TextUtils.isEmpty(movie.director) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/ratings"
@@ -293,10 +297,10 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:singleLine="true"
-      android:text="@{viewModel.movie.awards}"
+      android:text="@{movie.awards}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.movie.awards) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.awards) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/director_writer"
@@ -310,10 +314,10 @@
       android:layout_marginLeft="4dp"
       android:ellipsize="end"
       android:maxLines="2"
-      android:text="@{ `Casts: ` + viewModel.movie.actors}"
+      android:text="@{ `Casts: ` + movie.actors}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/font_medium"
-      android:visibility="@{TextUtils.isEmpty(viewModel.movie.actors) ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.actors) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintBottom_toTopOf="@+id/layout_icons"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -340,7 +344,7 @@
         android:layout_marginRight="4dp"
         android:padding="2dp"
         android:src="@drawable/ic_favorite"
-        android:visibility="@{viewModel.movie.favorite ? View.VISIBLE : View.GONE, default=visible}"
+        android:visibility="@{movie.favorite ? View.VISIBLE : View.GONE, default=visible}"
         app:tint="@color/grey_500" />
 
       <ImageView
@@ -351,7 +355,7 @@
         android:layout_marginRight="4dp"
         android:padding="2dp"
         android:src="@drawable/ic_eye"
-        android:visibility="@{viewModel.movie.watched ? View.VISIBLE : View.GONE, default=visible}"
+        android:visibility="@{movie.watched ? View.VISIBLE : View.GONE, default=visible}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/favorite"
         app:tint="@color/grey_500" />

@@ -7,7 +7,7 @@
 
   <fragment
     android:id="@+id/homeFragment"
-    android:name="com.mstf.pmdb.ui.main.home.HomeFragment"
+    android:name="com.pmdb.android.ui.main.home.HomeFragment"
     android:label="@string/home_label"
     tools:layout="@layout/fragment_home">
 
@@ -23,13 +23,13 @@
 
   <dialog
     android:id="@+id/addMovieDialog"
-    android:name="com.mstf.pmdb.ui.main.home.add_movie_dialog.AddMovieDialog"
+    android:name="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieDialog"
     android:label="@string/add_movie_label"
     tools:layout="@layout/dialog_add_movie" />
 
   <fragment
     android:id="@+id/archiveFragment"
-    android:name="com.mstf.pmdb.ui.main.archive.ArchiveFragment"
+    android:name="com.pmdb.android.ui.main.archive.ArchiveFragment"
     android:label="@string/archive_label"
     tools:layout="@layout/fragment_archive">
 
@@ -50,7 +50,7 @@
 
   <dialog
     android:id="@+id/searchInArchiveDialog"
-    android:name="com.mstf.pmdb.ui.main.archive.search_in_archive_dialog.SearchInArchiveDialog"
+    android:name="com.pmdb.android.ui.main.archive.search_in_archive_dialog.SearchInArchiveDialog"
     android:label="@string/search_in_archive_label"
     tools:layout="@layout/dialog_search_in_archive">
 
@@ -88,7 +88,7 @@
 
   <dialog
     android:id="@+id/ArchiveItemSummaryDialog"
-    android:name="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoDialog"
+    android:name="com.pmdb.android.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoDialog"
     android:label="@string/archive_item_info_label"
     tools:layout="@layout/dialog_archive_item_info">
 
@@ -101,7 +101,7 @@
 
   <fragment
     android:id="@+id/settingsFragment"
-    android:name="com.mstf.pmdb.ui.main.settings.SettingsFragment"
+    android:name="com.pmdb.android.ui.main.settings.SettingsFragment"
     android:label="@string/settings_label">
 
     <action
@@ -112,7 +112,7 @@
 
   <dialog
     android:id="@+id/aboutDialog"
-    android:name="com.mstf.pmdb.ui.main.settings.about_dialog.AboutDialog"
+    android:name="com.pmdb.android.ui.main.settings.about_dialog.AboutDialog"
     android:label="@string/about_label"
     tools:layout="@layout/dialog_about" />
 

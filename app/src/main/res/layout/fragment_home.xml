@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.home.HomeViewModel" />
+      type="com.pmdb.android.ui.main.home.HomeViewModel" />
 
     <import type="android.view.View" />
 

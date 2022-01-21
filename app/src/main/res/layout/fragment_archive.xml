@@ -7,13 +7,13 @@
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.ArchiveViewModel" />
+      type="com.pmdb.android.ui.main.archive.ArchiveViewModel" />
 
     <import type="android.view.View" />
 
-    <import type="com.mstf.pmdb.R" />
+    <import type="com.pmdb.android.R" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
   </data>
 

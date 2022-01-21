@@ -10,23 +10,36 @@ plugins {
 }
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.mstf.pmdb"
+        applicationId "com.pmdb.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")
             buildConfigField("String", "API_KEY_OMDB", "\"b9c2e15f\"")
+
+            debuggable true
         }
         release {
             buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")

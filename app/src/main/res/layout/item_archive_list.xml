@@ -9,11 +9,11 @@
 
     <import type="android.text.TextUtils" />
 
-    <import type="com.mstf.pmdb.utils.enums.RatingSite" />
+    <import type="com.pmdb.android.utils.enums.RatingSite" />
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.adapter.ArchiveItemViewModel" />
+      type="com.pmdb.android.ui.main.archive.adapter.ArchiveItemViewModel" />
 
   </data>
 

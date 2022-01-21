@@ -8,19 +8,23 @@
 
     <import type="android.text.TextUtils" />
 
-    <import type="com.mstf.pmdb.utils.AppConstants" />
+    <import type="com.pmdb.android.utils.AppConstants" />
 
     <import type="android.view.Gravity" />
 
     <import type="android.view.ViewGroup.LayoutParams" />
 
-    <import type="com.mstf.pmdb.R" />
+    <import type="com.pmdb.android.R" />
 
     <import type="android.view.inputmethod.EditorInfo" />
 
     <variable
       name="viewModel"
-      type="com.mstf.pmdb.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+      type="com.pmdb.android.ui.main.archive.archive_item_info_dialog.ArchiveItemInfoViewModel" />
+
+    <variable
+      name="movie"
+      type="com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieModel" />
 
   </data>
 
@@ -47,7 +51,7 @@
 
           <ImageView
             android:id="@+id/img_movie_poster"
-            omdbImageUrl="@{viewModel.movie.poster}"
+            omdbImageUrl="@{movie.poster}"
             quality="@{750}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +75,7 @@
             android:paddingLeft="4dp"
             android:paddingTop="70dp"
             android:paddingRight="4dp"
-            android:weightSum="@{viewModel.movie.tv ? (4.2f) : (4f)}">
+            android:weightSum="@{movie.tv ? (4.2f) : (4f)}">
 
             <RelativeLayout
               android:layout_width="0dp"
@@ -87,7 +91,7 @@
                 android:layout_alignBottom="@+id/layout_title"
                 android:layout_marginRight="4dp"
                 android:src="@drawable/ic_tv_accent"
-                android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
+                android:visibility="@{movie.tv ? View.VISIBLE : View.GONE}"
                 app:tint="?colorSelectedIconsTint" />
 
               <FrameLayout
@@ -106,7 +110,7 @@
                   android:hint="@string/title"
                   android:inputType="text"
                   android:nextFocusForward="@id/edt_year"
-                  android:text="@={viewModel.movie.title}"
+                  android:text="@={movie.title}"
                   android:textSize="@dimen/font_xx_large"
                   android:textStyle="bold"
                   android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.INVISIBLE, default=visible}" />
@@ -122,10 +126,10 @@
                   android:focusableInTouchMode="true"
                   android:fontFamily="serif"
                   android:marqueeRepeatLimit="marquee_forever"
-                  android:maxEms="@{viewModel.movie.tv ? 11 : 14}"
+                  android:maxEms="@{movie.tv ? 11 : 14}"
                   android:paddingLeft="4dp"
                   android:singleLine="true"
-                  android:text="@{viewModel.movie.title}"
+                  android:text="@{movie.title}"
                   android:textSize="@dimen/font_xx_large"
                   android:textStyle="bold"
                   android:visibility="@{viewModel.isEditing ? View.GONE : View.VISIBLE, default=gone}" />
@@ -145,12 +149,12 @@
                   style="@style/Theme.PMDb.MovieFormEditText"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:hint="@{TextUtils.isEmpty(viewModel.movie.runtime) ? `Runtime` : ``, default=`Runtime`}"
+                  android:hint="@{TextUtils.isEmpty(movie.runtime) ? `Runtime` : ``, default=`Runtime`}"
                   android:inputType="number"
                   android:maxLength="4"
                   android:nextFocusForward="@id/edt_country"
                   android:padding="8dp"
-                  android:text="@={viewModel.movie.runtime}"
+                  android:text="@={movie.runtime}"
                   android:textSize="@dimen/font_large" />
 
                 <TextView
@@ -161,7 +165,7 @@
                   android:paddingLeft="2dp"
                   android:text="@string/min"
                   android:textSize="@dimen/font_medium"
-                  android:visibility="@{TextUtils.isEmpty(viewModel.movie.runtime) ? View.GONE : View.VISIBLE, default=visible}" />
+                  android:visibility="@{TextUtils.isEmpty(movie.runtime) ? View.GONE : View.VISIBLE, default=visible}" />
 
               </LinearLayout>
 
@@ -189,7 +193,7 @@
                 android:inputType="text"
                 android:nextFocusForward="@id/edt_imdb_id"
                 android:padding="8dp"
-                android:text="@={viewModel.movie.country}"
+                android:text="@={movie.country}"
                 android:textSize="@dimen/font_large" />
 
             </RelativeLayout>
@@ -204,7 +208,7 @@
             <LinearLayout
               android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:layout_weight="@{viewModel.movie.tv ? (1.2f) : (1f), default=1}"
+              android:layout_weight="@{movie.tv ? (1.2f) : (1f), default=1}"
               android:orientation="vertical">
 
               <LinearLayout
@@ -213,20 +217,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:animateLayoutChanges="true"
-                android:gravity="@{viewModel.movie.tv ? Gravity.CENTER : Gravity.LEFT, default=center}"
+                android:gravity="@{movie.tv ? Gravity.CENTER : Gravity.LEFT, default=center}"
                 android:orientation="horizontal">
 
                 <EditText
                   android:id="@+id/edt_year"
                   style="@style/Theme.PMDb.MovieFormEditText"
-                  android:layout_width="@{!viewModel.movie.tv, default=wrap_content}"
+                  android:layout_width="@{!movie.tv, default=wrap_content}"
                   android:layout_height="wrap_content"
                   android:gravity="center"
-                  android:hint="@{viewModel.movie.tv ? `Start` : `Year`, default=`Year`}"
+                  android:hint="@{movie.tv ? `Start` : `Year`, default=`Year`}"
                   android:inputType="number"
                   android:maxLength="4"
-                  android:nextFocusForward="@{viewModel.movie.tv ? @id/edt_year_end : @id/edt_runtime}"
-                  android:text="@={viewModel.movie.yearStart}"
+                  android:nextFocusForward="@{movie.tv ? @id/edt_year_end : @id/edt_runtime}"
+                  android:text="@={movie.yearStart}"
                   android:textSize="@dimen/font_x_large" />
 
                 <TextView
@@ -235,7 +239,7 @@
                   android:padding="3dp"
                   android:text="–"
                   android:textSize="@dimen/font_medium"
-                  android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}" />
+                  android:visibility="@{movie.tv ? View.VISIBLE : View.GONE}" />
 
                 <EditText
                   android:id="@+id/edt_year_end"
@@ -244,13 +248,13 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:gravity="center"
-                  android:hint="@{viewModel.movie.tv ? `End` : ``, default=`Year`}"
+                  android:hint="@{movie.tv ? `End` : ``, default=`Year`}"
                   android:inputType="number"
                   android:maxLength="4"
                   android:nextFocusForward="@id/edt_runtime"
-                  android:text="@={viewModel.movie.yearEnd}"
+                  android:text="@={movie.yearEnd}"
                   android:textSize="@dimen/font_x_large"
-                  android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE, default=visible}" />
+                  android:visibility="@{movie.tv ? View.VISIBLE : View.GONE, default=visible}" />
 
               </LinearLayout>
 
@@ -266,7 +270,7 @@
                 android:maxLength="10"
                 android:nextFocusForward="@id/edt_genre"
                 android:padding="8dp"
-                android:text="@={viewModel.movie.imdbID}"
+                android:text="@={movie.imdbID}"
                 android:textSize="@dimen/font_large" />
 
             </LinearLayout>
@@ -369,15 +373,15 @@
               <EditText
                 android:id="@+id/edt_imdb_rate"
                 style="@style/Theme.PMDb.MovieFormEditText"
-                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.imdbRate), default=wrap_content}"
+                android:layout_width="@{TextUtils.isEmpty(movie.imdbRate), default=wrap_content}"
                 android:layout_height="wrap_content"
-                android:gravity="@{TextUtils.isEmpty(viewModel.movie.imdbRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:gravity="@{TextUtils.isEmpty(movie.imdbRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
                 android:hint="@string/rate"
                 android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_imdb_votes"
                 android:paddingRight="2dp"
-                android:text="@={viewModel.movie.imdbRate}"
+                android:text="@={movie.imdbRate}"
                 android:textSize="@dimen/font_xx_large" />
 
               <TextView
@@ -388,7 +392,7 @@
                 android:paddingLeft="2dp"
                 android:text="/10"
                 android:textSize="@dimen/font_x_large"
-                android:visibility="@{TextUtils.isEmpty(viewModel.movie.imdbRate) ? View.GONE : View.VISIBLE, default=visible}" />
+                android:visibility="@{TextUtils.isEmpty(movie.imdbRate) ? View.GONE : View.VISIBLE, default=visible}" />
 
             </LinearLayout>
 
@@ -402,7 +406,7 @@
               android:hint="@string/votes"
               android:inputType="number"
               android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
-              android:text="@={viewModel.movie.imdbVotes}"
+              android:text="@={movie.imdbVotes}"
               android:textColor="?colorPrimaryVariant"
               android:textSize="@dimen/font_medium" />
 
@@ -439,14 +443,14 @@
               <EditText
                 android:id="@+id/edt_rotten_tomatoes_rate"
                 style="@style/Theme.PMDb.MovieFormEditText"
-                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate), default=wrap_content}"
+                android:layout_width="@{TextUtils.isEmpty(movie.rottenTomatoesRate), default=wrap_content}"
                 android:layout_height="wrap_content"
-                android:gravity="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:gravity="@{TextUtils.isEmpty(movie.rottenTomatoesRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
                 android:hint="@string/rate"
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_metacritic_rate"
-                android:text="@={viewModel.movie.rottenTomatoesRate}"
+                android:text="@={movie.rottenTomatoesRate}"
                 android:textSize="@dimen/font_xx_large" />
 
               <TextView
@@ -457,7 +461,7 @@
                 android:paddingLeft="2dp"
                 android:text="%"
                 android:textSize="@dimen/font_x_large"
-                android:visibility="@{TextUtils.isEmpty(viewModel.movie.rottenTomatoesRate) ? View.GONE : View.VISIBLE, default=visible}" />
+                android:visibility="@{TextUtils.isEmpty(movie.rottenTomatoesRate) ? View.GONE : View.VISIBLE, default=visible}" />
 
             </LinearLayout>
 
@@ -494,14 +498,14 @@
               <EditText
                 android:id="@+id/edt_metacritic_rate"
                 style="@style/Theme.PMDb.MovieFormEditText"
-                android:layout_width="@{TextUtils.isEmpty(viewModel.movie.metacriticRate), default=wrap_content}"
+                android:layout_width="@{TextUtils.isEmpty(movie.metacriticRate), default=wrap_content}"
                 android:layout_height="wrap_content"
-                android:gravity="@{TextUtils.isEmpty(viewModel.movie.metacriticRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
+                android:gravity="@{TextUtils.isEmpty(movie.metacriticRate) ? Gravity.CENTER : Gravity.RIGHT, default=right}"
                 android:hint="@string/rate"
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_awards"
-                android:text="@={viewModel.movie.metacriticRate}"
+                android:text="@={movie.metacriticRate}"
                 android:textSize="@dimen/font_xx_large" />
 
               <TextView
@@ -512,7 +516,7 @@
                 android:paddingLeft="2dp"
                 android:text="/100"
                 android:textSize="@dimen/font_x_large"
-                android:visibility="@{TextUtils.isEmpty(viewModel.movie.metacriticRate) ? View.GONE : View.VISIBLE, default=visible}" />
+                android:visibility="@{TextUtils.isEmpty(movie.metacriticRate) ? View.GONE : View.VISIBLE, default=visible}" />
 
             </LinearLayout>
 
@@ -545,7 +549,7 @@
             android:hint="@string/enter_movie_awards"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_director"
-            android:text="@={viewModel.movie.awards}"
+            android:text="@={movie.awards}"
             android:textSize="@dimen/font_x_large" />
 
         </LinearLayout>
@@ -583,7 +587,7 @@
               android:hint="@string/name"
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_writer"
-              android:text="@={viewModel.movie.director}"
+              android:text="@={movie.director}"
               android:textSize="@dimen/font_x_large" />
 
           </LinearLayout>
@@ -620,7 +624,7 @@
               android:hint="@string/name"
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_actors"
-              android:text="@={viewModel.movie.writer}"
+              android:text="@={movie.writer}"
               android:textSize="@dimen/font_x_large" />
 
           </LinearLayout>
@@ -652,7 +656,7 @@
             android:hint="@string/names"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_plot"
-            android:text="@={viewModel.movie.actors}"
+            android:text="@={movie.actors}"
             android:textSize="@dimen/font_x_large" />
 
         </LinearLayout>
@@ -682,7 +686,7 @@
             android:hint="@string/enter_movie_plot"
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_comment"
-            android:text="@={viewModel.movie.plot}"
+            android:text="@={movie.plot}"
             android:textSize="@dimen/font_x_large" />
 
         </LinearLayout>
@@ -712,7 +716,7 @@
             android:hint="@string/write_your_comment"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
-            android:text="@={viewModel.movie.comment}"
+            android:text="@={movie.comment}"
             android:textSize="@dimen/font_x_large" />
 
         </LinearLayout>
@@ -740,7 +744,7 @@
         android:layout_height="24dp"
         android:layout_marginRight="4dp"
         android:src="@drawable/ic_tv_accent"
-        android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE}"
+        android:visibility="@{movie.tv ? View.VISIBLE : View.GONE}"
         app:tint="?colorSelectedIconsTint" />
 
       <TextView
@@ -752,10 +756,10 @@
         android:focusableInTouchMode="true"
         android:fontFamily="serif"
         android:marqueeRepeatLimit="marquee_forever"
-        android:maxEms="@{viewModel.movie.tv ? 11 : 14}"
+        android:maxEms="@{movie.tv ? 11 : 14}"
         android:paddingLeft="4dp"
         android:singleLine="true"
-        android:text="@{viewModel.movie.title}"
+        android:text="@{movie.title}"
         android:textSize="@dimen/font_xx_large"
         android:textStyle="bold" />
 
@@ -764,9 +768,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:singleLine="true"
-        android:text="@{viewModel.movie.tv ? `(`+viewModel.movie.yearStart+`–`+(TextUtils.isEmpty(viewModel.movie.yearEnd) ? `` : viewModel.movie.yearEnd)+`)` : `(`+viewModel.movie.yearStart+`)`}"
+        android:text="@{movie.tv ? `(`+movie.yearStart+`–`+(TextUtils.isEmpty(movie.yearEnd) ? `` : movie.yearEnd)+`)` : `(`+movie.yearStart+`)`}"
         android:textSize="@dimen/font_large"
-        android:visibility="@{TextUtils.isEmpty(viewModel.movie.yearStart) ? View.GONE : View.VISIBLE}" />
+        android:visibility="@{TextUtils.isEmpty(movie.yearStart) ? View.GONE : View.VISIBLE}" />
 
     </LinearLayout>
 
@@ -784,7 +788,7 @@
       android:padding="8dp">
 
       <ImageView
-        isActivated="@{viewModel.movie.tv}"
+        isActivated="@{movie.tv}"
         android:layout_width="?actionBarSize"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
@@ -800,7 +804,7 @@
       <ImageView
         activatedIcon="@{ @drawable/ic_eye }"
         deactivatedIcon="@{ @drawable/ic_eye_outline }"
-        isActivated="@{viewModel.movie.watched}"
+        isActivated="@{movie.watched}"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
@@ -815,7 +819,7 @@
       <ImageView
         activatedIcon="@{ @drawable/ic_favorite }"
         deactivatedIcon="@{ @drawable/ic_favorite_outline }"
-        isActivated="@{viewModel.movie.favorite}"
+        isActivated="@{movie.favorite}"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="bottom|right"
@@ -874,7 +878,7 @@
           android:id="@+id/btn_save"
           activatedIcon="@{ @drawable/ic_save }"
           deactivatedIcon="@{ @drawable/ic_save_outline }"
-          isActivated="@{viewModel.movie.canSave}"
+          isActivated="@{movie.canSave}"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
           android:background="?android:actionBarItemBackground"
