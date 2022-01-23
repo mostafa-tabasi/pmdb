@@ -28,29 +28,4 @@
     <item name="android:imeOptions">actionNext</item>
   </style>
 
-  <style name="Theme.PMDb.MovieFormChip" parent="Widget.MaterialComponents.Chip.Filter">
-    <item name="checkedIconVisible">false</item>
-    <item name="chipBackgroundColor">@color/selector_color_genre_chips</item>
-    <item name="android:checkable">true</item>
-  </style>
-
-  <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_cardCustomCorners</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay_cardCustomCorners" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSizeTopRight">0dp</item>
-    <item name="cornerSizeTopLeft">@dimen/space_large</item>
-    <item name="cornerSizeBottomRight">@dimen/space_large</item>
-    <item name="cornerSizeBottomLeft">0dp</item>
-  </style>
-
-  <style name="TransparentBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-    <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
-  </style>
-
-  <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-    <item name="android:background">@android:color/transparent</item>
-  </style>
 </resources>

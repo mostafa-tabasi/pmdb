@@ -61,7 +61,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
-          android:layout_width="@dimen/space_very_large"
+          android:layout_width="@dimen/_22sdp"
           android:layout_height="@dimen/_30sdp"
           android:contentDescription="@string/tv_icon"
           android:src="@drawable/ic_tv_accent" />

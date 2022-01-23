@@ -15,8 +15,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/_6sdp"
-    android:paddingTop="@dimen/space_large"
-    android:paddingBottom="@dimen/space_xxx_large">
+    android:paddingTop="@dimen/_10sdp"
+    android:paddingBottom="@dimen/_20sdp">
 
     <ImageView
       android:id="@+id/app_icon"
