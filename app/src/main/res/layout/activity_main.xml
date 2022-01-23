@@ -56,7 +56,8 @@
       app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorOnPrimary"
       app:layout_anchor="@id/bottom_bar"
-      tools:src="@drawable/ic_add" />
+      tools:src="@drawable/ic_add"
+      android:contentDescription="@string/add_movie_button" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

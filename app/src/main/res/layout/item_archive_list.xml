@@ -20,9 +20,9 @@
   <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/space_medium"
-    android:layout_marginVertical="@dimen/space_small"
-    app:cardCornerRadius="@dimen/space_large"
+    android:layout_marginHorizontal="@dimen/_6sdp"
+    android:layout_marginVertical="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
     app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="?selectableItemBackground"
-      android:clickable="true">
+      android:clickable="true"
+      android:focusable="true">
 
       <LinearLayout
         android:id="@+id/info_layout"
@@ -38,7 +39,7 @@
         android:layout_height="0dp"
         android:background="@{viewModel.isTv() ? @drawable/bg_tv : null, default = @drawable/bg_tv}"
         android:gravity="center"
-        android:minWidth="@dimen/space_super_massive"
+        android:minWidth="@dimen/_36sdp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -51,11 +52,11 @@
           android:background="@{(viewModel.ratingSite == RatingSite.IMDB) ? @drawable/bg_imdb_rating : (viewModel.ratingSite == RatingSite.ROTTEN_TOMATOES) ? @drawable/bg_rotten_tomatoes_rating : (viewModel.ratingSite == RatingSite.METACRITIC) ? @drawable/bg_metacritic_rating : null, default = @drawable/bg_imdb_rating}"
           android:fontFamily="sans-serif-medium"
           android:gravity="center"
-          android:minWidth="@dimen/space_super_massive"
-          android:minHeight="@dimen/space_massive"
+          android:minWidth="@dimen/_36sdp"
+          android:minHeight="@dimen/_28sdp"
           android:text="@{viewModel.rate}"
           android:textColor="@{(viewModel.ratingSite == RatingSite.IMDB) ? @color/black : @color/white}"
-          android:textSize="@dimen/font_large"
+          android:textSize="@dimen/_12ssp"
           android:textStyle="bold"
           android:visibility="@{viewModel.isRateVisible ? View.VISIBLE : View.GONE, default=visible}"
           app:layout_constraintBottom_toBottomOf="parent"
@@ -64,10 +65,11 @@
           tools:text="7.7" />
 
         <ImageView
-          android:layout_width="@dimen/space_massive"
+          android:layout_width="@dimen/_28sdp"
           android:layout_height="match_parent"
           android:background="@drawable/bg_tv"
-          android:padding="@dimen/space_small"
+          android:contentDescription="@string/tv_icon"
+          android:padding="@dimen/_4sdp"
           android:src="@drawable/ic_tv_accent"
           android:visibility="@{viewModel.isTv() ? View.VISIBLE : View.GONE, default=visible}" />
 
@@ -77,15 +79,15 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_medium"
-        android:layout_marginVertical="@dimen/space_small"
+        android:layout_marginHorizontal="@dimen/_6sdp"
+        android:layout_marginVertical="@dimen/_4sdp"
         android:ellipsize="end"
         android:fontFamily="serif"
         android:gravity="left"
         android:singleLine="true"
         android:text="@{viewModel.title}"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_medium"
+        android:textSize="@dimen/_10ssp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/info_layout"
         app:layout_constraintRight_toRightOf="parent"
@@ -96,14 +98,14 @@
         android:id="@+id/year"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_medium"
-        android:layout_marginVertical="@dimen/space_small"
+        android:layout_marginHorizontal="@dimen/_6sdp"
+        android:layout_marginVertical="@dimen/_4sdp"
         android:fontFamily="serif"
         android:gravity="left"
         android:singleLine="true"
         android:text="@{`(`+viewModel.yearStart+`)`}"
         android:textColor="@color/grey_600"
-        android:textSize="@dimen/font_medium"
+        android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/info_layout"
         app:layout_constraintRight_toRightOf="parent"

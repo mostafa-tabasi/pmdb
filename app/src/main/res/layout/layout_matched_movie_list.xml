@@ -18,19 +18,21 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="2dp"
-    android:paddingTop="4dp"
-    android:paddingBottom="16dp">
+    android:paddingHorizontal="@dimen/_2sdp"
+    android:paddingTop="@dimen/_4sdp"
+    android:paddingBottom="@dimen/_12sdp">
 
     <ImageView
       android:id="@+id/btn_back"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="8dp"
-      android:background="?android:selectableItemBackgroundBorderless"
+      android:layout_marginLeft="@dimen/_6sdp"
+      android:background="?actionBarItemBackground"
       android:clickable="true"
+      android:contentDescription="@string/back_button"
+      android:focusable="true"
       android:onClick="@{viewModel.onMatchedMovieListBackClick}"
-      android:padding="8dp"
+      android:padding="@dimen/_6sdp"
       android:src="@drawable/ic_back"
       app:tint="?colorSelectedIconsTint" />
 
@@ -40,11 +42,11 @@
       android:layout_height="wrap_content"
       android:layout_alignTop="@+id/btn_back"
       android:layout_alignBottom="@+id/btn_back"
-      android:layout_marginLeft="8dp"
+      android:layout_marginLeft="@dimen/_6sdp"
       android:layout_toRightOf="@+id/btn_back"
       android:gravity="center"
       android:text="@string/select_your_movie"
-      android:textSize="@dimen/font_large" />
+      android:textSize="@dimen/_12ssp" />
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/movies_recycler_view"

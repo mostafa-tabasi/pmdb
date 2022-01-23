@@ -32,6 +32,17 @@
   <string name="key_display_type" translatable="false">key_display_type</string>
   <string name="key_archive_default_item_rate" translatable="false">key_archive_default_item_rate</string>
 
+  <!--content description-->
+  <string name="app_logo" translatable="false">App Logo</string>
+  <string name="linkedin_button" translatable="false">Linkedin Button</string>
+  <string name="email_button" translatable="false">Email Button</string>
+  <string name="title_clear_button" translatable="false">Title Clear Button</string>
+  <string name="year_clear_button" translatable="false">Year Clear Button</string>
+  <string name="director_clear_button" translatable="false">Director Clear Button</string>
+  <string name="add_movie_button" translatable="false">Add Movie Button</string>
+  <string name="poster" translatable="false">Poster</string>
+  <string name="tv_icon" translatable="false">TV Icon</string>
+
   <!--strings-->
   <string name="mail_subject">Feedback to PMDb</string>
   <string name="mail_chooser_title">Send feedback…</string>
@@ -46,6 +57,7 @@
   <string name="movies">Movies</string>
   <string name="tv_series">TV Series</string>
   <string name="search_in">Search in</string>
+  <string name="search">Search</string>
   <string name="movie_title">Movie Title</string>
   <string name="year">Year</string>
   <string name="from">From</string>
@@ -93,4 +105,25 @@
   <string name="movie_not_found">Movie not found</string>
   <string name="something_wrong_try_again">Something wrong! try again</string>
   <string name="item_has_problem_try_again">Item has problem right now, try again later</string>
+  <string name="cancel_button">Cancel Button</string>
+  <string name="search_button">Search Button</string>
+  <string name="back_button">Back Button</string>
+  <string name="_10">/10</string>
+  <string name="_100">/100</string>
+  <string name="tv_button">TV Button</string>
+  <string name="seen_button">Seen Button</string>
+  <string name="favorite_button">Favorite Button</string>
+  <string name="clear_button">Clear Button</string>
+  <string name="delete_button">Delete Button</string>
+  <string name="confirm_clear_button">Confirm Clear Button</string>
+  <string name="save_button">Save Button</string>
+  <string name="edit_button">Edit Button</string>
+  <string name="confirm_overwrite_button">Confirm Overwrite Button</string>
+  <string name="confirm_button">Confirm Button</string>
+  <string name="imdb_logo">IMDb Logo</string>
+  <string name="rotten_tomatoes_logo">Rotten Tomatoes Logo</string>
+  <string name="metacritic_logo">Metacritic Logo</string>
+  <string name="favorite_icon">Favorite Icon</string>
+  <string name="seen_icon">Seen Icon</string>
+  <string name="title_icon">Title Icon</string>
 </resources>

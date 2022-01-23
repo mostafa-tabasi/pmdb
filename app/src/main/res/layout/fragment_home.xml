@@ -27,7 +27,7 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/space_medium"
+        android:layout_marginVertical="@dimen/_6sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -41,18 +41,18 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/recently_added_movies"
             android:textColor="@color/grey_500"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_14ssp" />
 
           <View
             android:layout_width="0dp"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:layout_weight="1"
             android:background="@color/grey_400" />
 
@@ -61,8 +61,8 @@
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recently_added_movies"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
-          android:layout_marginBottom="@dimen/space_xx_large"
+          android:layout_height="@dimen/_155sdp"
+          android:layout_marginBottom="@dimen/_16sdp"
           android:orientation="horizontal"
           android:visibility="@{viewModel.isRecentMoviesEnable &amp;&amp; viewModel.recentlyAddedMovies != null &amp;&amp; viewModel.recentlyAddedMovies.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -80,18 +80,18 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/recently_added_tv_series"
             android:textColor="@color/grey_500"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_14ssp" />
 
           <View
             android:layout_width="0dp"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:layout_weight="1"
             android:background="@color/grey_400" />
 
@@ -100,8 +100,8 @@
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recently_added_series"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
-          android:layout_marginBottom="@dimen/space_xx_large"
+          android:layout_height="@dimen/_155sdp"
+          android:layout_marginBottom="@dimen/_16sdp"
           android:orientation="horizontal"
           android:visibility="@{viewModel.isRecentSeriesEnable &amp;&amp; viewModel.recentlyAddedSeries != null &amp;&amp; viewModel.recentlyAddedSeries.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -119,18 +119,18 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/top_rated"
             android:textColor="@color/grey_500"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_14ssp" />
 
           <View
             android:layout_width="0dp"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:layout_weight="1"
             android:background="@color/grey_400" />
 
@@ -139,8 +139,8 @@
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/top_rated"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
-          android:layout_marginBottom="@dimen/space_xx_large"
+          android:layout_height="@dimen/_155sdp"
+          android:layout_marginBottom="@dimen/_16sdp"
           android:orientation="horizontal"
           android:visibility="@{viewModel.isTopRatedEnable &amp;&amp; viewModel.topRated != null &amp;&amp; viewModel.topRated.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -158,18 +158,18 @@
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/space_large"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/recently_watched"
             android:textColor="@color/grey_500"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_14ssp" />
 
           <View
             android:layout_width="0dp"
-            android:layout_height="0.5dp"
+            android:layout_height="@dimen/_1sdp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:layout_weight="1"
             android:background="@color/grey_400" />
 
@@ -178,8 +178,8 @@
         <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/recently_watched"
           android:layout_width="match_parent"
-          android:layout_height="200dp"
-          android:layout_marginBottom="@dimen/space_xx_large"
+          android:layout_height="@dimen/_155sdp"
+          android:layout_marginBottom="@dimen/_16sdp"
           android:orientation="horizontal"
           android:visibility="@{viewModel.isRecentlyWatchedEnable &amp;&amp; viewModel.recentlyWatched != null &amp;&amp; viewModel.recentlyWatched.size > 0 ? View.VISIBLE : View.GONE, default= gone}"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -207,42 +207,44 @@
         android:layout_height="wrap_content"
         android:text="@string/there_is_nothing_to_show"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_xx_large" />
+        android:textSize="@dimen/_16ssp" />
 
       <TextView
         android:id="@+id/add_first_movie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/_6sdp"
         android:background="?selectableItemBackground"
         android:clickable="true"
-        android:drawableLeft="@drawable/ic_add"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
+        android:drawablePadding="@dimen/_6sdp"
+        android:focusable="true"
+        android:padding="@dimen/_6sdp"
         android:text="@string/add_your_first_movie"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_xx_large" />
+        android:textSize="@dimen/_16ssp"
+        app:drawableLeftCompat="@drawable/ic_add" />
 
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/or"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_xx_large" />
+        android:textSize="@dimen/_16ssp" />
 
       <TextView
         android:id="@+id/change_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/_6sdp"
         android:background="?selectableItemBackground"
         android:clickable="true"
-        android:drawableLeft="@drawable/ic_settings_outline"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
+        android:drawablePadding="@dimen/_6sdp"
+        android:focusable="true"
+        android:padding="@dimen/_6sdp"
         android:text="@string/change_settings"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_xx_large" />
+        android:textSize="@dimen/_16ssp"
+        app:drawableLeftCompat="@drawable/ic_settings_outline" />
 
     </LinearLayout>
 

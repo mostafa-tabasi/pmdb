@@ -26,19 +26,19 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:padding="@dimen/space_medium">
+    android:padding="@dimen/_6sdp">
 
     <TextView
       android:id="@+id/guide_to_full_description"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
-      android:drawableLeft="@drawable/ic_arrow_up"
-      android:drawablePadding="@dimen/space_medium"
+      android:drawablePadding="@dimen/_6sdp"
       android:gravity="center"
       android:text="@string/swipe_up_to_view_all_information_or_edit"
       android:textColor="@color/grey_500"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
+      app:drawableLeftCompat="@drawable/ic_arrow_up"
       app:drawableTint="@color/grey_500"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
@@ -55,8 +55,8 @@
       android:id="@+id/poster_layout"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space_medium"
-      android:minHeight="200dp"
+      android:layout_marginTop="@dimen/_6sdp"
+      android:minHeight="@dimen/_155sdp"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toLeftOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@id/guide_to_full_description">
@@ -64,11 +64,11 @@
       <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="1dp">
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_6sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="@dimen/_1sdp">
 
         <ImageView
           android:id="@+id/img_poster"
@@ -76,6 +76,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:adjustViewBounds="true"
+          android:contentDescription="@string/poster"
           android:scaleType="fitStart"
           android:src="@drawable/ic_foreground" />
 
@@ -85,10 +86,11 @@
 
     <ImageView
       android:id="@+id/tv"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginLeft="4dp"
-      android:layout_marginTop="@dimen/space_medium"
+      android:layout_width="@dimen/_20sdp"
+      android:layout_height="@dimen/_20sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
+      android:layout_marginTop="@dimen/_6sdp"
+      android:contentDescription="@string/tv_icon"
       android:src="@drawable/ic_tv_accent"
       android:visibility="@{movie.tv ? View.VISIBLE : View.GONE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
@@ -98,12 +100,12 @@
       android:id="@+id/title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginHorizontal="4dp"
-      android:layout_marginTop="@dimen/space_medium"
+      android:layout_marginHorizontal="@dimen/_3sdp"
+      android:layout_marginTop="@dimen/_6sdp"
       android:fontFamily="serif"
       android:text="@{movie.title}"
       android:textColor="@color/black"
-      android:textSize="@dimen/font_x_large"
+      android:textSize="@dimen/_13ssp"
       android:textStyle="bold"
       app:layout_constraintLeft_toRightOf="@+id/tv"
       app:layout_constraintRight_toRightOf="parent"
@@ -114,11 +116,11 @@
       android:id="@+id/year"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:text="@{movie.tv ? `(`+movie.yearStart+` – `+ (movie.yearEnd == null ? `` : movie.yearEnd)+`)` : `(`+movie.yearStart+`)`}"
       android:textColor="@color/grey_600"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{movie.yearStart == null ? View.GONE : View.VISIBLE}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@+id/title"
@@ -126,10 +128,10 @@
 
     <View
       android:id="@+id/year_divider"
-      android:layout_width="0.1dp"
+      android:layout_width="@dimen/_1sdp"
       android:layout_height="0dp"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="8dp"
+      android:layout_marginLeft="@dimen/_6sdp"
+      android:layout_marginTop="@dimen/_2sdp"
       android:alpha="0.5"
       android:background="?attr/colorMovieFormDivider"
       android:visibility="@{movie.yearStart == null || movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
@@ -141,11 +143,11 @@
       android:id="@+id/runtime"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="8dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_6sdp"
       android:text="@{movie.runtime +` min`}"
       android:textColor="@color/grey_600"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/year_divider"
       app:layout_constraintTop_toBottomOf="@+id/title"
@@ -155,12 +157,12 @@
       android:id="@+id/genre"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:ellipsize="end"
       android:singleLine="true"
       android:text="@{movie.genre}"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{TextUtils.isEmpty(movie.genre) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -171,8 +173,8 @@
       android:id="@+id/ratings"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:orientation="horizontal"
       android:visibility="@{movie.imdbRate == null &amp;&amp; movie.rottenTomatoesRate == null &amp;&amp; movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
       android:weightSum="3"
@@ -185,12 +187,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{movie.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.imdbRate == null ? View.GONE : View.VISIBLE, default=visible}"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="30dp"
-          android:padding="4dp"
+          android:layout_height="@dimen/_24sdp"
+          android:contentDescription="@string/imdb_logo"
+          android:padding="@dimen/_3sdp"
           android:src="@drawable/imdb_logo" />
 
         <TextView
@@ -199,16 +203,16 @@
           android:gravity="center"
           android:text="@{movie.imdbRate == null ? `-` : movie.imdbRate+`/10`}"
           android:textColor="@color/grey_600"
-          android:textSize="@dimen/font_small"
+          android:textSize="@dimen/_9ssp"
           tools:text="rate" />
 
       </LinearLayout>
 
       <View
-        android:layout_width="0.1dp"
+        android:layout_width="@dimen/_1sdp"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginVertical="6dp"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
         android:visibility="@{movie.imdbRate == null || movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}" />
@@ -218,12 +222,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.rottenTomatoesRate == null ? View.GONE : View.VISIBLE, default=visible}"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="30dp"
-          android:padding="4dp"
+          android:layout_height="@dimen/_24sdp"
+          android:contentDescription="@string/rotten_tomatoes_logo"
+          android:padding="@dimen/_3sdp"
           android:src="@drawable/rotten_logo" />
 
         <TextView
@@ -232,16 +238,16 @@
           android:gravity="center"
           android:text="@{movie.rottenTomatoesRate == null ? `-` : movie.rottenTomatoesRate+`%`}"
           android:textColor="@color/grey_600"
-          android:textSize="@dimen/font_small"
+          android:textSize="@dimen/_9ssp"
           tools:text="rate" />
 
       </LinearLayout>
 
       <View
-        android:layout_width="0.1dp"
+        android:layout_width="@dimen/_1sdp"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginVertical="6dp"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
         android:alpha="0.5"
         android:background="?attr/colorMovieFormDivider"
         android:visibility="@{movie.rottenTomatoesRate == null || movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}" />
@@ -251,12 +257,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:visibility="@{movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}">
+        android:visibility="@{movie.metacriticRate == null ? View.GONE : View.VISIBLE, default=visible}"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
           android:layout_width="match_parent"
-          android:layout_height="30dp"
-          android:padding="4dp"
+          android:layout_height="@dimen/_24sdp"
+          android:contentDescription="@string/metacritic_logo"
+          android:padding="@dimen/_3sdp"
           android:src="@drawable/metacritic_logo" />
 
         <TextView
@@ -265,7 +273,7 @@
           android:gravity="center"
           android:text="@{movie.metacriticRate == null ? `-` : movie.metacriticRate+`/100`}"
           android:textColor="@color/grey_600"
-          android:textSize="@dimen/font_small"
+          android:textSize="@dimen/_9ssp"
           tools:text="rate" />
 
       </LinearLayout>
@@ -276,13 +284,13 @@
       android:id="@+id/director_writer"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:ellipsize="end"
       android:singleLine="true"
       android:text="@{!TextUtils.isEmpty(movie.director) ? `Director: ` + movie.director : `Writer: ` + movie.writer}"
       android:textColor="@color/grey_600"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{TextUtils.isEmpty(movie.writer) &amp;&amp; TextUtils.isEmpty(movie.director) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -293,13 +301,13 @@
       android:id="@+id/awards"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:ellipsize="end"
       android:singleLine="true"
       android:text="@{movie.awards}"
       android:textColor="@color/grey_600"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{TextUtils.isEmpty(movie.awards) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintRight_toRightOf="parent"
@@ -310,13 +318,13 @@
       android:id="@+id/actors"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginVertical="2dp"
-      android:layout_marginLeft="4dp"
+      android:layout_marginVertical="@dimen/_2sdp"
+      android:layout_marginLeft="@dimen/_3sdp"
       android:ellipsize="end"
       android:maxLines="2"
       android:text="@{ `Casts: ` + movie.actors}"
       android:textColor="@color/grey_600"
-      android:textSize="@dimen/font_medium"
+      android:textSize="@dimen/_10ssp"
       android:visibility="@{TextUtils.isEmpty(movie.actors) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintBottom_toTopOf="@+id/layout_icons"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
@@ -329,8 +337,8 @@
       android:id="@+id/layout_icons"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/space_small"
-      android:layout_marginBottom="@dimen/space_medium"
+      android:layout_marginLeft="@dimen/_3sdp"
+      android:layout_marginBottom="@dimen/_6sdp"
       android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
@@ -338,22 +346,24 @@
 
       <ImageView
         android:id="@+id/favorite"
-        android:layout_width="@dimen/space_xxx_large"
-        android:layout_height="@dimen/space_xxx_large"
-        android:layout_marginTop="@dimen/space_medium"
-        android:layout_marginRight="4dp"
-        android:padding="2dp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:contentDescription="@string/favorite_icon"
+        android:padding="@dimen/_2sdp"
         android:src="@drawable/ic_favorite"
         android:visibility="@{movie.favorite ? View.VISIBLE : View.GONE, default=visible}"
         app:tint="@color/grey_500" />
 
       <ImageView
         android:id="@+id/watched"
-        android:layout_width="@dimen/space_xxx_large"
-        android:layout_height="@dimen/space_xxx_large"
-        android:layout_marginTop="@dimen/space_medium"
-        android:layout_marginRight="4dp"
-        android:padding="2dp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:contentDescription="@string/seen_icon"
+        android:padding="@dimen/_2sdp"
         android:src="@drawable/ic_eye"
         android:visibility="@{movie.watched ? View.VISIBLE : View.GONE, default=visible}"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -361,7 +371,6 @@
         app:tint="@color/grey_500" />
 
     </LinearLayout>
-
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

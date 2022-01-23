@@ -25,8 +25,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/space_xx_large"
-    android:paddingVertical="@dimen/space_large">
+    android:paddingHorizontal="@dimen/_16sdp"
+    android:paddingVertical="@dimen/_9sdp">
 
     <ScrollView
       android:layout_width="match_parent"
@@ -35,7 +35,7 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_xx_large"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/bg_bottom_sheet"
         android:orientation="vertical">
 
@@ -45,13 +45,13 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_x_large">
+          android:paddingVertical="@dimen/_12sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/display_type"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_13ssp" />
 
           <TextView
             android:layout_width="0dp"
@@ -60,7 +60,7 @@
             android:gravity="right"
             android:text="@{viewModel.displayType.toString()}"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_x_large"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
         </LinearLayout>
@@ -69,7 +69,7 @@
           android:id="@+id/expandable_display"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/space_large"
+          android:layout_marginHorizontal="@dimen/_9sdp"
           app:el_duration="200"
           app:el_expanded="false"
           app:el_parallax="0.5"
@@ -86,15 +86,16 @@
               android:id="@+id/display_tile"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_small"
+              android:layout_marginHorizontal="@dimen/_3sdp"
               android:background="?selectableItemBackground"
               android:button="@null"
               android:checked="@{viewModel.displayType == ArchiveDisplayType.TILE, default=true}"
               android:drawableLeft="@drawable/ic_grid"
-              android:drawablePadding="@dimen/space_small"
+              android:drawablePadding="@dimen/_3sdp"
               android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.TILE)}"
-              android:padding="@dimen/space_large"
+              android:padding="@dimen/_9sdp"
               android:text="@string/tile"
+              android:textSize="@dimen/_11ssp"
               app:buttonCompat="@null"
               app:drawableTint="@color/selector_color_display_type_radio" />
 
@@ -102,15 +103,16 @@
               android:id="@+id/display_list"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_small"
+              android:layout_marginHorizontal="@dimen/_3sdp"
               android:background="?selectableItemBackground"
               android:button="@null"
               android:checked="@{viewModel.displayType == ArchiveDisplayType.LIST, default=false}"
               android:drawableLeft="@drawable/ic_list"
-              android:drawablePadding="@dimen/space_small"
+              android:drawablePadding="@dimen/_3sdp"
               android:onClick="@{()->viewModel.changeDisplayType(ArchiveDisplayType.LIST)}"
-              android:padding="@dimen/space_large"
+              android:padding="@dimen/_9sdp"
               android:text="@string/list"
+              android:textSize="@dimen/_11ssp"
               app:buttonCompat="@null"
               app:drawableTint="@color/selector_color_display_type_radio" />
 
@@ -124,13 +126,13 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_x_large">
+          android:paddingVertical="@dimen/_12sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/filter"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_13ssp" />
 
           <TextView
             android:layout_width="0dp"
@@ -139,7 +141,7 @@
             android:gravity="right"
             android:text="@{viewModel.filterType.toString()}"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_x_large"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
         </LinearLayout>
 
@@ -147,7 +149,7 @@
           android:id="@+id/expandable_filter"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginHorizontal="@dimen/space_large"
+          android:layout_marginHorizontal="@dimen/_9sdp"
           app:el_duration="200"
           app:el_expanded="false"
           app:el_parallax="0.5"
@@ -165,32 +167,35 @@
               android:id="@+id/filter_both"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_small"
+              android:layout_marginHorizontal="@dimen/_3sdp"
               android:buttonTint="@color/selector_color_display_type_radio"
               android:checked="@{viewModel.filterType == MediaFilterType.BOTH, default=true}"
               android:gravity="center"
-              android:text="@string/both" />
+              android:text="@string/both"
+              android:textSize="@dimen/_11ssp" />
 
             <RadioButton
               android:id="@+id/filter_movies"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_small"
+              android:layout_marginHorizontal="@dimen/_3sdp"
               android:buttonTint="@color/selector_color_display_type_radio"
               android:checked="@{viewModel.filterType == MediaFilterType.MOVIES, default=false}"
               android:gravity="center"
               android:singleLine="true"
-              android:text="@string/movies" />
+              android:text="@string/movies"
+              android:textSize="@dimen/_11ssp" />
 
             <RadioButton
               android:id="@+id/filter_tv"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_small"
+              android:layout_marginHorizontal="@dimen/_3sdp"
               android:buttonTint="@color/selector_color_display_type_radio"
               android:checked="@{viewModel.filterType == MediaFilterType.SERIES, default=false}"
               android:gravity="center"
-              android:text="@string/tv_series" />
+              android:text="@string/tv_series"
+              android:textSize="@dimen/_11ssp" />
 
           </RadioGroup>
 
@@ -201,18 +206,18 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_medium">
+          android:paddingVertical="@dimen/_6sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_in"
-            android:textSize="@dimen/font_medium" />
+            android:text="@string/search"
+            android:textSize="@dimen/_10ssp" />
 
           <View
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/space_medium"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginLeft="@dimen/_6sdp"
             android:layout_weight="1"
             android:alpha="0.2"
             android:background="?colorPrimaryVariant" />
@@ -225,32 +230,33 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_x_large">
+          android:paddingVertical="@dimen/_6sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_13ssp" />
 
           <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_marginHorizontal="@dimen/_9sdp"
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.title}"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_x_large"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
           <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/space_medium"
+            android:layout_marginRight="@dimen/_6sdp"
             android:background="?actionBarItemBackground"
+            android:contentDescription="@string/title_clear_button"
             android:onClick="@{viewModel::clearTitle}"
-            android:paddingHorizontal="@dimen/space_small"
+            android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_clear"
             android:visibility="@{TextUtils.isEmpty(viewModel.title) ? View.GONE : View.VISIBLE, default=visible}"
             app:tint="@color/grey_400" />
@@ -270,14 +276,15 @@
           <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="name"
             android:background="@drawable/bg_text_field"
             android:gravity="center"
             android:hint="@string/movie_title"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:padding="@dimen/space_medium"
+            android:padding="@dimen/_6sdp"
             android:text="@={viewModel.title}"
-            android:textSize="@dimen/font_medium" />
+            android:textSize="@dimen/_10ssp" />
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 
@@ -287,18 +294,18 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_x_large">
+          android:paddingVertical="@dimen/_6sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/year"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_13ssp" />
 
           <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_marginHorizontal="@dimen/_9sdp"
             android:layout_weight="1"
             android:gravity="right"
             android:orientation="horizontal">
@@ -309,19 +316,20 @@
               android:gravity="right"
               android:text="@{viewModel.fromYear}"
               android:textColor="@color/black"
-              android:textSize="@dimen/font_x_large"
+              android:textSize="@dimen/_13ssp"
               android:textStyle="bold" />
 
             <TextView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_medium"
+              android:layout_marginHorizontal="@dimen/_6sdp"
               android:gravity="right"
               android:text="-"
               android:textColor="@color/black"
-              android:textSize="@dimen/font_x_large"
+              android:textSize="@dimen/_13ssp"
               android:textStyle="bold"
-              android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=gone}" />
+              android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=gone}"
+              tools:ignore="HardcodedText" />
 
             <TextView
               android:layout_width="wrap_content"
@@ -329,7 +337,7 @@
               android:gravity="right"
               android:text="@{viewModel.toYear}"
               android:textColor="@color/black"
-              android:textSize="@dimen/font_x_large"
+              android:textSize="@dimen/_13ssp"
               android:textStyle="bold" />
 
           </LinearLayout>
@@ -337,10 +345,11 @@
           <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/space_medium"
+            android:layout_marginRight="@dimen/_6sdp"
             android:background="?actionBarItemBackground"
+            android:contentDescription="@string/year_clear_button"
             android:onClick="@{viewModel::clearYear}"
-            android:paddingHorizontal="@dimen/space_small"
+            android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_clear"
             android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=visible}"
             app:tint="@color/grey_400" />
@@ -370,21 +379,23 @@
               android:gravity="center"
               android:hint="@string/from"
               android:imeOptions="actionNext"
+              android:importantForAutofill="no"
               android:inputType="number"
               android:maxLength="4"
-              android:minWidth="75dp"
-              android:padding="@dimen/space_medium"
+              android:minWidth="@dimen/_60sdp"
+              android:padding="@dimen/_6sdp"
               android:text="@={viewModel.fromYear}"
-              android:textSize="@dimen/font_medium" />
+              android:textSize="@dimen/_10ssp" />
 
             <TextView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginHorizontal="@dimen/space_medium"
+              android:layout_marginHorizontal="@dimen/_6sdp"
               android:gravity="right"
               android:text="-"
-              android:textSize="@dimen/font_x_large"
-              android:textStyle="bold" />
+              android:textSize="@dimen/_13ssp"
+              android:textStyle="bold"
+              tools:ignore="HardcodedText" />
 
             <EditText
               android:layout_width="wrap_content"
@@ -393,12 +404,13 @@
               android:gravity="center"
               android:hint="@string/to"
               android:imeOptions="actionDone"
+              android:importantForAutofill="no"
               android:inputType="number"
               android:maxLength="4"
-              android:minWidth="75dp"
-              android:padding="@dimen/space_medium"
+              android:minWidth="@dimen/_60sdp"
+              android:padding="@dimen/_6sdp"
               android:text="@={viewModel.toYear}"
-              android:textSize="@dimen/font_medium" />
+              android:textSize="@dimen/_10ssp" />
 
           </LinearLayout>
 
@@ -410,32 +422,33 @@
           android:layout_height="wrap_content"
           android:gravity="center_vertical"
           android:orientation="horizontal"
-          android:paddingVertical="@dimen/space_x_large">
+          android:paddingVertical="@dimen/_6sdp">
 
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/director"
-            android:textSize="@dimen/font_x_large" />
+            android:textSize="@dimen/_13ssp" />
 
           <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_large"
+            android:layout_marginHorizontal="@dimen/_9sdp"
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.director}"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_x_large"
+            android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
           <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/space_medium"
+            android:layout_marginRight="@dimen/_6sdp"
             android:background="?actionBarItemBackground"
+            android:contentDescription="@string/director_clear_button"
             android:onClick="@{viewModel::clearDirector}"
-            android:paddingHorizontal="@dimen/space_small"
+            android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_clear"
             android:visibility="@{TextUtils.isEmpty(viewModel.director) ? View.GONE : View.VISIBLE, default=visible}"
             app:tint="@color/grey_400" />
@@ -455,14 +468,15 @@
           <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="name"
             android:background="@drawable/bg_text_field"
             android:gravity="center"
             android:hint="@string/director_name"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:padding="@dimen/space_medium"
+            android:padding="@dimen/_6sdp"
             android:text="@={viewModel.director}"
-            android:textSize="@dimen/font_medium" />
+            android:textSize="@dimen/_10ssp" />
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 
@@ -481,14 +495,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginRight="@dimen/space_medium"
+        android:layout_marginRight="@dimen/_6sdp"
         android:layout_weight="1"
         android:background="@drawable/bg_transparent_with_ripple_button"
         android:onClick="@{viewModel::clearAll}"
         android:stateListAnimator="@null"
         android:text="@string/clear"
         android:textColor="@color/grey_600"
-        android:textSize="@dimen/font_large"
+        android:textSize="@dimen/_11ssp"
         android:textStyle="bold"
         android:visibility="@{TextUtils.isEmpty(viewModel.title) &amp;&amp; TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) &amp;&amp; TextUtils.isEmpty(viewModel.director) ? View.GONE : View.VISIBLE, default=visible}" />
 
@@ -501,7 +515,7 @@
         android:background="@drawable/bg_confirm_yellow_button"
         android:stateListAnimator="@null"
         android:text="@string/apply"
-        android:textSize="@dimen/font_large"
+        android:textSize="@dimen/_11ssp"
         android:textStyle="bold" />
     </LinearLayout>
   </LinearLayout>

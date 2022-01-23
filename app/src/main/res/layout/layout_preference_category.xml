@@ -5,9 +5,9 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="vertical"
-  android:paddingHorizontal="@dimen/space_x_large"
-  android:paddingTop="@dimen/space_xxx_large"
-  android:paddingBottom="@dimen/space_large">
+  android:paddingHorizontal="@dimen/_12sdp"
+  android:paddingTop="@dimen/_18sdp"
+  android:paddingBottom="@dimen/_10sdp">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
     <View
       android:layout_width="0dp"
-      android:layout_height="0.5dp"
+      android:layout_height="@dimen/_1sdp"
       android:layout_weight="1"
       android:background="@color/grey_400" />
 
@@ -25,7 +25,8 @@
       android:id="@android:id/icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/space_large"
+      android:layout_marginLeft="@dimen/_10sdp"
+      android:contentDescription="@string/title_icon"
       app:tint="@color/grey_500"
       tools:src="@drawable/ic_home" />
 
@@ -33,16 +34,16 @@
       android:id="@android:id/title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/space_large"
-      android:layout_marginRight="@dimen/space_large"
+      android:layout_marginLeft="@dimen/_10sdp"
+      android:layout_marginRight="@dimen/_10sdp"
       android:fontFamily="sans-serif-smallcaps"
       android:textColor="@color/grey_500"
-      android:textSize="@dimen/font_xx_large"
+      android:textSize="@dimen/_16ssp"
       tools:text="Title" />
 
     <View
       android:layout_width="0dp"
-      android:layout_height="0.5dp"
+      android:layout_height="@dimen/_1sdp"
       android:layout_weight="1"
       android:background="@color/grey_400" />
 
@@ -53,11 +54,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginLeft="@dimen/space_large"
-    android:layout_marginRight="@dimen/space_large"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
     android:fontFamily="sans-serif-smallcaps"
     android:textColor="@color/grey_500"
-    android:textSize="@dimen/font_medium"
+    android:textSize="@dimen/_10ssp"
     tools:text="subtitle" />
 
 </LinearLayout>

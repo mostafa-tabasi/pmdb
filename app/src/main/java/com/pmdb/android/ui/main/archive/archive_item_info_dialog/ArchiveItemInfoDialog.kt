@@ -67,7 +67,7 @@ class ArchiveItemInfoDialog :
   private fun setUp() {
     viewDataBinding?.let {
 
-      // اضافه کردن لایه ی فرم خالی فیلم
+      // اضافه کردن لایه ی فرم ویرایش فیلم
       movieFormEditBinding = DataBindingUtil.inflate(
         layoutInflater,
         R.layout.layout_movie_form_edit,

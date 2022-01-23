@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/_12sdp">
 
     <TextView
       android:id="@+id/txt_search_title"
@@ -27,13 +27,13 @@
       android:layout_alignParentTop="true"
       android:layout_centerHorizontal="true"
       android:layout_gravity="center_horizontal"
-      android:layout_marginBottom="16dp"
-      android:drawableLeft="@drawable/ic_arrow_up"
-      android:drawablePadding="@dimen/space_medium"
+      android:layout_marginBottom="@dimen/_12sdp"
+      android:drawablePadding="@dimen/_6sdp"
       android:gravity="center_horizontal"
       android:text="@string/search_your_movie_or_swipe_up_for_a_blank_form"
       android:textColor="@color/grey_500"
-      android:textSize="@dimen/font_large"
+      android:textSize="@dimen/_12ssp"
+      app:drawableLeftCompat="@drawable/ic_arrow_up"
       app:drawableTint="@color/grey_500" />
 
     <LinearLayout
@@ -51,48 +51,52 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="2dp"
+        android:layout_margin="@dimen/_2sdp"
         android:layout_weight="2"
+        android:autofillHints="name"
         android:background="@drawable/bg_text_field"
         android:gravity="center"
         android:hint="@string/title"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:onEditorAction="@{(view,actionId,event) -> viewModel.onEditorAction(view,actionId,event)}"
-        android:padding="4dp"
+        android:onEditorAction="@{(view, actionId, event) -> viewModel.onEditorAction(view, actionId, event)}"
+        android:padding="@dimen/_4sdp"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:text="@={viewModel.searchTitle}"
-        android:textSize="@dimen/font_x_large" />
+        android:textSize="@dimen/_14ssp" />
 
       <EditText
         android:id="@+id/edt_search_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="2dp"
+        android:layout_margin="@dimen/_2sdp"
         android:layout_weight="2"
         android:background="@drawable/bg_text_field"
         android:gravity="center"
         android:hint="@string/imdb_id"
         android:imeOptions="actionSearch"
+        android:importantForAutofill="no"
         android:inputType="text"
-        android:onEditorAction="@{(view,actionId,event) -> viewModel.onEditorAction(view,actionId,event)}"
-        android:padding="4dp"
+        android:onEditorAction="@{(view, actionId, event) -> viewModel.onEditorAction(view, actionId, event)}"
+        android:padding="@dimen/_4sdp"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:text="@={viewModel.searchID}"
-        android:textSize="@dimen/font_x_large" />
+        android:textSize="@dimen/_14ssp" />
 
       <ImageView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/_4sdp"
         android:layout_weight="0.75"
         android:background="?android:actionBarItemBackground"
         android:clickable="true"
+        android:contentDescription="@string/search_button"
+        android:focusable="true"
         android:onClick="@{viewModel::searchMovie}"
-        android:padding="4dp"
+        android:padding="@dimen/_4sdp"
         android:src="@drawable/ic_search"
         android:visibility="@{viewModel.searchLoading ? View.GONE : View.VISIBLE}"
         app:tint="?colorSelectedIconsTint" />
@@ -101,7 +105,7 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/_4sdp"
         android:layout_weight="0.75"
         android:indeterminateTint="?colorSelectedIconsTint"
         android:visibility="@{viewModel.searchLoading ? View.VISIBLE : View.GONE, default=gone}" />
