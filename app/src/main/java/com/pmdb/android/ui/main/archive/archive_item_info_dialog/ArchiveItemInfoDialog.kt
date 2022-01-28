@@ -8,7 +8,10 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -66,7 +69,8 @@ class ArchiveItemInfoDialog :
 
   private fun setUp() {
     viewDataBinding?.let {
-
+      // کلیک آیکون مربوط به باز کردن فرم خالی جهت ورود اطلاعات فیلم
+      it.includeMovieSummary.fullInfoButton.setOnClickListener { showFullMovieInfo() }
       // اضافه کردن لایه ی فرم ویرایش فیلم
       movieFormEditBinding = DataBindingUtil.inflate(
         layoutInflater,
@@ -91,6 +95,14 @@ class ArchiveItemInfoDialog :
     setUpMovieFormHeaderToolbar()
     setUpBottomSheet()
     setUpMovieGenres()
+  }
+
+  /**
+   * نمایش لایه ی مربوط به اطلاعات کامل فیلم
+   */
+  private fun showFullMovieInfo() {
+    // باتم شیت کامل باز شود تا لایه ی مربوط به اطلاعات نمایش داده شود
+    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
   }
 
   /**

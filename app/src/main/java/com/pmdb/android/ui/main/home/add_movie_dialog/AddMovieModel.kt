@@ -17,26 +17,26 @@ class AddMovieModel : BaseObservable() {
 
   var dbId: Long = -1L
   var dbCreatedAt: Long = -1L
-  val title = ObservableField<String>()
-  val yearStart = ObservableField<String>()
-  val yearEnd = ObservableField<String>()
-  val imdbID = ObservableField<String>()
-  val poster = ObservableField<String>()
+  val title = ObservableField("")
+  val yearStart = ObservableField("")
+  val yearEnd = ObservableField("")
+  val imdbID = ObservableField("")
+  val poster = ObservableField("")
   val type = ObservableField<String>().apply { set(MEDIA_TYPE_TITLE_MOVIE) }
   val tv = ObservableField<Boolean>().apply { set(false) }
-  val runtime = ObservableField<String>()
-  val country = ObservableField<String>()
-  val imdbRate = ObservableField<String>()
-  val imdbVotes = ObservableField<String>()
-  val rottenTomatoesRate = ObservableField<String>()
-  val metacriticRate = ObservableField<String>()
+  val runtime = ObservableField("")
+  val country = ObservableField("")
+  val imdbRate = ObservableField("")
+  val imdbVotes = ObservableField("")
+  val rottenTomatoesRate = ObservableField("")
+  val metacriticRate = ObservableField("")
   val genre = ObservableField<String>().apply { set("") }
-  val director = ObservableField<String>()
-  val writer = ObservableField<String>()
-  val actors = ObservableField<String>()
-  val plot = ObservableField<String>()
-  val awards = ObservableField<String>()
-  val comment = ObservableField<String>()
+  val director = ObservableField("")
+  val writer = ObservableField("")
+  val actors = ObservableField("")
+  val plot = ObservableField("")
+  val awards = ObservableField("")
+  val comment = ObservableField("")
   val watched = ObservableField<Boolean>().apply { set(false) }
   var watchAt: Long? = null
   val favorite = ObservableField<Boolean>().apply { set(false) }
@@ -122,29 +122,131 @@ class AddMovieModel : BaseObservable() {
 
   }
 
+  /**
+   * بررسی امتیاز وارد شده در فیلد امتیاز IMDb (عدد وارد شده بیشتر از 10 نباید باشد)
+   */
+  fun onImdbRateChange(s: CharSequence, start: Int, before: Int, count: Int) {
+    if (s.isEmpty()) return
+    val rate = s.toString().toFloatOrNull() ?: return
+    if (rate > 10) setImdbRateToMaximum()
+    else imdbRate.set(s.toString())
+  }
+
+  private fun setImdbRateToMaximum() = imdbRate.set("9.9")
+
+  /**
+   * بررسی امتیاز وارد شده در فیلد امتیاز Rotten Tomatoes (عدد وارد شده بیشتر از 100 نباید باشد)
+   */
+  fun onRottenTomatoesRateChange(s: CharSequence, start: Int, before: Int, count: Int) {
+    if (s.isEmpty()) return
+    val rate = s.toString().toIntOrNull() ?: return
+    if (rate > 100) setRottenTomatoesRateToMaximum()
+    else rottenTomatoesRate.set(s.toString())
+  }
+
+  private fun setRottenTomatoesRateToMaximum() = rottenTomatoesRate.set("100")
+
+  /**
+   * بررسی امتیاز وارد شده در فیلد امتیاز Metacritic (عدد وارد شده بیشتر از 100 نباید باشد)
+   */
+  fun onMetacriticRateChange(s: CharSequence, start: Int, before: Int, count: Int) {
+    if (s.isEmpty()) return
+    val rate = s.toString().toIntOrNull() ?: return
+    if (rate > 100) setMetacriticRateToMaximum()
+    else metacriticRate.set(s.toString())
+  }
+
+  private fun setMetacriticRateToMaximum() = metacriticRate.set("100")
+
   fun clear() {
     dbId = -1L
     dbCreatedAt = -1L
-    title.set(null)
-    imdbID.set(null)
-    poster.set("N/A")
+    title.set("")
+    imdbID.set("")
+    poster.set("")
     type.set(MEDIA_TYPE_TITLE_MOVIE)
-    runtime.set(null)
-    country.set(null)
-    imdbRate.set(null)
-    rottenTomatoesRate.set(null)
-    metacriticRate.set(null)
-    imdbVotes.set(null)
+    runtime.set("")
+    country.set("")
+    imdbRate.set("")
+    rottenTomatoesRate.set("")
+    metacriticRate.set("")
+    imdbVotes.set("")
     genre.set("")
-    director.set(null)
-    writer.set(null)
-    actors.set(null)
-    plot.set(null)
-    awards.set(null)
-    yearStart.set(null)
-    yearEnd.set(null)
-    comment.set(null)
+    director.set("")
+    writer.set("")
+    actors.set("")
+    plot.set("")
+    awards.set("")
+    yearStart.set("")
+    yearEnd.set("")
+    comment.set("")
     watched.set(false)
     favorite.set(false)
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as AddMovieModel
+
+    if (dbId != other.dbId) return false
+    if (dbCreatedAt != other.dbCreatedAt) return false
+    if (title.get() != other.title.get()) return false
+    if (yearStart.get() != other.yearStart.get()) return false
+    if (yearEnd.get() != other.yearEnd.get()) return false
+    if (imdbID.get() != other.imdbID.get()) return false
+    if (poster.get() != other.poster.get()) return false
+    if (type.get() != other.type.get()) return false
+    if (tv.get() != other.tv.get()) return false
+    if (runtime.get() != other.runtime.get()) return false
+    if (country.get() != other.country.get()) return false
+    if (imdbRate.get() != other.imdbRate.get()) return false
+    if (imdbVotes.get() != other.imdbVotes.get()) return false
+    if (rottenTomatoesRate.get() != other.rottenTomatoesRate.get()) return false
+    if (metacriticRate.get() != other.metacriticRate.get()) return false
+    if (genre.get() != other.genre.get()) return false
+    if (director.get() != other.director.get()) return false
+    if (writer.get() != other.writer.get()) return false
+    if (actors.get() != other.actors.get()) return false
+    if (plot.get() != other.plot.get()) return false
+    if (awards.get() != other.awards.get()) return false
+    if (comment.get() != other.comment.get()) return false
+    if (watched.get() != other.watched.get()) return false
+    if (watchAt != other.watchAt) return false
+    if (favorite.get() != other.favorite.get()) return false
+    if (canSave.get() != other.canSave.get()) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = dbId.hashCode()
+    result = 31 * result + dbCreatedAt.hashCode()
+    result = 31 * result + title.hashCode()
+    result = 31 * result + yearStart.hashCode()
+    result = 31 * result + yearEnd.hashCode()
+    result = 31 * result + imdbID.hashCode()
+    result = 31 * result + poster.hashCode()
+    result = 31 * result + type.hashCode()
+    result = 31 * result + tv.hashCode()
+    result = 31 * result + runtime.hashCode()
+    result = 31 * result + country.hashCode()
+    result = 31 * result + imdbRate.hashCode()
+    result = 31 * result + imdbVotes.hashCode()
+    result = 31 * result + rottenTomatoesRate.hashCode()
+    result = 31 * result + metacriticRate.hashCode()
+    result = 31 * result + genre.hashCode()
+    result = 31 * result + director.hashCode()
+    result = 31 * result + writer.hashCode()
+    result = 31 * result + actors.hashCode()
+    result = 31 * result + plot.hashCode()
+    result = 31 * result + awards.hashCode()
+    result = 31 * result + comment.hashCode()
+    result = 31 * result + watched.hashCode()
+    result = 31 * result + (watchAt?.hashCode() ?: 0)
+    result = 31 * result + favorite.hashCode()
+    result = 31 * result + canSave.hashCode()
+    return result
   }
 }

@@ -2,6 +2,7 @@ package com.pmdb.android.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.pmdb.android.BR
@@ -21,6 +22,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   override val layoutId: Int get() = R.layout.activity_main
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
     setUp()
@@ -37,7 +39,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   }
 
   private fun setupFab() {
-    viewModel.currentPage.observe(this, {
+    viewModel.currentPage.observe(this) {
       viewDataBinding?.fabMain?.setImageResource(
         when (it) {
           getString(R.string.home_label) -> R.drawable.ic_add
@@ -46,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
           else -> 0
         }
       )
-    })
+    }
 
     viewDataBinding?.fabMain?.setOnClickListener {
       val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)

@@ -390,8 +390,9 @@
                 android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_imdb_votes"
+                android:onTextChanged="@{viewModel.movie.onImdbRateChange}"
                 android:paddingRight="@dimen/_2sdp"
-                android:text="@={movie.imdbRate}"
+                android:text="@{movie.imdbRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -462,7 +463,8 @@
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_metacritic_rate"
-                android:text="@={movie.rottenTomatoesRate}"
+                android:onTextChanged="@{viewModel.movie.onRottenTomatoesRateChange}"
+                android:text="@{movie.rottenTomatoesRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -519,7 +521,8 @@
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_awards"
-                android:text="@={movie.metacriticRate}"
+                android:onTextChanged="@{viewModel.movie.onMetacriticRateChange}"
+                android:text="@{movie.metacriticRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView

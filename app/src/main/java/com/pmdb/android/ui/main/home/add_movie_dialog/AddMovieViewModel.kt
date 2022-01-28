@@ -83,7 +83,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
         else dataManager.findMovieByImdbId(searchID.value!!.trim())
           .run { checkMatchedMovieResponse(this) }
 
-      } catch (e: NoInternetException) {
+      } catch (e: Exception) {
         navigator?.showError(dataManager.getString(R.string.check_internet_connection))
         _searchLoading.value = false
       }
@@ -418,5 +418,13 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun editMovie(v: View? = null) {
     isEditing.set(true)
+  }
+
+  /**
+   * آیا اطلاعاتی وارد شده است درون فیلد ها یا خیر
+   */
+  fun doesAnyInfoEntered(): Boolean {
+    // اگر آبجکت فیلم فعلی با آبجکت خام آن برابر نباشد، یعنی تغییراتی اعمال شده است
+    return movie != AddMovieModel()
   }
 }

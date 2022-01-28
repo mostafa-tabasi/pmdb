@@ -95,6 +95,8 @@ class AddMovieDialog :
 
       it.includeFindMovie.edtSearchTitle.onFocusChangeListener = this
       it.includeFindMovie.edtSearchId.onFocusChangeListener = this
+      // کلیک آیکون مربوط به باز کردن فرم خالی جهت ورود اطلاعات فیلم
+      it.includeFindMovie.blankFormButton.setOnClickListener { showFormLayout() }
 
       movieFormBinding.imgMoviePoster.setOnClickListener {
         if (viewModel.isEditing.get() == true) getContent.launch("image/*")
@@ -114,10 +116,12 @@ class AddMovieDialog :
    * نمایش دکمه ی تایید جهت پاک کردن اطلاعات صبت شده در فرم
    */
   private fun showClearFormConfirm() {
+    if (!viewModel.doesAnyInfoEntered()) return
+
     viewDataBinding?.let {
       showConfirmFor(
         movieFormBinding.btnConfirmClearDelete,
-        "Clear?",
+        getString(R.string.clear_question),
         R.drawable.bg_confirm_red_button
       ) { viewModel.clearForm(); dismissConfirm() }
     }
@@ -130,7 +134,7 @@ class AddMovieDialog :
     viewDataBinding?.let {
       showConfirmFor(
         movieFormBinding.btnConfirmClearDelete,
-        "Delete?",
+        getString(R.string.delete_question),
         R.drawable.bg_confirm_red_button
       ) { viewModel.deleteMovie(); dismissConfirm() }
     }
@@ -143,7 +147,7 @@ class AddMovieDialog :
     viewDataBinding?.let {
       showConfirmFor(
         movieFormBinding.btnConfirmOverwrite,
-        "Already archived, overwrite?",
+        getString(R.string.already_archived_overwrite),
         R.drawable.bg_confirm_green_button
       ) { viewModel.updateMovie(); dismissConfirm() }
     }

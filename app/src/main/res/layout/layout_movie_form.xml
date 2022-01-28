@@ -387,8 +387,9 @@
                 android:inputType="numberDecimal"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_imdb_votes"
+                android:onTextChanged="@{viewModel.movie.onImdbRateChange}"
                 android:paddingRight="@dimen/_2sdp"
-                android:text="@={viewModel.movie.imdbRate}"
+                android:text="@{viewModel.movie.imdbRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -459,7 +460,8 @@
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_metacritic_rate"
-                android:text="@={viewModel.movie.rottenTomatoesRate}"
+                android:onTextChanged="@{viewModel.movie.onRottenTomatoesRateChange}"
+                android:text="@{viewModel.movie.rottenTomatoesRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -516,7 +518,8 @@
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusForward="@id/edt_awards"
-                android:text="@={viewModel.movie.metacriticRate}"
+                android:onTextChanged="@{viewModel.movie.onMetacriticRateChange}"
+                android:text="@{viewModel.movie.metacriticRate}"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
