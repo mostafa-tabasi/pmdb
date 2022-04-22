@@ -54,10 +54,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
     }
   }
 
-  fun openActivityOnTokenExpire() {
-    //TODO: redirect user to login activity
-  }
-
   @TargetApi(Build.VERSION_CODES.M)
   fun requestPermissionsSafely(permissions: Array<String?>?, requestCode: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

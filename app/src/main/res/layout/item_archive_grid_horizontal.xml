@@ -11,6 +11,8 @@
 
     <import type="com.pmdb.android.utils.enums.RatingSite" />
 
+    <import type="com.pmdb.android.R" />
+
     <variable
       name="viewModel"
       type="com.pmdb.android.ui.main.archive.adapter.ArchiveItemViewModel" />
@@ -106,7 +108,7 @@
         android:gravity="left"
         android:maxLines="5"
         android:text="@{viewModel.title}"
-        android:textColor="@color/black"
+        android:textColor="?colorOnPrimary"
         android:textSize="@dimen/_10ssp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/rate"

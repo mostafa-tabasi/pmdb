@@ -2,15 +2,14 @@ package com.pmdb.android.data.local.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import com.pmdb.android.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class AppPreferencesHelper @Inject constructor(
-  val context: Context,
+  private val mPrefs: SharedPreferences,
+  @ApplicationContext private val context: Context,
 ) : PreferencesHelper {
-
-  private val mPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
   override var currentUserId: String?
     get() = mPrefs.getString(context.getString(R.string.key_current_user_id), null)
@@ -75,5 +74,20 @@ class AppPreferencesHelper @Inject constructor(
     set(value) {
       mPrefs.edit().putString(context.getString(R.string.key_display_type), value)
         .apply()
+    }
+
+  override var isSystemDefaultThemeEnable: Boolean
+    get() = mPrefs.getBoolean(context.getString(R.string.key_theme_system_default), true)
+    set(value) {
+      mPrefs.edit().putBoolean(context.getString(R.string.key_theme_system_default), value).apply()
+    }
+
+  override var appTheme: String
+    get() = mPrefs.getString(
+      context.getString(R.string.key_theme_method),
+      context.resources.getStringArray(R.array.theme_values)[0]
+    )!!
+    set(value) {
+      mPrefs.edit().putString(context.getString(R.string.key_theme_method), value).apply()
     }
 }

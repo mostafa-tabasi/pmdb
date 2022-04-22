@@ -2,6 +2,7 @@ package com.pmdb.android.ui.main.archive
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -33,6 +34,10 @@ import javax.inject.Inject
 class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>(), ArchiveNavigator,
   ArchiveListener {
 
+  companion object {
+    const val TAG = "ArchiveFragment"
+  }
+
   override val viewModel: ArchiveViewModel by viewModels()
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.fragment_archive
@@ -57,12 +62,6 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
     viewDataBinding?.let {
       it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
       it.changeFilter.setOnClickListener { openSearchInArchiveDialog() }
-      /*  TODO: handle multi select for next release
-      it.clearSelectedItems.setOnClickListener {
-        viewModel.clearSelectedMovies()
-        setItemElevationToDefault()
-      }
-      */
       setUpList(it)
     }
   }
@@ -76,12 +75,12 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
       listAdapter.setRatingSite(site)
     }
     // دیتای موردنظر جهت نمایش در لیست
-    viewModel.movies.observe(viewLifecycleOwner, {
+    viewModel.movies.observe(viewLifecycleOwner) {
       tilesAdapter.submitList(it)
       listAdapter.submitList(it)
-    })
+    }
     // تغییر نوع نمایش لیست فیلم ها
-    viewModel.displayType.observe(viewLifecycleOwner, { type ->
+    viewModel.displayType.observe(viewLifecycleOwner) { type ->
       (requireActivity() as MainActivity).showBottomBar()
       with(view.movies) {
         when (type) {
@@ -105,7 +104,7 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
           }
         }
       }
-    })
+    }
   }
 
   /**
@@ -162,25 +161,13 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
     if (preventMultiOpen) return false
     preventMultiOpen = true
     // 500 میلی ثانیه بعد از نمایش باتم شیت، امکان نمایش مجدد فراهم شود
-    Handler().postDelayed({ preventMultiOpen = false }, 500)
+    Handler(Looper.getMainLooper()).postDelayed({ preventMultiOpen = false }, 500)
     openArchiveItemSummaryDialog(movieId)
-
-    /* TODO: handle multi select for next release
-    // اگر در حالت انتخاب فیلم بودیم، با انتخاب هر فیلم، به لیست انتخاب شده ها اضافه یا از آن حذف میشود
-    return if (viewModel.isInSelectMode.value == true)
-      viewModel.addOrRemoveMovieFromSelectedList(movieId)
-    // در غیر اینصورت، باتم شیتِ خلاصه ی اطلاعات فیلم را نمابش میدهیم
-    else {
-      // TODO: show movie summary bottom sheet
-      false
-    }
-    */
 
     return false
   }
 
   override fun onMovieLongTouch(movieId: Long): Boolean {
-    //return viewModel.addOrRemoveMovieFromSelectedList(movieId)
     return false
   }
 
@@ -192,15 +179,5 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
       archiveItemId = movieId
     )
     findNavController().navigate(action)
-  }
-
-  companion object {
-    const val TAG = "ArchiveFragment"
-    fun newInstance(): ArchiveFragment {
-      val args = Bundle()
-      val fragment = ArchiveFragment()
-      fragment.arguments = args
-      return fragment
-    }
   }
 }

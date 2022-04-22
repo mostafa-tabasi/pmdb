@@ -1,7 +1,8 @@
 package com.pmdb.android.di
 
-import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -78,7 +79,9 @@ object AppModule {
 
   @Provides
   @Singleton
-  fun provideContext(application: Application): Context = application
+  fun provideSharedPreferences(
+    @ApplicationContext context: Context
+  ): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
   @Provides
   @Singleton

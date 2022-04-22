@@ -82,6 +82,8 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:text="@={viewModel.searchTitle}"
+        android:textColor="?colorOnPrimary"
+        android:textColorHint="?colorOnPrimaryHint"
         android:textSize="@dimen/_14ssp" />
 
       <EditText
@@ -102,6 +104,8 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:text="@={viewModel.searchID}"
+        android:textColor="?colorOnPrimary"
+        android:textColorHint="?colorOnPrimaryHint"
         android:textSize="@dimen/_14ssp" />
 
       <ImageView

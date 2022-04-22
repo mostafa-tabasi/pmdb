@@ -34,4 +34,6 @@ object CommonUtils {
     progressDialog.setCanceledOnTouchOutside(false)
     return progressDialog
   }
+
+  fun imdbUrl(movieId: String): String = "https://www.imdb.com/title/$movieId/"
 }

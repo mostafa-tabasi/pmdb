@@ -10,4 +10,9 @@ interface ArchiveItemInfoNavigator : BaseNavigator {
    * @param animate همراه با انیمیشن انجام شود یا خیر
    */
   fun dismissConfirm(animate: Boolean = true)
+
+  /**
+   * هدایت کاربر به url موردنظر بوسیله ی browser
+   */
+  fun openUrl(url: String)
 }

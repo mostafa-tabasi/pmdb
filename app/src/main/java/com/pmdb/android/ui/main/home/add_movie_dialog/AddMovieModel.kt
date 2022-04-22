@@ -132,7 +132,7 @@ class AddMovieModel : BaseObservable() {
     else imdbRate.set(s.toString())
   }
 
-  private fun setImdbRateToMaximum() = imdbRate.set("9.9")
+  private fun setImdbRateToMaximum() = imdbRate.set("10")
 
   /**
    * بررسی امتیاز وارد شده در فیلد امتیاز Rotten Tomatoes (عدد وارد شده بیشتر از 100 نباید باشد)

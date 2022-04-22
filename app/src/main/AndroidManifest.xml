@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.pmdb.android">
 
   <uses-permission android:name="android.permission.INTERNET" />
@@ -18,8 +19,11 @@
 
     <activity
       android:name="com.pmdb.android.ui.splash.SplashActivity"
+      android:configChanges="uiMode"
+      android:exported="true"
       android:screenOrientation="portrait"
-      android:theme="@style/Theme.PMDb.Splash">
+      android:theme="@style/Theme.PMDb.Splash"
+      tools:ignore="LockedOrientationActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
@@ -28,8 +32,10 @@
 
     <activity
       android:name="com.pmdb.android.ui.main.MainActivity"
+      android:configChanges="uiMode"
       android:screenOrientation="portrait"
-      android:windowSoftInputMode="adjustNothing" />
+      android:windowSoftInputMode="adjustNothing"
+      tools:ignore="LockedOrientationActivity" />
 
   </application>
 

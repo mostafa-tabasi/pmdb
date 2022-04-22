@@ -22,19 +22,19 @@
       android:id="@+id/app_icon"
       android:layout_width="@dimen/_90sdp"
       android:layout_height="@dimen/_110sdp"
+      android:contentDescription="@string/app_logo"
       android:scaleType="centerCrop"
-      android:src="@drawable/ic_foreground"
-      android:contentDescription="@string/app_logo" />
+      android:src="@drawable/ic_foreground" />
 
     <View
       android:id="@+id/divider"
       android:layout_width="@dimen/_1sdp"
+      android:layout_height="wrap_content"
       android:layout_alignTop="@+id/app_icon"
       android:layout_alignBottom="@+id/app_icon"
-      android:layout_height="wrap_content"
       android:layout_marginRight="@dimen/_6sdp"
       android:layout_toRightOf="@id/app_icon"
-      android:background="?colorOnPrimary" />
+      android:background="?colorAccent" />
 
     <TextView
       android:id="@+id/app_name"
@@ -45,7 +45,7 @@
       android:layout_toRightOf="@id/divider"
       android:fontFamily="sans-serif"
       android:text="@string/app_name"
-      android:textColor="@color/black"
+      android:textColor="?colorOnPrimary"
       android:textSize="@dimen/_13ssp"
       android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
       android:layout_toRightOf="@id/developed_by"
       android:fontFamily="sans-serif"
       android:text="@string/app_developer_name"
-      android:textColor="@color/black"
+      android:textColor="?colorOnPrimary"
       android:textSize="@dimen/_11ssp"
       android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
       android:layout_toRightOf="@id/version_title"
       android:fontFamily="sans-serif"
       android:text="@{viewModel.version}"
-      android:textColor="@color/black"
+      android:textColor="?colorOnPrimary"
       android:textSize="@dimen/_11ssp"
       android:textStyle="bold"
       tools:text="1.0" />
@@ -128,11 +128,11 @@
         android:layout_marginRight="@dimen/_3sdp"
         android:background="?actionBarItemBackground"
         android:clickable="true"
+        android:contentDescription="@string/linkedin_button"
+        android:focusable="true"
         android:padding="@dimen/_3sdp"
         android:src="@drawable/ic_linkedin"
-        app:tint="@color/grey_500"
-        android:contentDescription="@string/linkedin_button"
-        android:focusable="true" />
+        app:tint="@color/grey_500" />
 
       <ImageView
         android:id="@+id/email"
@@ -141,11 +141,11 @@
         android:layout_marginRight="@dimen/_3sdp"
         android:background="?actionBarItemBackground"
         android:clickable="true"
+        android:contentDescription="@string/email_button"
+        android:focusable="true"
         android:padding="@dimen/_3sdp"
         android:src="@drawable/ic_email"
-        android:contentDescription="@string/email_button"
-        app:tint="@color/grey_500"
-        android:focusable="true" />
+        app:tint="@color/grey_500" />
 
     </LinearLayout>
 

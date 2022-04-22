@@ -1,5 +1,4 @@
 <resources>
-  <string name="app_name" translatable="false">PMDb</string>
   <string name="app_name_full" translatable="false">Pocket Movie Database</string>
   <string name="developed_by">Developed by</string>
   <string name="app_developer_name">Mostafa Tabasi</string>
@@ -58,6 +57,7 @@
   <string name="confirm_overwrite_button" translatable="false">Confirm Overwrite Button</string>
   <string name="confirm_button" translatable="false">Confirm Button</string>
   <string name="imdb_logo" translatable="false">IMDb Logo</string>
+  <string name="imdb_page" translatable="false">IMDb Page</string>
   <string name="rotten_tomatoes_logo" translatable="false">Rotten Tomatoes Logo</string>
   <string name="metacritic_logo" translatable="false">Metacritic Logo</string>
   <string name="favorite_icon" translatable="false">Favorite Icon</string>

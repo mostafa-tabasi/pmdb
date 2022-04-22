@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <attr name="colorTransparentPrimary" format="color" />
-  <attr name="colorTransparentPrimaryVariant" format="color" />
+  <attr name="colorOnPrimaryHint" format="color" />
 
   <attr name="colorBottomNavigationItemSelected" format="color" />
   <attr name="colorBottomNavigationItemUnSelected" format="color" />
 
-  <attr name="colorMovieFormDivider" format="color" />
-  <attr name="colorMovieFormToolbarBackground" format="color" />
+  <attr name="colorFormDivider" format="color" />
 
   <attr name="colorSelectedIconsTint" format="color" />
   <attr name="colorUnSelectedIconsTint" format="color" />
 
   <attr name="colorTransparentMatchedMovieListItemLoading" format="color" />
-
-  <attr name="colorCheckedChip" format="color" />
-  <attr name="colorUnCheckedChip" format="color" />
 
   <attr name="colorBackgroundSimpleImdbRate" format="color" />
   <attr name="colorBackgroundSimpleRottenTomatoesRate" format="color" />

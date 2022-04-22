@@ -2,6 +2,7 @@ package com.pmdb.android.ui.main.home
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import androidx.core.widget.NestedScrollView
@@ -22,6 +23,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNavigator,
   ArchiveListener {
+
+  companion object {
+    const val TAG = "HomeFragment"
+  }
 
   override val viewModel: HomeViewModel by viewModels()
   override val bindingVariable: Int get() = BR.viewModel
@@ -65,9 +70,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       recentlyAddedMoviesAdapter.setListener(this)
       it.recentlyAddedMovies.adapter = recentlyAddedMoviesAdapter
       GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedMovies) }
-      viewModel.recentlyAddedMovies.observe(viewLifecycleOwner, { items ->
+      viewModel.recentlyAddedMovies.observe(viewLifecycleOwner) { items ->
         recentlyAddedMoviesAdapter.submitList(items)
-      })
+      }
     }
   }
 
@@ -79,9 +84,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       recentlyAddedSeriesAdapter.setListener(this)
       it.recentlyAddedSeries.adapter = recentlyAddedSeriesAdapter
       GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyAddedSeries) }
-      viewModel.recentlyAddedSeries.observe(viewLifecycleOwner, { items ->
+      viewModel.recentlyAddedSeries.observe(viewLifecycleOwner) { items ->
         recentlyAddedSeriesAdapter.submitList(items)
-      })
+      }
     }
   }
 
@@ -93,13 +98,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       topRatedAdapter.setListener(this)
       // سایتی که معیار امتیاز فیلم ها قرار است باشد
       viewModel.topRatedMethod.observe(
-        viewLifecycleOwner,
-        { site -> topRatedAdapter.ratingSite = site })
+        viewLifecycleOwner
+      ) { site -> topRatedAdapter.ratingSite = site }
       it.topRated.adapter = topRatedAdapter
       GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.topRated) }
-      viewModel.topRated.observe(viewLifecycleOwner, { items ->
+      viewModel.topRated.observe(viewLifecycleOwner) { items ->
         topRatedAdapter.submitList(items)
-      })
+      }
     }
   }
 
@@ -111,9 +116,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       recentlyWatchedAdapter.setListener(this)
       it.recentlyWatched.adapter = recentlyWatchedAdapter
       GravitySnapHelper(Gravity.START).apply { attachToRecyclerView(it.recentlyWatched) }
-      viewModel.recentlyWatched.observe(viewLifecycleOwner, { items ->
+      viewModel.recentlyWatched.observe(viewLifecycleOwner) { items ->
         recentlyWatchedAdapter.submitList(items)
-      })
+      }
     }
   }
 
@@ -122,11 +127,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
    */
   private fun setUpBottomBarVisibility() {
     viewDataBinding?.scrollRoot?.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-      if (scrollY > oldScrollY) {
-        (requireActivity() as MainActivity).hideBottomBar()
-      } else {
-        (requireActivity() as MainActivity).showBottomBar()
-      }
+      if (scrollY > oldScrollY) (requireActivity() as MainActivity).hideBottomBar()
+      else (requireActivity() as MainActivity).showBottomBar()
     })
   }
 
@@ -161,7 +163,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
     if (preventMultiOpen) return false
     preventMultiOpen = true
     // 500 میلی ثانیه بعد از نمایش باتم شیت، امکان نمایش مجدد فراهم شود
-    Handler().postDelayed({ preventMultiOpen = false }, 500)
+    Handler(Looper.getMainLooper()).postDelayed({ preventMultiOpen = false }, 500)
     openArchiveItemSummaryDialog(movieId)
 
     return false
@@ -179,16 +181,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       archiveItemId = movieId
     )
     findNavController().navigate(action)
-  }
-
-  companion object {
-    const val TAG = "HomeFragment"
-    fun newInstance(): HomeFragment {
-      val args = Bundle()
-      val fragment = HomeFragment()
-      fragment.arguments = args
-      return fragment
-    }
   }
 
 }

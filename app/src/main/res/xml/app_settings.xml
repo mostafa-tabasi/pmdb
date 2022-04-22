@@ -71,6 +71,28 @@
 
   <Preference
     android:layout="@layout/layout_preference_category"
+    android:title="Theme"
+    app:iconSpaceReserved="false"
+    app:selectable="false" />
+
+  <SwitchPreferenceCompat
+    android:defaultValue="true"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_theme_system_default"
+    app:summary="Set app theme based on system default"
+    app:title="System default" />
+
+  <ListPreference
+    android:title="Choose theme"
+    app:defaultValue="1"
+    app:entries="@array/theme_entries"
+    app:entryValues="@array/theme_values"
+    app:iconSpaceReserved="false"
+    app:key="@string/key_theme_method"
+    app:useSimpleSummaryProvider="true" />
+
+  <Preference
+    android:layout="@layout/layout_preference_category"
     android:summary="Will be available in the next version"
     android:title="Backup"
     app:iconSpaceReserved="false"
@@ -81,30 +103,6 @@
     android:summary="Click for making a backup from your archive"
     app:iconSpaceReserved="false"
     app:selectable="false" />
-
-  <Preference
-    android:layout="@layout/layout_preference_category"
-    android:summary="Will be available in the next version"
-    android:title="Theme"
-    app:iconSpaceReserved="false"
-    app:selectable="false" />
-
-  <SwitchPreferenceCompat
-    android:enabled="false"
-    app:iconSpaceReserved="false"
-    app:key="@string/key_theme_system_default"
-    app:summary="Set app theme based on system default"
-    app:title="Device default" />
-
-  <ListPreference
-    android:enabled="false"
-    android:title="Choose theme"
-    app:defaultValue="1"
-    app:entries="@array/theme_entries"
-    app:entryValues="@array/theme_values"
-    app:iconSpaceReserved="false"
-    app:key="@string/key_theme_method"
-    app:useSimpleSummaryProvider="true" />
 
   <Preference />
 

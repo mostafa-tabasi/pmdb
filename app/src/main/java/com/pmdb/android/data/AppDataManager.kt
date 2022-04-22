@@ -11,13 +11,14 @@ import com.pmdb.android.data.model.db.MovieEntity
 import com.pmdb.android.data.remote.ApiHeader
 import com.pmdb.android.data.remote.ApiHelper
 import com.pmdb.android.data.resource.ResourceHelper
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppDataManager @Inject constructor(
-  private val mContext: Context,
+  @ApplicationContext private val mContext: Context,
   private val dbHelper: DbHelper,
   private val preferencesHelper: PreferencesHelper,
   private val apiHelper: ApiHelper,
@@ -79,6 +80,18 @@ class AppDataManager @Inject constructor(
     get() = preferencesHelper.archiveDefaultItemViewType
     set(value) {
       preferencesHelper.archiveDefaultItemViewType = value
+    }
+
+  override var isSystemDefaultThemeEnable: Boolean
+    get() = preferencesHelper.isSystemDefaultThemeEnable
+    set(value) {
+      preferencesHelper.isSystemDefaultThemeEnable = value
+    }
+
+  override var appTheme: String
+    get() = preferencesHelper.appTheme
+    set(value) {
+      preferencesHelper.appTheme = value
     }
 
   override fun getApiHeader(): ApiHeader = apiHelper.getApiHeader()

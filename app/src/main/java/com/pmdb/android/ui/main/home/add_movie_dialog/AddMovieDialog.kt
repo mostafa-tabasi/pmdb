@@ -3,6 +3,7 @@ package com.pmdb.android.ui.main.home.add_movie_dialog
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -53,9 +54,12 @@ class AddMovieDialog :
   private lateinit var matchedMovieListBinding: LayoutMatchedMovieListBinding
   private lateinit var movieFormBinding: LayoutMovieFormBinding
 
+  private lateinit var handler: Handler
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
+    handler = Handler(Looper.getMainLooper())
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -152,6 +156,8 @@ class AddMovieDialog :
       ) { viewModel.updateMovie(); dismissConfirm() }
     }
   }
+
+  override fun openUrl(url: String) = requireActivity().openUrl(url)
 
   /**
    * نمایش عنوان تاییدیه مربوط به دکمه ی موردنظر
@@ -548,7 +554,7 @@ class AddMovieDialog :
           animate = false
         ) { viewModel.removeGenre(genre) }
         // بعد از اضافه شدن چیپِ جدید، به سمت راست اسکرول، تا چیپ دیده شود
-        Handler().postDelayed({
+        handler.postDelayed({
           movieFormBinding.layoutGenreChipsParent.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
         }, 200L)
       }
@@ -569,7 +575,7 @@ class AddMovieDialog :
     movieFormBinding.edtGenre.setItems(
       items = viewModel.getGenreItems(),
       onFocusChangeListener = { _, hasFocus ->
-        if (hasFocus) Handler().postDelayed({
+        if (hasFocus) handler.postDelayed({
           movieFormBinding.layoutScrollView.smoothScrollBy(0, 100)
         }, 250)
       },

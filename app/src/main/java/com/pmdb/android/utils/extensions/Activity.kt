@@ -1,7 +1,9 @@
 package com.pmdb.android.utils.extensions
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -41,4 +43,9 @@ fun Activity.actionBarSize(): Int {
   return if (theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
     TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
   } else 0
+}
+
+fun Activity.openUrl(url: String) {
+  val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+  startActivity(browserIntent)
 }

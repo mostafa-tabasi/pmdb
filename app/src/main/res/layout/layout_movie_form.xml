@@ -28,7 +28,9 @@
   <FrameLayout
     android:id="@+id/layout_movie_form"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?colorPrimary"
+    tools:ignore="TooManyViews">
 
     <androidx.core.widget.NestedScrollView
       android:id="@+id/layout_scroll_view"
@@ -111,6 +113,8 @@
                   android:inputType="text"
                   android:nextFocusForward="@id/edt_year"
                   android:text="@={viewModel.movie.title}"
+                  android:textColor="?colorOnPrimary"
+                  android:textColorHint="?colorOnPrimaryHint"
                   android:textSize="@dimen/_16ssp"
                   android:textStyle="bold"
                   android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.INVISIBLE, default=visible}" />
@@ -156,6 +160,8 @@
                   android:nextFocusForward="@id/edt_country"
                   android:padding="@dimen/_6sdp"
                   android:text="@={viewModel.movie.runtime}"
+                  android:textColor="?colorOnPrimary"
+                  android:textColorHint="?colorOnPrimaryHint"
                   android:textSize="@dimen/_11ssp" />
 
                 <TextView
@@ -165,6 +171,7 @@
                   android:gravity="left"
                   android:paddingLeft="@dimen/_2sdp"
                   android:text="@string/min"
+                  android:textColor="@color/grey_600"
                   android:textSize="@dimen/_10ssp"
                   android:visibility="@{TextUtils.isEmpty(viewModel.movie.runtime) ? View.GONE : View.VISIBLE, default=visible}" />
 
@@ -180,7 +187,7 @@
                 android:layout_marginRight="@dimen/_6sdp"
                 android:layout_toRightOf="@+id/layout_runtime"
                 android:alpha="0.5"
-                android:background="?attr/colorMovieFormDivider" />
+                android:background="?attr/colorFormDivider" />
 
               <EditText
                 android:id="@+id/edt_country"
@@ -196,6 +203,8 @@
                 android:nextFocusForward="@id/edt_imdb_id"
                 android:padding="@dimen/_6sdp"
                 android:text="@={viewModel.movie.country}"
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="?colorOnPrimaryHint"
                 android:textSize="@dimen/_11ssp" />
 
             </RelativeLayout>
@@ -205,7 +214,7 @@
               android:layout_height="match_parent"
               android:layout_marginRight="@dimen/_4sdp"
               android:alpha="0.5"
-              android:background="?attr/colorMovieFormDivider" />
+              android:background="?attr/colorFormDivider" />
 
             <LinearLayout
               android:layout_width="0dp"
@@ -234,6 +243,8 @@
                   android:maxLength="4"
                   android:nextFocusForward="@{viewModel.movie.tv ? @id/edt_year_end : @id/edt_runtime}"
                   android:text="@={viewModel.movie.yearStart}"
+                  android:textColor="?colorOnPrimary"
+                  android:textColorHint="?colorOnPrimaryHint"
                   android:textSize="@dimen/_12ssp" />
 
                 <TextView
@@ -258,6 +269,8 @@
                   android:maxLength="4"
                   android:nextFocusForward="@id/edt_runtime"
                   android:text="@={viewModel.movie.yearEnd}"
+                  android:textColor="?colorOnPrimary"
+                  android:textColorHint="?colorOnPrimaryHint"
                   android:textSize="@dimen/_12ssp"
                   android:visibility="@{viewModel.movie.tv ? View.VISIBLE : View.GONE, default=visible}" />
 
@@ -276,6 +289,8 @@
                 android:nextFocusForward="@id/edt_genre"
                 android:padding="@dimen/_6sdp"
                 android:text="@={viewModel.movie.imdbID}"
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="?colorOnPrimaryHint"
                 android:textSize="@dimen/_11ssp" />
 
             </LinearLayout>
@@ -297,7 +312,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/genre"
-            android:textSize="@dimen/_9sdp" />
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_9ssp" />
 
           <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/layout_genres"
@@ -338,6 +354,8 @@
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_imdb_rate"
               android:text="@={viewModel.genreField}"
+              android:textColor="?colorOnPrimary"
+              android:textColorHint="?colorOnPrimaryHint"
               android:textSize="@dimen/_13ssp"
               android:visibility="@{viewModel.isEditing ? View.VISIBLE : View.GONE}" />
 
@@ -361,17 +379,40 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="@dimen/_16sdp"
               android:gravity="center"
-              android:text="@string/imdb"
-              android:textSize="@dimen/_9sdp" />
+              tools:ignore="UseCompoundDrawables">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/imdb"
+                android:textColor="@color/grey_600"
+                android:textSize="@dimen/_9ssp" />
+
+              <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:background="?actionBarItemBackground"
+                android:clickable="true"
+                android:contentDescription="@string/imdb_page"
+                android:focusable="true"
+                android:onClick="@{viewModel.onImdbRateClick}"
+                android:src="@drawable/ic_open"
+                android:visibility="@{TextUtils.isEmpty(viewModel.movie.imdbID) || viewModel.isEditing ? View.GONE : View.VISIBLE, default=gone}"
+                app:tint="@color/grey_600" />
+
+            </LinearLayout>
 
             <LinearLayout
               android:id="@+id/layout_imdb_rate"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/_2sdp"
               android:animateLayoutChanges="true"
               android:gravity="center"
               android:orientation="horizontal">
@@ -390,6 +431,8 @@
                 android:onTextChanged="@{viewModel.movie.onImdbRateChange}"
                 android:paddingRight="@dimen/_2sdp"
                 android:text="@{viewModel.movie.imdbRate}"
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="?colorOnPrimaryHint"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -416,7 +459,8 @@
               android:inputType="number"
               android:nextFocusForward="@id/edt_rotten_tomatoes_rate"
               android:text="@={viewModel.movie.imdbVotes}"
-              android:textColor="?colorPrimaryVariant"
+              android:textColor="?colorOnPrimary"
+              android:textColorHint="?colorOnPrimaryHint"
               android:textSize="@dimen/_10ssp" />
 
           </LinearLayout>
@@ -427,7 +471,7 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_4sdp"
             android:alpha="0.5"
-            android:background="?attr/colorMovieFormDivider" />
+            android:background="?attr/colorFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -437,14 +481,16 @@
 
             <TextView
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="@dimen/_16sdp"
               android:gravity="center"
               android:text="@string/rotten_tomatoes"
-              android:textSize="@dimen/_9sdp" />
+              android:textColor="@color/grey_600"
+              android:textSize="@dimen/_9ssp" />
 
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/_2sdp"
               android:animateLayoutChanges="true"
               android:gravity="center"
               android:orientation="horizontal">
@@ -462,6 +508,8 @@
                 android:nextFocusForward="@id/edt_metacritic_rate"
                 android:onTextChanged="@{viewModel.movie.onRottenTomatoesRateChange}"
                 android:text="@{viewModel.movie.rottenTomatoesRate}"
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="?colorOnPrimaryHint"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -485,7 +533,7 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_4sdp"
             android:alpha="0.5"
-            android:background="?attr/colorMovieFormDivider" />
+            android:background="?attr/colorFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -495,14 +543,16 @@
 
             <TextView
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="@dimen/_16sdp"
               android:gravity="center"
               android:text="@string/metacritic"
-              android:textSize="@dimen/_9sdp" />
+              android:textColor="@color/grey_600"
+              android:textSize="@dimen/_9ssp" />
 
             <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginHorizontal="@dimen/_2sdp"
               android:animateLayoutChanges="true"
               android:gravity="center"
               android:orientation="horizontal">
@@ -520,6 +570,8 @@
                 android:nextFocusForward="@id/edt_awards"
                 android:onTextChanged="@{viewModel.movie.onMetacriticRateChange}"
                 android:text="@{viewModel.movie.metacriticRate}"
+                android:textColor="?colorOnPrimary"
+                android:textColorHint="?colorOnPrimaryHint"
                 android:textSize="@dimen/_16ssp" />
 
               <TextView
@@ -551,7 +603,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/awards"
-            android:textSize="@dimen/_9sdp" />
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_9ssp" />
 
           <EditText
             android:id="@+id/edt_awards"
@@ -565,6 +618,8 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_director"
             android:text="@={viewModel.movie.awards}"
+            android:textColor="?colorOnPrimary"
+            android:textColorHint="?colorOnPrimaryHint"
             android:textSize="@dimen/_13ssp" />
 
         </LinearLayout>
@@ -590,7 +645,8 @@
               android:layout_height="wrap_content"
               android:gravity="center"
               android:text="@string/director"
-              android:textSize="@dimen/_9sdp" />
+              android:textColor="@color/grey_600"
+              android:textSize="@dimen/_9ssp" />
 
             <EditText
               android:id="@+id/edt_director"
@@ -604,6 +660,8 @@
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_writer"
               android:text="@={viewModel.movie.director}"
+              android:textColor="?colorOnPrimary"
+              android:textColorHint="?colorOnPrimaryHint"
               android:textSize="@dimen/_13ssp" />
 
           </LinearLayout>
@@ -614,7 +672,7 @@
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_4sdp"
             android:alpha="0.5"
-            android:background="?attr/colorMovieFormDivider" />
+            android:background="?attr/colorFormDivider" />
 
           <LinearLayout
             android:layout_width="0dp"
@@ -628,7 +686,8 @@
               android:layout_height="wrap_content"
               android:gravity="center"
               android:text="@string/writer"
-              android:textSize="@dimen/_9sdp" />
+              android:textColor="@color/grey_600"
+              android:textSize="@dimen/_9ssp" />
 
             <EditText
               android:id="@+id/edt_writer"
@@ -642,6 +701,8 @@
               android:inputType="textMultiLine"
               android:nextFocusForward="@id/edt_actors"
               android:text="@={viewModel.movie.writer}"
+              android:textColor="?colorOnPrimary"
+              android:textColorHint="?colorOnPrimaryHint"
               android:textSize="@dimen/_13ssp" />
 
           </LinearLayout>
@@ -661,7 +722,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/actors"
-            android:textSize="@dimen/_9sdp" />
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_9ssp" />
 
           <EditText
             android:id="@+id/edt_actors"
@@ -675,6 +737,8 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_plot"
             android:text="@={viewModel.movie.actors}"
+            android:textColor="?colorOnPrimary"
+            android:textColorHint="?colorOnPrimaryHint"
             android:textSize="@dimen/_13ssp" />
 
         </LinearLayout>
@@ -692,7 +756,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/plot"
-            android:textSize="@dimen/_9sdp" />
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_9ssp" />
 
           <EditText
             android:id="@+id/edt_plot"
@@ -706,6 +771,8 @@
             android:inputType="textMultiLine"
             android:nextFocusForward="@id/edt_comment"
             android:text="@={viewModel.movie.plot}"
+            android:textColor="?colorOnPrimary"
+            android:textColorHint="?colorOnPrimaryHint"
             android:textSize="@dimen/_13ssp" />
 
         </LinearLayout>
@@ -723,7 +790,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/comment"
-            android:textSize="@dimen/_9sdp" />
+            android:textColor="@color/grey_600"
+            android:textSize="@dimen/_9ssp" />
 
           <EditText
             android:id="@+id/edt_comment"
@@ -737,6 +805,8 @@
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:text="@={viewModel.movie.comment}"
+            android:textColor="?colorOnPrimary"
+            android:textColorHint="?colorOnPrimaryHint"
             android:textSize="@dimen/_13ssp" />
 
         </LinearLayout>
@@ -751,7 +821,7 @@
       android:layout_height="?actionBarSize"
       android:layout_gravity="top"
       android:animateLayoutChanges="true"
-      android:background="?colorPrimary"
+      android:background="?colorTransparentPrimary"
       android:elevation="@dimen/_4sdp"
       android:gravity="left|center_vertical"
       android:orientation="horizontal"
@@ -801,7 +871,7 @@
       android:layout_height="?actionBarSize"
       android:layout_gravity="bottom"
       android:animateLayoutChanges="true"
-      android:background="?attr/colorMovieFormToolbarBackground"
+      android:background="?attr/colorTransparentPrimary"
       android:elevation="@dimen/_6sdp"
       android:gravity="right|center_vertical"
       android:orientation="horizontal"
@@ -864,7 +934,7 @@
         android:layout_marginRight="@dimen/_6sdp"
         android:layout_marginBottom="@dimen/_4sdp"
         android:alpha="0.5"
-        android:background="?attr/colorMovieFormDivider" />
+        android:background="?attr/colorFormDivider" />
 
       <FrameLayout
         android:layout_width="wrap_content"

@@ -10,6 +10,7 @@ import com.pmdb.android.data.model.db.MovieEntity
 import com.pmdb.android.ui.base.BaseViewModel
 import com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieModel
 import com.pmdb.android.utils.AppConstants
+import com.pmdb.android.utils.CommonUtils
 import com.pmdb.android.utils.enums.MovieGenre
 import com.pmdb.android.utils.enums.TvGenre
 import com.pmdb.android.utils.extensions.isNullOrEmptyAfterTrim
@@ -179,6 +180,18 @@ class ArchiveItemInfoViewModel @Inject constructor(dataManager: DataManager) :
       _isEditing.value = false
       movie.genre.set(_genres.value!!.joinToString(", "))
       dataManager.updateMovie(MovieEntity.from(movie)).run { _saveLoading.value = false }
+    }
+  }
+
+  /**
+   *کلیک روی امتیاز مربوط به سایت Imdb
+   */
+  fun onImdbRateClick(v: View? = null) {
+    with(movie.imdbID.get()) {
+      if (isNullOrEmptyAfterTrim()) return
+
+      // هدایت کاربر به سایت Imdb مربوط به فیلم یا سریال موردنظر
+      navigator?.openUrl(CommonUtils.imdbUrl(this!!))
     }
   }
 }

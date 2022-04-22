@@ -253,6 +253,8 @@ class ArchiveItemInfoDialog :
     )
   }
 
+  override fun openUrl(url: String) = requireActivity().openUrl(url)
+
   /**
    * نمایش دکمه ی تایید جهت پاک کردن فیلم از آرشیو
    */
@@ -260,7 +262,7 @@ class ArchiveItemInfoDialog :
     viewDataBinding?.let {
       showConfirmFor(
         movieFormEditBinding.btnConfirmClearDelete,
-        "Delete?",
+        getString(R.string.delete_question),
         R.drawable.bg_confirm_red_button
       ) { viewModel.deleteMovie(); dismissConfirm() }
     }

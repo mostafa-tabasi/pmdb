@@ -53,11 +53,11 @@
       android:id="@+id/fab_main"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:contentDescription="@string/add_movie_button"
       app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
-      app:backgroundTint="?colorOnPrimary"
+      app:backgroundTint="?colorAccent"
       app:layout_anchor="@id/bottom_bar"
-      tools:src="@drawable/ic_add"
-      android:contentDescription="@string/add_movie_button" />
+      tools:src="@drawable/ic_add" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

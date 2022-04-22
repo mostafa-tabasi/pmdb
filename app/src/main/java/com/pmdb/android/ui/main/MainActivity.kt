@@ -7,12 +7,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.pmdb.android.BR
 import com.pmdb.android.R
+import com.pmdb.android.data.local.prefs.PreferencesHelper
 import com.pmdb.android.databinding.ActivityMainBinding
 import com.pmdb.android.ui.base.BaseActivity
 import com.pmdb.android.ui.main.archive.ArchiveFragment
 import com.pmdb.android.ui.main.home.HomeFragment
 import com.pmdb.android.ui.main.settings.SettingsFragment
+import com.pmdb.android.utils.enums.AppTheme
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator {
@@ -21,11 +27,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   override val bindingVariable: Int get() = BR.viewModel
   override val layoutId: Int get() = R.layout.activity_main
 
+  @EntryPoint
+  @InstallIn(SingletonComponent::class)
+  interface MainActivityEntryPoint {
+    fun providePreferencesHelper(): PreferencesHelper
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    handleAppTheme()
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
     setUp()
+  }
+
+  private fun handleAppTheme() {
+    val hiltEntryPoint =
+      EntryPointAccessors.fromApplication(this, MainActivityEntryPoint::class.java)
+    val prefsHelper = hiltEntryPoint.providePreferencesHelper()
+
+    AppCompatDelegate.setDefaultNightMode(
+      when {
+        prefsHelper.isSystemDefaultThemeEnable -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        AppTheme.withId(prefsHelper.appTheme.toInt()) == AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+        else -> AppCompatDelegate.MODE_NIGHT_YES
+      }
+    )
   }
 
   private fun setUp() {

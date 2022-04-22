@@ -25,4 +25,10 @@ interface PreferencesHelper {
 
   // حالت پیش فرض نمایش آیتم های موجود در آرشیو
   var archiveDefaultItemViewType: String
+
+  // آیا تم از  حالت پیش فرض دیوایس پیروی میکند
+  var isSystemDefaultThemeEnable: Boolean
+
+  // تم انتخاب شده ی اپلیکیشن
+  var appTheme: String
 }

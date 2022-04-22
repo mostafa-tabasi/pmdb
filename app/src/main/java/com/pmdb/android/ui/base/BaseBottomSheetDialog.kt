@@ -66,10 +66,6 @@ abstract class BaseBottomSheetDialog<T : ViewDataBinding?, V : BaseViewModel<*>?
     }
   }
 
-  fun openActivityOnTokenExpire() {
-    baseActivity?.openActivityOnTokenExpire()
-  }
-
   override fun showError(message: String) = requireContext().toast(message)
 
   override fun back() = requireActivity().onBackPressed()

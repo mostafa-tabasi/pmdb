@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_16sdp"
-        android:background="@drawable/bg_bottom_sheet"
         android:orientation="vertical">
 
         <LinearLayout
@@ -59,7 +58,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.displayType.toString()}"
-            android:textColor="@color/black"
+            android:textColor="?colorOnPrimary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
@@ -87,7 +86,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginHorizontal="@dimen/_3sdp"
-              android:background="?selectableItemBackground"
+              android:background="?actionBarItemBackground"
               android:button="@null"
               android:checked="@{viewModel.displayType == ArchiveDisplayType.TILE, default=true}"
               android:drawableLeft="@drawable/ic_grid"
@@ -140,7 +139,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.filterType.toString()}"
-            android:textColor="@color/black"
+            android:textColor="?colorOnPrimary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
         </LinearLayout>
@@ -219,8 +218,8 @@
             android:layout_height="@dimen/_1sdp"
             android:layout_marginLeft="@dimen/_6sdp"
             android:layout_weight="1"
-            android:alpha="0.2"
-            android:background="?colorPrimaryVariant" />
+            android:alpha="0.5"
+            android:background="?colorFormDivider" />
 
         </LinearLayout>
 
@@ -245,7 +244,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.title}"
-            android:textColor="@color/black"
+            android:textColor="?colorOnPrimary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
@@ -315,7 +314,7 @@
               android:layout_height="wrap_content"
               android:gravity="right"
               android:text="@{viewModel.fromYear}"
-              android:textColor="@color/black"
+              android:textColor="?colorOnPrimary"
               android:textSize="@dimen/_13ssp"
               android:textStyle="bold" />
 
@@ -325,7 +324,7 @@
               android:layout_marginHorizontal="@dimen/_6sdp"
               android:gravity="right"
               android:text="-"
-              android:textColor="@color/black"
+              android:textColor="?colorOnPrimary"
               android:textSize="@dimen/_13ssp"
               android:textStyle="bold"
               android:visibility="@{TextUtils.isEmpty(viewModel.fromYear) &amp;&amp; TextUtils.isEmpty(viewModel.toYear) ? View.GONE : View.VISIBLE, default=gone}"
@@ -336,7 +335,7 @@
               android:layout_height="wrap_content"
               android:gravity="right"
               android:text="@{viewModel.toYear}"
-              android:textColor="@color/black"
+              android:textColor="?colorOnPrimary"
               android:textSize="@dimen/_13ssp"
               android:textStyle="bold" />
 
@@ -437,7 +436,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="@{viewModel.director}"
-            android:textColor="@color/black"
+            android:textColor="?colorOnPrimary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold" />
 
@@ -515,6 +514,7 @@
         android:background="@drawable/bg_confirm_yellow_button"
         android:stateListAnimator="@null"
         android:text="@string/apply"
+        android:textColor="@color/black"
         android:textSize="@dimen/_11ssp"
         android:textStyle="bold" />
     </LinearLayout>

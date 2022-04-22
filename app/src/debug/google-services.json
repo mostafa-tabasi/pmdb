@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "685421962515",
+    "project_id": "pmdb-debug",
+    "storage_bucket": "pmdb-debug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685421962515:android:e55e7e94ab217f77a1a6e6",
+        "android_client_info": {
+          "package_name": "com.pmdb.android.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685421962515-3fkcdujv9grnubpicu7a4t3h8osb15k3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3NWyTiTrgC_ivRUOJODH0vLX6QzW9Hwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685421962515-3fkcdujv9grnubpicu7a4t3h8osb15k3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

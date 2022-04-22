@@ -86,7 +86,7 @@
         android:gravity="left"
         android:singleLine="true"
         android:text="@{viewModel.title}"
-        android:textColor="@color/black"
+        android:textColor="?colorOnPrimary"
         android:textSize="@dimen/_10ssp"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/info_layout"

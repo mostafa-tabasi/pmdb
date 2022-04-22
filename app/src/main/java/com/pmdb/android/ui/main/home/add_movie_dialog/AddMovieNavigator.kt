@@ -72,4 +72,9 @@ interface AddMovieNavigator : BaseNavigator {
    */
   fun showOverwriteConfirm()
 
+  /**
+   * هدایت کاربر به url موردنظر بوسیله ی browser
+   */
+  fun openUrl(url: String)
+
 }

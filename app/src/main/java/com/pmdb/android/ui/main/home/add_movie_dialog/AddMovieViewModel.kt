@@ -19,6 +19,7 @@ import com.pmdb.android.ui.base.BaseViewModel
 import com.pmdb.android.utils.AppConstants.MEDIA_TYPE_TITLE_EPISODE
 import com.pmdb.android.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
 import com.pmdb.android.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
+import com.pmdb.android.utils.CommonUtils
 import com.pmdb.android.utils.NoInternetException
 import com.pmdb.android.utils.enums.MovieGenre
 import com.pmdb.android.utils.enums.TvGenre
@@ -426,5 +427,17 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   fun doesAnyInfoEntered(): Boolean {
     // اگر آبجکت فیلم فعلی با آبجکت خام آن برابر نباشد، یعنی تغییراتی اعمال شده است
     return movie != AddMovieModel()
+  }
+
+  /**
+   *کلیک روی امتیاز مربوط به سایت Imdb
+   */
+  fun onImdbRateClick(v: View? = null) {
+    with(movie.imdbID.get()) {
+      if (isNullOrEmptyAfterTrim()) return
+
+      // هدایت کاربر به سایت Imdb مربوط به فیلم یا سریال موردنظر
+      navigator?.openUrl(CommonUtils.imdbUrl(this!!))
+    }
   }
 }
