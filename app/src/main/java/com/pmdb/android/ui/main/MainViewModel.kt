@@ -26,7 +26,6 @@ class MainViewModel @Inject constructor(dataManager: DataManager) :
     destination: NavDestination,
     arguments: Bundle?
   ) {
-    navigator?.showBottomBar()
     _currentPage.value = destination.label.toString()
     _isBottomToolbarVisible.value = when (destination.label) {
       dataManager.getString(R.string.home_label),

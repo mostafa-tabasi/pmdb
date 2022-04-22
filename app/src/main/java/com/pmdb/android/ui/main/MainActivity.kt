@@ -5,6 +5,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.pmdb.android.BR
 import com.pmdb.android.R
 import com.pmdb.android.data.local.prefs.PreferencesHelper
@@ -20,6 +23,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator {
@@ -34,11 +38,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
     fun providePreferencesHelper(): PreferencesHelper
   }
 
+  @Inject
+  lateinit var appUpdateManager: AppUpdateManager
+
+  companion object {
+    private const val REQUEST_CODE_APP_UPDATE = 100
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     handleAppTheme()
     super.onCreate(savedInstanceState)
     viewModel.setNavigator(this)
     setUp()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    resumeUpdateManager()
   }
 
   private fun handleAppTheme() {
@@ -57,6 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
   private fun setUp() {
     viewDataBinding?.let {
+      setupUpdateManager()
       // راه اندازی کامپوننت navigation
       val navHostFragment =
         supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -70,6 +87,30 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
         it.bottomBar.setAnimatedVisibility(visible)
       }
       setupFab()
+    }
+  }
+
+  private fun setupUpdateManager() {
+    appUpdateManager.appUpdateInfo.addOnSuccessListener {
+      if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+        && it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+      ) {
+        appUpdateManager.startUpdateFlowForResult(
+          it, AppUpdateType.IMMEDIATE, this,
+          REQUEST_CODE_APP_UPDATE
+        )
+      }
+    }
+  }
+
+  private fun resumeUpdateManager() {
+    appUpdateManager.appUpdateInfo.addOnSuccessListener {
+      if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+        appUpdateManager.startUpdateFlowForResult(
+          it, AppUpdateType.IMMEDIATE, this,
+          REQUEST_CODE_APP_UPDATE
+        )
+      }
     }
   }
 

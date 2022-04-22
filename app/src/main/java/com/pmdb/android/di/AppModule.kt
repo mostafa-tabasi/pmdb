@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import androidx.room.Room
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.pmdb.android.BuildConfig
@@ -39,6 +41,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+  @Singleton
+  @Provides
+  fun provideAppUpdateManager(
+    @ApplicationContext context: Context
+  ): AppUpdateManager = AppUpdateManagerFactory.create(context)
 
   @Singleton
   @Provides
