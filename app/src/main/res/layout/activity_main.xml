@@ -29,7 +29,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
-      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorPrimaryVariant"
       app:contentInsetEnd="0dp"
       app:contentInsetStart="0dp"
@@ -54,7 +53,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:contentDescription="@string/add_movie_button"
-      app:animatedVisibility="@{viewModel.isBottomToolbarVisible}"
       app:backgroundTint="?colorAccent"
       app:layout_anchor="@id/bottom_bar"
       tools:src="@drawable/ic_add" />

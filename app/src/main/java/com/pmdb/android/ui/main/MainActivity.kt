@@ -13,6 +13,7 @@ import com.pmdb.android.ui.base.BaseActivity
 import com.pmdb.android.ui.main.archive.ArchiveFragment
 import com.pmdb.android.ui.main.home.HomeFragment
 import com.pmdb.android.ui.main.settings.SettingsFragment
+import com.pmdb.android.utils.BindingUtils.setAnimatedVisibility
 import com.pmdb.android.utils.enums.AppTheme
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -55,13 +56,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   }
 
   private fun setUp() {
-    val navHostFragment =
-      supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-    with(navHostFragment.navController) {
-      NavigationUI.setupWithNavController(viewDataBinding!!.bottomNavigation, this)
-      addOnDestinationChangedListener(viewModel)
+    viewDataBinding?.let {
+      // راه اندازی کامپوننت navigation
+      val navHostFragment =
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+      with(navHostFragment.navController) {
+        NavigationUI.setupWithNavController(it.bottomNavigation, this)
+        addOnDestinationChangedListener(viewModel)
+      }
+      // هندل کردن وضعیت نمایش bottomBar و fab همراه با انیمیشن
+      viewModel.isBottomToolbarVisible.observe(this) { visible ->
+        it.fabMain.setAnimatedVisibility(visible)
+        it.bottomBar.setAnimatedVisibility(visible)
+      }
+      setupFab()
     }
-    setupFab()
   }
 
   private fun setupFab() {
