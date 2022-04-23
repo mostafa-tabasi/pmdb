@@ -152,10 +152,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
     viewModel.refresh()
   }
 
-  override fun refreshPage() {
-    (requireActivity() as MainActivity).changeBottomNavigationTab(R.id.homeFragment)
-  }
-
   // متغیری جهت جلوگیری از باز شدن همزمان چند باتم شیت
   private var preventMultiOpen = false
 

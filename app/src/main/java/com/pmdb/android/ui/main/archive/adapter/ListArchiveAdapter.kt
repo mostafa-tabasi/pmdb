@@ -17,7 +17,12 @@ class ListArchiveAdapter :
 
   private var listener: ArchiveListener? = null
 
-  private var ratingSite: RatingSite? = null
+  //سایت موردنظری که امتیاز دادن براساس آن باید باشه
+  var ratingSite: RatingSite? = null
+    set(value) {
+      field = value
+      notifyDataSetChanged()
+    }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveViewHolder {
     val binding = ItemArchiveListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,15 +36,6 @@ class ListArchiveAdapter :
 
   fun setListener(listener: ArchiveListener) {
     this.listener = listener
-  }
-
-  /**
-   * ست کردن سایت موردنظری که امتیاز دادن براساس آن باید باشه
-   *
-   * @param site سایت موردنظر جهت نمایش امتیاز های آن
-   */
-  fun setRatingSite(site: RatingSite) {
-    this.ratingSite = site
   }
 
   inner class ArchiveViewHolder(private val binding: ItemArchiveListBinding) :

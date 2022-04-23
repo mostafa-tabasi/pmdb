@@ -2,8 +2,6 @@ package com.pmdb.android.ui.main.archive.adapter
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.pmdb.android.data.model.db.MovieEntity
 import com.pmdb.android.utils.AppConstants.MEDIA_TYPE_TITLE_SERIES
 import com.pmdb.android.utils.enums.RatingSite
@@ -14,13 +12,23 @@ class ArchiveItemViewModel(private val item: MovieEntity) {
   val poster = ObservableField<String?>().apply { set(item.poster) }
   val title = ObservableField<String>().apply { set(item.title.replace(" ", "\n")) }
   val isTv = ObservableField<Boolean>().apply { set(item.type == MEDIA_TYPE_TITLE_SERIES) }
-  val yearStart = ObservableField<String>().apply { item.yearStart?.let { set(it.toString()) } }
-  val yearEnd = ObservableField<String>().apply { item.yearEnd?.let { set(it.toString()) } }
+  val year = ObservableField<String>().apply {
+    // ست کردن مقدار نهایی جهت نمایش سال تولید فیلم یا سریال با توجه به شرایط متفاوت
+    set(
+      if ((item.yearStart == null || item.yearStart == -1) && item.yearEnd == null) ""
+      else {
+        val yearStart =
+          if (item.yearStart == null || item.yearStart == -1) "" else "${item.yearStart}"
+        val yearEnd = if (item.yearEnd == null) "" else "${item.yearEnd}"
+        if (yearStart.isEmpty() && yearEnd.isEmpty()) ""
+        else if (isTv.get() == true) "($yearStart - $yearEnd)"
+        else if (isTv.get() != true && yearStart.isNotEmpty()) "($yearStart)"
+        else ""
+      }
+    )
+  }
   val runtime = ObservableField<Int>().apply { set(item.runtime) }
   val genre = ObservableField<String>().apply { set(item.genre) }
-  val imdbRate = ObservableField<Float?>().apply { set(item.imdbRate) }
-  val rottenTomatoesRate = ObservableField<Int?>().apply { set(item.rottenTomatoesRate) }
-  val metacriticRate = ObservableField<Int?>().apply { set(item.metacriticRate) }
   val director = ObservableField<String>().apply { set(item.director) }
   val writer = ObservableField<String>().apply { set(item.writer) }
   val awards = ObservableField<String>().apply { set(item.awards) }
@@ -31,12 +39,6 @@ class ArchiveItemViewModel(private val item: MovieEntity) {
   val rate = ObservableField<String?>().apply { set(whicheverRateIsAvailable()) }
   val isRateVisible =
     ObservableBoolean().apply { set(item.imdbRate != null || item.rottenTomatoesRate != null || item.metacriticRate != null) }
-  private val _isSelected = MutableLiveData(false)
-  val isSelected: LiveData<Boolean> = _isSelected
-
-  fun changeSelected(isSelected: Boolean?) {
-    isSelected?.let { if (_isSelected.value != it) _isSelected.value = it }
-  }
 
   /**
    * ست کردن سایت که امتیاز فیلم بر اساس آن نمایش داده میشود

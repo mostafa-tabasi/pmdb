@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(dataManager: DataManager) :
 
   private val _topRatedMethod =
     MutableLiveData(RatingSite.withId(dataManager.topRatedMethod.toInt()))
-  var topRatedMethod: LiveData<RatingSite?> = _topRatedMethod
+  val topRatedMethod: LiveData<RatingSite?> = _topRatedMethod
 
   val topRated: LiveData<PagedList<MovieEntity>> =
     when (RatingSite.withId(dataManager.topRatedMethod.toInt())) {

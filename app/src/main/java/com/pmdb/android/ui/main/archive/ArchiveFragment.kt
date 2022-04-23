@@ -58,6 +58,11 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
     setUp()
   }
 
+  override fun onResume() {
+    super.onResume()
+    viewModel.refresh()
+  }
+
   private fun setUp() {
     viewDataBinding?.let {
       it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
@@ -69,10 +74,10 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
   private fun setUpList(view: FragmentArchiveBinding) {
     tilesAdapter.setListener(this)
     listAdapter.setListener(this)
-    // ست کردن امتیاز پیش فرضی که برای هر آیتم باید نمایش داده شود
-    viewModel.defaultItemRate?.let { site ->
+    // سایتی که معیار امتیاز فیلم ها قرار است باشد
+    viewModel.defaultItemRate.observe(viewLifecycleOwner) { site ->
       tilesAdapter.ratingSite = site
-      listAdapter.setRatingSite(site)
+      listAdapter.ratingSite = site
     }
     // دیتای موردنظر جهت نمایش در لیست
     viewModel.movies.observe(viewLifecycleOwner) {

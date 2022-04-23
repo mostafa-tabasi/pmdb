@@ -19,4 +19,6 @@
   <attr name="colorBackgroundTvIcon" format="color" />
 
   <attr name="colorBackgroundArchive" format="color" />
+
+  <attr name="colorBackgroundDefaultPoster" format="color" />
 </resources>

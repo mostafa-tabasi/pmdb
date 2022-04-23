@@ -70,6 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/img_movie_poster"
             android:background="@drawable/bg_movie_title"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/_4sdp"
@@ -385,18 +387,10 @@
               android:gravity="center"
               tools:ignore="UseCompoundDrawables">
 
-              <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/imdb"
-                android:textColor="@color/grey_600"
-                android:textSize="@dimen/_9ssp" />
-
               <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_4sdp"
+                android:layout_marginRight="@dimen/_4sdp"
                 android:background="?actionBarItemBackground"
                 android:clickable="true"
                 android:contentDescription="@string/imdb_page"
@@ -405,6 +399,14 @@
                 android:src="@drawable/ic_open"
                 android:visibility="@{TextUtils.isEmpty(viewModel.movie.imdbID) || viewModel.isEditing ? View.GONE : View.VISIBLE, default=gone}"
                 app:tint="@color/grey_600" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/imdb"
+                android:textColor="@color/grey_600"
+                android:textSize="@dimen/_9ssp" />
 
             </LinearLayout>
 

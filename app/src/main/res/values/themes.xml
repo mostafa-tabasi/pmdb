@@ -32,6 +32,8 @@
     <item name="colorBackgroundSimpleMetacriticRate">@color/grey_600</item>
     <item name="colorBackgroundTvIcon">@color/grey_500</item>
 
+    <item name="colorBackgroundDefaultPoster">@color/grey_400</item>
+
     <item name="colorBackgroundArchive">@color/grey_100</item>
     <!-- BottomSheetDialog theme -->
     <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>

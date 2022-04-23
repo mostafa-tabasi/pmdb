@@ -18,6 +18,7 @@ class AddMovieModel : BaseObservable() {
   var dbId: Long = -1L
   var dbCreatedAt: Long = -1L
   val title = ObservableField("")
+  val year = ObservableField("")
   val yearStart = ObservableField("")
   val yearEnd = ObservableField("")
   val imdbID = ObservableField("")
@@ -51,8 +52,38 @@ class AddMovieModel : BaseObservable() {
     type.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
       override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
         tv.set(type.get() == MEDIA_TYPE_TITLE_SERIES)
+        setMovieYear()
       }
     })
+    yearStart.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+      override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+        setMovieYear()
+      }
+    })
+    yearEnd.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+      override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+        setMovieYear()
+      }
+    })
+  }
+
+  /**
+   * ست کردن مقدار نهایی جهت نمایش سال تولید فیلم یا سریال با توجه به شرایط متفاوت
+   */
+  private fun setMovieYear() {
+    year.set(
+      if ((yearStart.get() == null || yearStart.get() == "-1") && yearEnd.get() == null) ""
+      else {
+        val yearStart =
+          if (yearStart.get() == null || yearStart.get() == "-1") "" else yearStart.get()
+        val yearEnd = yearEnd.get() ?: ""
+
+        if (yearStart.isNullOrEmpty() && yearEnd.isEmpty()) ""
+        else if (tv.get() == true) "($yearStart - $yearEnd)"
+        else if (tv.get() != true && !yearStart.isNullOrEmpty()) "($yearStart)"
+        else ""
+      }
+    )
   }
 
   fun update(movie: MatchedMovie) {
@@ -97,7 +128,7 @@ class AddMovieModel : BaseObservable() {
     dbId = movie.id!!
     dbCreatedAt = movie.createdAt
     title.set(movie.title.ifAvailable())
-    movie.yearStart?.let { yearStart.set(it.toString()) }
+    movie.yearStart?.let { if (it != -1) yearStart.set(it.toString()) }
     movie.yearEnd?.let { yearEnd.set(it.toString()) }
     imdbID.set(movie.imdbID.ifAvailable())
     poster.set(movie.poster)

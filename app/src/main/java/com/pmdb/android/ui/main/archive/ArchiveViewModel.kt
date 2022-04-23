@@ -30,7 +30,9 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
   private val _filter = MutableLiveData(ArchiveFilterModel())
   val filter: LiveData<ArchiveFilterModel> = _filter
 
-  val defaultItemRate: RatingSite? = RatingSite.withId(dataManager.archiveDefaultItemRate.toInt())
+  private val _defaultItemRate =
+    MutableLiveData(RatingSite.withId(dataManager.archiveDefaultItemRate.toInt()))
+  val defaultItemRate: LiveData<RatingSite?> = _defaultItemRate
 
   init {
     viewModelScope.launch {
@@ -80,7 +82,6 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
    */
   fun setDisplayType(type: ArchiveDisplayType?) {
     if (type != null && type != _displayType.value) _displayType.postValue(type)
-    //clearSelectedMovies()
   }
 
   /**
@@ -109,33 +110,15 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
     }
   }
 
-  /*
-  fun toggleSelectMode(active: Boolean) {
-    _isInSelectMode.value = active
-  }
-
   /**
-   * شناسه ی فیلم انتخاب شده را از لیست موردنظر حذف یا به آن اضافه کند
+   * بروزرسانی متغیرهای تاثیرگذار در نمایش محتوا
    */
-  fun addOrRemoveMovieFromSelectedList(movieId: Long): Boolean {
-    with(_selectedMoviesId.value!!) {
-      // اگر از قبل در لیست انتخاب شده ها موجود بود، حذف شود
-      if (contains(movieId)) remove(movieId)
-      // در غیر اینصورت اضافه شود
-      else add(movieId)
-
-      // اگر محتوای لیست خالی نبود، یعنی در حالت انتخاب فیلم هستیم
-      _isInSelectMode.value = isNotEmpty()
-      return contains(movieId)
+  fun refresh() {
+    ArchiveDisplayType.withId(dataManager.archiveDefaultItemViewType.toInt())?.let {
+      if (displayType.value != it) _displayType.value = it
+    }
+    RatingSite.withId(dataManager.archiveDefaultItemRate.toInt())?.let {
+      if (defaultItemRate.value != it) _defaultItemRate.value = it
     }
   }
-
-  /**
-   * خالی کردنِ لیست فیلم های انتخاب شده
-   */
-  fun clearSelectedMovies() {
-    _selectedMoviesId.value?.clear()
-    _isInSelectMode.value = false
-  }
-  */
 }

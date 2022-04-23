@@ -103,7 +103,7 @@
         android:fontFamily="serif"
         android:gravity="left"
         android:singleLine="true"
-        android:text="@{`(`+viewModel.yearStart+`)`}"
+        android:text="@{viewModel.year}"
         android:textColor="@color/grey_600"
         android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="parent"

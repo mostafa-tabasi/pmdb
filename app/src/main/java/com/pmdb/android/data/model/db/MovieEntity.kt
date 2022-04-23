@@ -43,7 +43,7 @@ data class MovieEntity(
       with(movie) {
         return MovieEntity(
           title = title.get()!!,
-          yearStart = yearStart.get()?.toIntOrNull(),
+          yearStart = if (yearStart.get().isNullOrEmpty()) -1 else yearStart.get()!!.toInt(),
           yearEnd = yearEnd.get()?.toIntOrNull(),
           imdbID = imdbID.get(),
           poster = poster.get(),

@@ -133,10 +133,10 @@
       android:layout_height="wrap_content"
       android:layout_marginVertical="@dimen/_2sdp"
       android:layout_marginLeft="@dimen/_3sdp"
-      android:text="@{movie.tv ? `(`+movie.yearStart+` – `+ (movie.yearEnd == null ? `` : movie.yearEnd)+`)` : `(`+movie.yearStart+`)`}"
+      android:text="@{movie.year}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/_10ssp"
-      android:visibility="@{movie.yearStart == null ? View.GONE : View.VISIBLE}"
+      android:visibility="@{TextUtils.isEmpty(movie.year) ? View.INVISIBLE : View.VISIBLE}"
       app:layout_constraintLeft_toRightOf="@+id/vGuideline"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="(year)" />
@@ -149,7 +149,7 @@
       android:layout_marginTop="@dimen/_2sdp"
       android:alpha="0.5"
       android:background="?attr/colorFormDivider"
-      android:visibility="@{movie.yearStart == null || movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.year) || TextUtils.isEmpty(movie.runtime) ? View.GONE : View.VISIBLE, default=visible}"
       app:layout_constraintBottom_toBottomOf="@+id/year"
       app:layout_constraintLeft_toRightOf="@+id/year"
       app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -163,7 +163,7 @@
       android:text="@{movie.runtime +` min`}"
       android:textColor="@color/grey_600"
       android:textSize="@dimen/_10ssp"
-      android:visibility="@{movie.runtime == null ? View.GONE : View.VISIBLE, default=visible}"
+      android:visibility="@{TextUtils.isEmpty(movie.runtime) ? View.INVISIBLE : View.VISIBLE, default=visible}"
       app:layout_constraintLeft_toRightOf="@+id/year_divider"
       app:layout_constraintTop_toBottomOf="@+id/title"
       tools:text="runtime" />

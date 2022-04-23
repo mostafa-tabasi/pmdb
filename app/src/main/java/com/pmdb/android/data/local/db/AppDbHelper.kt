@@ -29,7 +29,7 @@ class AppDbHelper @Inject constructor(private val appDatabase: AppDatabase) : Db
 
   override fun filterAllArchive(title: String?, fromYear: Int?, toYear: Int?, director: String?) =
     appDatabase.movieDao()
-      .filterAllArchive(title ?: "", fromYear ?: 0, toYear ?: 9999, director ?: "")
+      .filterAllArchive(title ?: "", fromYear ?: -1, toYear ?: 9999, director ?: "")
 
   override fun allMoviesByDate() = appDatabase.movieDao().allMoviesByDate()
 
