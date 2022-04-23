@@ -27,8 +27,8 @@ android {
         applicationId "com.pmdb.android"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 4
-        versionName "1.1.0"
+        versionCode 5
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
