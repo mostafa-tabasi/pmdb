@@ -42,6 +42,8 @@
     <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
   </style>
 
+  <style name="Theme.PMDb.dark" parent="Theme.PMDb" />
+
   <style name="Theme.PMDb.Splash">
     <item name="android:windowBackground">@drawable/launch_screen_background</item>
   </style>

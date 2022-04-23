@@ -1,5 +1,6 @@
 package com.pmdb.android.ui.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
@@ -62,13 +63,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
       EntryPointAccessors.fromApplication(this, MainActivityEntryPoint::class.java)
     val prefsHelper = hiltEntryPoint.providePreferencesHelper()
 
-    AppCompatDelegate.setDefaultNightMode(
-      when {
-        prefsHelper.isSystemDefaultThemeEnable -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        AppTheme.withId(prefsHelper.appTheme.toInt()) == AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-        else -> AppCompatDelegate.MODE_NIGHT_YES
+    when {
+      prefsHelper.isSystemDefaultThemeEnable ->
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+      AppTheme.withId(prefsHelper.appTheme.toInt()) == AppTheme.LIGHT -> {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setTheme(R.style.Theme_PMDb)
       }
-    )
+      else -> {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        setTheme(R.style.Theme_PMDb_dark)
+      }
+    }
+  }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    recreate()
+    super.onConfigurationChanged(newConfig)
   }
 
   private fun setUp() {
