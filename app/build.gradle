@@ -11,12 +11,15 @@ plugins {
 
 android {
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('signing.properties').newDataInputStream())
+
     signingConfigs {
         release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
+            storeFile project.rootProject.file(properties.getProperty('RELEASE_STORE_FILE'))
+            storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
+            keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
+            keyPassword properties.getProperty('RELEASE_KEY_PASSWORD')
         }
     }
 
@@ -68,13 +71,13 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation "com.google.android.material:material:1.5.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.3"
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "com.google.android.material:material:1.6.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.annotation:annotation:1.3.0'
-    androidTestImplementation 'androidx.annotation:annotation:1.3.0'
+    implementation 'androidx.annotation:annotation:1.4.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.4.0'
     implementation "com.google.android.play:core-ktx:1.8.1"
 
     def lifecycle_version = '2.4.1'
@@ -95,7 +98,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // coroutine
-    def coroutine_version = '1.4.1'
+    def coroutine_version = '1.6.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
