@@ -130,4 +130,9 @@
   <string name="clear_question">Clear?</string>
   <string name="delete_question">Delete?</string>
   <string name="already_archived_overwrite">Already archived, overwrite?</string>
+  <string name="google_sync">Google Sync</string>
+  <string name="logout">Logout</string>
+  <string name="login">Login</string>
+  <string name="login_description">Login with your Google account to sync your archive with it</string>
+  <string name="logged_in_description">Your archive will be synced with %s</string>
 </resources>

@@ -6,6 +6,10 @@ import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.pmdb.android.BuildConfig
@@ -47,6 +51,14 @@ object AppModule {
   fun provideAppUpdateManager(
     @ApplicationContext context: Context
   ): AppUpdateManager = AppUpdateManagerFactory.create(context)
+
+  @Singleton
+  @Provides
+  fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
+
+  @Singleton
+  @Provides
+  fun provideFirebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 
   @Singleton
   @Provides

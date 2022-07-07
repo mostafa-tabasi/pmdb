@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+      name="viewModel"
+      type="com.pmdb.android.ui.main.settings.SettingsViewModel" />
+
+  </data>
+
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_sync"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?colorPrimary"
+    android:elevation="0dp"
+    android:orientation="vertical">
+
+    <include
+      android:id="@+id/include_preference_category"
+      layout="@layout/layout_preference_category" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal"
+      android:paddingHorizontal="@dimen/_12sdp"
+      android:paddingTop="@dimen/_5sdp"
+      android:paddingBottom="@dimen/_9sdp">
+
+      <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@{viewModel.currentUser != null ? @string/logged_in_description(viewModel.currentUser.getEmail()) : @string/login_description}"
+        android:textColor="?colorOnPrimary"
+        android:textSize="@dimen/_12ssp"
+        tools:text="Login state description" />
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_28sdp"
+        android:layout_marginLeft="@dimen/_6sdp"
+        android:background="@drawable/bg_confirm_yellow_button"
+        android:stateListAnimator="@null"
+        android:text="@string/logout"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        android:visibility="@{viewModel.currentUser != null ? View.VISIBLE : View.GONE, default = gone}"
+        tools:visibility="visible" />
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_28sdp"
+        android:layout_marginLeft="@dimen/_6sdp"
+        android:background="@drawable/bg_confirm_yellow_button"
+        android:stateListAnimator="@null"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        android:visibility="@{viewModel.currentUser == null ? View.VISIBLE : View.GONE, default = gone}"
+        tools:visibility="visible" />
+
+    </LinearLayout>
+
+  </LinearLayout>
+</layout>

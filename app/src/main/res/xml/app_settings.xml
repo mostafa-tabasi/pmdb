@@ -91,19 +91,6 @@
     app:key="@string/key_theme_method"
     app:useSimpleSummaryProvider="true" />
 
-  <Preference
-    android:layout="@layout/layout_preference_category"
-    android:summary="Will be available in the next version"
-    android:title="Backup"
-    app:iconSpaceReserved="false"
-    app:selectable="false" />
-
-  <Preference
-    android:enabled="false"
-    android:summary="Click for making a backup from your archive"
-    app:iconSpaceReserved="false"
-    app:selectable="false" />
-
   <Preference />
 
 </androidx.preference.PreferenceScreen>

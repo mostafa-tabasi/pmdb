@@ -11,11 +11,11 @@ plugins {
 
 android {
 
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('signing.properties').newDataInputStream())
-
     signingConfigs {
         release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('signing.properties').newDataInputStream())
+
             storeFile project.rootProject.file(properties.getProperty('RELEASE_STORE_FILE'))
             storePassword properties.getProperty('RELEASE_STORE_PASSWORD')
             keyAlias properties.getProperty('RELEASE_KEY_ALIAS')
@@ -23,13 +23,13 @@ android {
         }
     }
 
-    compileSdkVersion 32
-    buildToolsVersion "32.1.0-rc1"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
         applicationId "com.pmdb.android"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 5
         versionName "1.1.2"
 
@@ -38,16 +38,20 @@ android {
     }
 
     buildTypes {
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
         debug {
-            buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")
-            buildConfigField("String", "API_KEY_OMDB", "\"b9c2e15f\"")
+            buildConfigField("String", "BASE_URL_OMDB", "\"${properties.getProperty('BASE_URL_OMDB')}\"")
+            buildConfigField("String", "API_KEY_OMDB", "\"${properties.getProperty('API_KEY_OMDB')}\"")
 
             debuggable true
             applicationIdSuffix ".debug"
         }
         release {
-            buildConfigField("String", "BASE_URL_OMDB", "\"http://www.omdbapi.com/\"")
-            buildConfigField("String", "API_KEY_OMDB", "\"b9c2e15f\"")
+            buildConfigField("String", "BASE_URL_OMDB", "\"${properties.getProperty('BASE_URL_OMDB')}\"")
+            buildConfigField("String", "API_KEY_OMDB", "\"${properties.getProperty('API_KEY_OMDB')}\"")
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -80,15 +84,15 @@ dependencies {
     androidTestImplementation 'androidx.annotation:annotation:1.4.0'
     implementation "com.google.android.play:core-ktx:1.8.1"
 
-    def lifecycle_version = '2.4.1'
+    def lifecycle_version = '2.5.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation "androidx.test.ext:junit:1.1.3"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation 'androidx.activity:activity-ktx:1.5.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.0'
     implementation 'com.google.android:flexbox:2.0.1'
 
     // Import the BoM for the Firebase platform
@@ -96,6 +100,12 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // firebase authentication UI
+    def firebase_ui_version = '7.2.0'
+    implementation "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
 
     // coroutine
     def coroutine_version = '1.6.0'
@@ -117,7 +127,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.11.0"
 
     // parser
-    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.google.code.gson:gson:2.9.0"
 
     //Retrofit
     def retrofit_version = '2.9.0'

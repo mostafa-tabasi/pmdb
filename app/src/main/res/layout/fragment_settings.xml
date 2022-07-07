@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.pmdb.android.ui.main.settings.SettingsViewModel" />
+
+  </data>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+      android:id="@+id/include_google_sync"
+      layout="@layout/layout_settings_google_sync"
+      bind:viewModel="@{viewModel}" />
+
+    <FrameLayout
+      android:id="@+id/container_settings_preferences"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1" />
+
+  </LinearLayout>
+
+</layout>
