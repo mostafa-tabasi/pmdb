@@ -2,12 +2,15 @@ package com.pmdb.android.data
 
 import android.content.Context
 import androidx.paging.DataSource
+import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
+import com.pmdb.android.data.firestore.FirebaseHelper
 import com.pmdb.android.data.local.db.DbHelper
 import com.pmdb.android.data.local.prefs.PreferencesHelper
 import com.pmdb.android.data.model.api.MatchedMovie
 import com.pmdb.android.data.model.api.MatchedMovieList
 import com.pmdb.android.data.model.db.MovieEntity
+import com.pmdb.android.data.model.firestore.User
 import com.pmdb.android.data.remote.ApiHeader
 import com.pmdb.android.data.remote.ApiHelper
 import com.pmdb.android.data.resource.ResourceHelper
@@ -22,6 +25,7 @@ class AppDataManager @Inject constructor(
   private val dbHelper: DbHelper,
   private val preferencesHelper: PreferencesHelper,
   private val apiHelper: ApiHelper,
+  private val firebaseHelper: FirebaseHelper,
   private val resourceHelper: ResourceHelper,
   private val gson: Gson
 ) : DataManager {
@@ -101,6 +105,21 @@ class AppDataManager @Inject constructor(
 
   override suspend fun findMovieByImdbId(id: String): Response<MatchedMovie> =
     apiHelper.findMovieByImdbId(id)
+
+  override val firebaseUser: FirebaseUser?
+    get() = firebaseHelper.firebaseUser
+
+  override suspend fun insertUser(
+    id: String,
+    displayName: String?,
+    email: String?,
+    photoUrl: String?
+  ) = firebaseHelper.insertUser(id, displayName, email, photoUrl)
+
+  override suspend fun getUserData(id: String): User? = firebaseHelper.getUserData(id)
+
+  override suspend fun addMovie(userId: String, movie: User.Movie) =
+    firebaseHelper.addMovie(userId, movie)
 
   override fun getString(resourceId: Int) = resourceHelper.getString(resourceId)
 

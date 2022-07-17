@@ -15,6 +15,8 @@ import com.google.gson.GsonBuilder
 import com.pmdb.android.BuildConfig
 import com.pmdb.android.data.AppDataManager
 import com.pmdb.android.data.DataManager
+import com.pmdb.android.data.firestore.AppFirebaseHelper
+import com.pmdb.android.data.firestore.FirebaseHelper
 import com.pmdb.android.data.local.db.AppDatabase
 import com.pmdb.android.data.local.db.AppDbHelper
 import com.pmdb.android.data.local.db.DbHelper
@@ -114,6 +116,11 @@ object AppModule {
   @Provides
   @Singleton
   fun provideDbHelper(appDbHelper: AppDbHelper): DbHelper = appDbHelper
+
+  @Provides
+  @Singleton
+  fun provideFirebaseHelper(appFirebaseHelper: AppFirebaseHelper): FirebaseHelper =
+    appFirebaseHelper
 
   @Provides
   @Singleton

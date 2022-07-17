@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.pmdb.android.R
+import java.util.*
 
 object AppUtils {
   fun openPlayStoreForApp(context: Context) {
@@ -33,4 +34,6 @@ object AppUtils {
       )
     }
   }
+
+  fun getUUID() = UUID.randomUUID().toString()
 }
