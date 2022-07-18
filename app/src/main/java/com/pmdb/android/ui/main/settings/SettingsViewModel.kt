@@ -25,7 +25,7 @@ class SettingsViewModel @Inject constructor(
   private val _signInLoading = MutableLiveData(false)
   val signInLoading: LiveData<Boolean> = _signInLoading
 
-  fun setFirebaseUser(user: FirebaseUser?) {
+  private fun setFirebaseUser(user: FirebaseUser?) {
     _currentUser.postValue(user)
   }
 
@@ -51,5 +51,9 @@ class SettingsViewModel @Inject constructor(
     val localArchive = dataManager.getAllMovies() ?: return
     if (localArchive.isEmpty()) return
     localArchive.forEach { dataManager.addMovie(userId, it.toFirestoreEntity()) }
+  }
+
+  fun onGoogleSignOut() {
+    setFirebaseUser(null)
   }
 }

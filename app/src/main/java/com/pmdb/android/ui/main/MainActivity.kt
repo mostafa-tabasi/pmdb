@@ -1,9 +1,16 @@
 package com.pmdb.android.ui.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.animation.AlphaAnimation
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -19,11 +26,15 @@ import com.pmdb.android.ui.main.home.HomeFragment
 import com.pmdb.android.ui.main.settings.SettingsFragment
 import com.pmdb.android.utils.BindingUtils.setAnimatedVisibility
 import com.pmdb.android.utils.enums.AppTheme
+import com.pmdb.android.utils.extensions.gone
+import com.pmdb.android.utils.extensions.visible
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -56,6 +67,27 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
   override fun onResume() {
     super.onResume()
     resumeUpdateManager()
+    registerNetworkStateReceiver()
+  }
+
+  private val networkStateChangeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+      viewModel.onConfigRefreshClick()
+    }
+  }
+
+  /**
+   * شروع به رصدِ تغییرات مربوط به اتصال اینترنت
+   */
+  private fun registerNetworkStateReceiver() {
+    val intentFilter = IntentFilter()
+    intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+    registerReceiver(networkStateChangeReceiver, intentFilter)
+  }
+
+  override fun onPause() {
+    super.onPause()
+    unregisterReceiver(networkStateChangeReceiver)
   }
 
   private fun handleAppTheme() {
@@ -98,6 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
         it.bottomBar.setAnimatedVisibility(visible)
       }
       setupFab()
+      setupNetworkState()
     }
   }
 
@@ -125,6 +158,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
     }
   }
 
+  private var isConnectionErrorShowing = false
+  fun isConnectionErrorShowing() =
+    isConnectionErrorShowing || viewModel.configRefreshLoading.value == true
+
   private fun setupFab() {
     viewModel.currentPage.observe(this) {
       viewDataBinding?.fabMain?.setImageResource(
@@ -141,10 +178,28 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
       val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
       with(navHostFragment!!.childFragmentManager.fragments[0]) {
         when (this) {
-          is HomeFragment -> openAddMovieDialog()
+          is HomeFragment -> {
+            // اگر خطای مربوط به کانکشن درحال نمایش بود، کاربر امکان اضافه کردن فیلم ندارد
+            if (isConnectionErrorShowing()) blinkConnectionError()
+            else openAddMovieDialog()
+          }
           is ArchiveFragment -> openSearchInArchiveDialog()
           is SettingsFragment -> openAboutDialog()
         }
+      }
+    }
+  }
+
+  private fun setupNetworkState() {
+    viewDataBinding?.let { view ->
+      lifecycleScope.launch {
+        viewModel.showConnectionError.collectLatest {
+          isConnectionErrorShowing = it
+          if (it) view.connectionErrorText.visible() else view.connectionErrorText.gone()
+        }
+      }
+      viewModel.configRefreshLoading.observe(this) {
+        if (it) view.connectionCheckLoading.visible() else view.connectionCheckLoading.gone()
       }
     }
   }
@@ -164,5 +219,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
    */
   fun changeBottomNavigationTab(tabId: Int) {
     viewDataBinding?.bottomNavigation?.selectedItemId = tabId
+  }
+
+  /**
+   * چشمک زدن لایه ی مربوط به خطای اینترنت جهت تاکید
+   */
+  fun blinkConnectionError() {
+    viewDataBinding?.connectionErrorLayout?.let {
+      val animation = AlphaAnimation(0.3f, 1f)
+      animation.duration = 350
+      it.startAnimation(animation)
+    }
   }
 }

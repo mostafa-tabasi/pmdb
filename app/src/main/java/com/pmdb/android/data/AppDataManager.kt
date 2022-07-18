@@ -3,6 +3,7 @@ package com.pmdb.android.data
 import android.content.Context
 import androidx.paging.DataSource
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.Source
 import com.google.gson.Gson
 import com.pmdb.android.data.firestore.FirebaseHelper
 import com.pmdb.android.data.local.db.DbHelper
@@ -116,7 +117,8 @@ class AppDataManager @Inject constructor(
     photoUrl: String?
   ) = firebaseHelper.insertUser(id, displayName, email, photoUrl)
 
-  override suspend fun getUserData(id: String): User? = firebaseHelper.getUserData(id)
+  override suspend fun getUserData(id: String, source: Source): User? =
+    firebaseHelper.getUserData(id, source)
 
   override suspend fun addMovie(userId: String, movie: User.Movie) =
     firebaseHelper.addMovie(userId, movie)

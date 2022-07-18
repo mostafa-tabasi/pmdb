@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
     setUpRecentWatch()
     setUpBottomBarVisibility()
     viewDataBinding?.let {
-      it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
+      it.addFirstMovie.setOnClickListener { onAddFirstMovieClick() }
       it.changeSettings.setOnClickListener { goToSettings() }
     }
   }
@@ -130,6 +130,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), HomeNav
       if (scrollY > oldScrollY) (requireActivity() as MainActivity).hideBottomBar()
       else (requireActivity() as MainActivity).showBottomBar()
     })
+  }
+
+  private fun onAddFirstMovieClick() {
+    // اگر مشکلی در اتصال اینترنت وجود داشت، خطای آن چشمک بزند و فرایند ادامه پیدا نکند
+    with((requireActivity() as MainActivity)) {
+      if (isConnectionErrorShowing()) {
+        blinkConnectionError()
+        return
+      }
+    }
+    openAddMovieDialog()
   }
 
   /**

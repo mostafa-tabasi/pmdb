@@ -26,6 +26,7 @@ import com.pmdb.android.databinding.DialogAddMovieBinding
 import com.pmdb.android.databinding.LayoutMatchedMovieListBinding
 import com.pmdb.android.databinding.LayoutMovieFormBinding
 import com.pmdb.android.ui.base.BaseBottomSheetDialog
+import com.pmdb.android.ui.main.MainActivity
 import com.pmdb.android.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 import com.pmdb.android.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -107,6 +108,12 @@ class AddMovieDialog :
       }
 
       movieFormBinding.btnClear.setOnClickListener { showClearFormConfirm() }
+      movieFormBinding.btnEdit.setOnClickListener {
+        if (isNetworkConnected()) viewModel.editMovie()
+      }
+      movieFormBinding.btnSave.setOnClickListener {
+        if (isNetworkConnected()) viewModel.saveProcess()
+      }
       movieFormBinding.btnDelete.setOnClickListener { showDeleteConfirm() }
     }
 
@@ -114,6 +121,13 @@ class AddMovieDialog :
     setUpMovieFormHeaderToolbar()
     setUpBottomSheet()
     setUpMovieGenres(viewModel.getGenreItems())
+  }
+
+  private fun isNetworkConnected(): Boolean {
+    if (!(requireActivity() as MainActivity).isConnectionErrorShowing()) return true
+
+    requireContext().toast(R.string.network_connection_error)
+    return false
   }
 
   /**
@@ -140,7 +154,11 @@ class AddMovieDialog :
         movieFormBinding.btnConfirmClearDelete,
         getString(R.string.delete_question),
         R.drawable.bg_confirm_red_button
-      ) { viewModel.deleteMovie(); dismissConfirm() }
+      ) {
+        if (isNetworkConnected()) {
+          viewModel.deleteMovie(); dismissConfirm()
+        }
+      }
     }
   }
 

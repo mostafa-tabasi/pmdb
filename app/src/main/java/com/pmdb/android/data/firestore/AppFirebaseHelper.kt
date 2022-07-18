@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.pmdb.android.data.model.firestore.User
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -32,8 +33,8 @@ class AppFirebaseHelper @Inject constructor(
   /**
    * دریافت دیتاهای مربوط به کاربر لاگین کرده
    */
-  override suspend fun getUserData(id: String): User? =
-    getUserDocument(id).get().await().toObject(User::class.java)
+  override suspend fun getUserData(id: String, source: Source): User? =
+    getUserDocument(id).get(source).await().toObject(User::class.java)
 
   override suspend fun addMovie(userId: String, movie: User.Movie) {
     getUserDocument(userId).update("movies", FieldValue.arrayUnion(movie)).await()

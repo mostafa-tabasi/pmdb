@@ -12,6 +12,7 @@ import com.pmdb.android.BR
 import com.pmdb.android.R
 import com.pmdb.android.databinding.FragmentSettingsBinding
 import com.pmdb.android.ui.base.BaseFragment
+import com.pmdb.android.ui.main.MainActivity
 import com.pmdb.android.utils.extensions.gone
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,10 +87,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
   }
 
   private fun signOutFromGoogle() {
+    // اگر مشکلی در اتصال اینترنت وجود داشت، خطای آن چشمک بزند و فرایند ادامه پیدا نکند
+    with((requireActivity() as MainActivity)) {
+      if (isConnectionErrorShowing()) {
+        blinkConnectionError()
+        return
+      }
+    }
+
     AuthUI.getInstance()
       .signOut(requireContext())
       .addOnCompleteListener { task ->
-        if (task.isSuccessful) viewModel.setFirebaseUser(null)
+        if (task.isSuccessful) viewModel.onGoogleSignOut()
       }
   }
 

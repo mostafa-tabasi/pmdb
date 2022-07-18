@@ -135,4 +135,6 @@
   <string name="login">Login</string>
   <string name="login_description">Login with your Google account to sync your archive with it</string>
   <string name="logged_in_description">Your archive will be synced with %s</string>
+  <string name="network_connection_error">Something is wrong with your network connection!</string>
+  <string name="network_connection_error_full">Something is wrong with your network connection!\nYou can\'t add, remove or edit any of the movies for now\nCheck the connection and tap to try again</string>
 </resources>

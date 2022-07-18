@@ -351,7 +351,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    *بررسی شرایط جهت ذخیره ی فیلم در دیتابیس
    */
-  fun saveProcess(v: View? = null) {
+  fun saveProcess() {
     if (movie.title.get().isNullOrEmptyAfterTrim()) {
       navigator?.showError(dataManager.getString(R.string.title_cant_be_empty))
       return
@@ -417,7 +417,7 @@ class AddMovieViewModel @Inject constructor(dataManager: DataManager) :
   /**
    *فعال کردن امکان ویرایش اطلاعات فیلم
    */
-  fun editMovie(v: View? = null) {
+  fun editMovie() {
     isEditing.set(true)
   }
 

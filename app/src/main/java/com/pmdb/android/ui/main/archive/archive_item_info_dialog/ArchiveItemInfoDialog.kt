@@ -26,6 +26,7 @@ import com.pmdb.android.R
 import com.pmdb.android.databinding.DialogArchiveItemInfoBinding
 import com.pmdb.android.databinding.LayoutMovieFormEditBinding
 import com.pmdb.android.ui.base.BaseBottomSheetDialog
+import com.pmdb.android.ui.main.MainActivity
 import com.pmdb.android.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,12 +90,25 @@ class ArchiveItemInfoDialog :
       movieFormEditBinding.imgMoviePoster.setOnClickListener {
         if (viewModel.isEditing.value == true) getContent.launch("image/*")
       }
+      movieFormEditBinding.btnEdit.setOnClickListener {
+        if (isNetworkConnected()) viewModel.editMovie()
+      }
+      movieFormEditBinding.btnSave.setOnClickListener {
+        if (isNetworkConnected()) viewModel.saveProcess()
+      }
       movieFormEditBinding.btnDelete.setOnClickListener { showDeleteConfirm() }
     }
 
     setUpMovieFormHeaderToolbar()
     setUpBottomSheet()
     setUpMovieGenres()
+  }
+
+  private fun isNetworkConnected(): Boolean {
+    if (!(requireActivity() as MainActivity).isConnectionErrorShowing()) return true
+
+    requireContext().toast(R.string.network_connection_error)
+    return false
   }
 
   /**
@@ -264,7 +278,11 @@ class ArchiveItemInfoDialog :
         movieFormEditBinding.btnConfirmClearDelete,
         getString(R.string.delete_question),
         R.drawable.bg_confirm_red_button
-      ) { viewModel.deleteMovie(); dismissConfirm() }
+      ) {
+        if (isNetworkConnected()) {
+          viewModel.deleteMovie(); dismissConfirm()
+        }
+      }
     }
   }
 

@@ -65,7 +65,7 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
 
   private fun setUp() {
     viewDataBinding?.let {
-      it.addFirstMovie.setOnClickListener { openAddMovieDialog() }
+      it.addFirstMovie.setOnClickListener { onAddFirstMovieClick() }
       it.changeFilter.setOnClickListener { openSearchInArchiveDialog() }
       setUpList(it)
     }
@@ -110,6 +110,17 @@ class ArchiveFragment : BaseFragment<FragmentArchiveBinding, ArchiveViewModel>()
         }
       }
     }
+  }
+
+  private fun onAddFirstMovieClick() {
+    // اگر مشکلی در اتصال اینترنت وجود داشت، خطای آن چشمک بزند و فرایند ادامه پیدا نکند
+    with((requireActivity() as MainActivity)) {
+      if (isConnectionErrorShowing()) {
+        blinkConnectionError()
+        return
+      }
+    }
+    openAddMovieDialog()
   }
 
   /**
