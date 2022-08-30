@@ -8,6 +8,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pmdb.android.data.DataManager
+import com.pmdb.android.data.model.firestore.User
 import com.pmdb.android.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +51,7 @@ class SettingsViewModel @Inject constructor(
   private suspend fun syncArchive(userId: String) {
     val localArchive = dataManager.getAllMovies() ?: return
     if (localArchive.isEmpty()) return
-    localArchive.forEach { dataManager.addMovie(userId, it.toFirestoreEntity()) }
+    localArchive.forEach { dataManager.addMovie(userId, User.Movie.build(it)) }
   }
 
   fun onGoogleSignOut() {

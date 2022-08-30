@@ -1,7 +1,9 @@
 package com.pmdb.android.data.model.firestore
 
 import androidx.annotation.Keep
+import com.pmdb.android.data.model.db.MovieEntity
 import com.pmdb.android.utils.AppConstants
+import com.pmdb.android.utils.AppUtils
 
 @Keep
 data class User(
@@ -9,7 +11,6 @@ data class User(
   val name: String? = null,
   val email: String? = null,
   val photo_url: String? = null,
-  val movies: List<Movie>? = arrayListOf(),
 ) {
   constructor() : this("")
 
@@ -41,5 +42,36 @@ data class User(
     val created_at: Long = 0,
   ) {
     constructor() : this("", "")
+
+    companion object {
+      fun build(movie: MovieEntity) = with(movie) {
+        Movie(
+          AppUtils.getUUID(),
+          title,
+          yearStart,
+          yearEnd,
+          imdbID,
+          poster,
+          type,
+          runtime,
+          country,
+          imdbRate,
+          imdbVotes,
+          rottenTomatoesRate,
+          metacriticRate,
+          genre,
+          director,
+          writer,
+          actors,
+          plot,
+          awards,
+          comment,
+          favorite,
+          watch,
+          watchedAt,
+          createdAt
+        )
+      }
+    }
   }
 }

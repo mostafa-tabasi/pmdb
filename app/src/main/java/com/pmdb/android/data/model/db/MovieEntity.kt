@@ -3,10 +3,8 @@ package com.pmdb.android.data.model.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.pmdb.android.data.model.firestore.User
 import com.pmdb.android.ui.main.home.add_movie_dialog.AddMovieModel
 import com.pmdb.android.utils.AppConstants.MEDIA_TYPE_TITLE_MOVIE
-import com.pmdb.android.utils.AppUtils
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -76,31 +74,4 @@ data class MovieEntity(
       }
     }
   }
-
-  fun toFirestoreEntity(): User.Movie = User.Movie(
-    AppUtils.getUUID(),
-    title,
-    yearStart,
-    yearEnd,
-    imdbID,
-    poster,
-    type,
-    runtime,
-    country,
-    imdbRate,
-    imdbVotes,
-    rottenTomatoesRate,
-    metacriticRate,
-    genre,
-    director,
-    writer,
-    actors,
-    plot,
-    awards,
-    comment,
-    favorite,
-    watch,
-    watchedAt,
-    createdAt
-  )
 }

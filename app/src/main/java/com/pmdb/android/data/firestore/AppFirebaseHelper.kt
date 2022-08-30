@@ -3,7 +3,6 @@ package com.pmdb.android.data.firestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.pmdb.android.data.model.firestore.User
@@ -37,7 +36,7 @@ class AppFirebaseHelper @Inject constructor(
     getUserDocument(id).get(source).await().toObject(User::class.java)
 
   override suspend fun addMovie(userId: String, movie: User.Movie) {
-    getUserDocument(userId).update("movies", FieldValue.arrayUnion(movie)).await()
+    getUserMovieDocument(userId, movie.uuid).set(movie).await()
   }
 
   /**
@@ -45,4 +44,10 @@ class AppFirebaseHelper @Inject constructor(
    */
   private fun getUserDocument(uid: String): DocumentReference =
     firebaseFirestore.collection("users").document(uid)
+
+  /**
+   * دریافت داکیومنت مربوط به یک فیلم از یک کاربر
+   */
+  private fun getUserMovieDocument(userId: String, movieId: String): DocumentReference =
+    getUserDocument(userId).collection("movies").document(movieId)
 }
