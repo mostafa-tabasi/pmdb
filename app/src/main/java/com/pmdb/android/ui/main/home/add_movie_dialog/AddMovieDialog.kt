@@ -29,7 +29,6 @@ import com.pmdb.android.ui.base.BaseBottomSheetDialog
 import com.pmdb.android.ui.main.home.add_movie_dialog.adapter.MatchedMoviesAdapter
 import com.pmdb.android.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.layout_find_movie.view.*
 
 @AndroidEntryPoint
 class AddMovieDialog :
@@ -484,13 +483,13 @@ class AddMovieDialog :
    */
   override fun onFocusChange(v: View?, hasFocus: Boolean) {
     v?.let {
-      if (it.edt_search_title != null && hasFocus) {
+      if (it.findViewById<EditText>(R.id.edt_search_title) != null && hasFocus) {
         // اگر فیلد جستجو براساس عنوان انتخاب شده بود، فیلد شناسه خالی میشود
         viewModel.clearMovieId()
         prepareSearchTitleField()
         return
       }
-      if (it.edt_search_id != null && hasFocus) {
+      if (it.findViewById<EditText>(R.id.edt_search_id) != null && hasFocus) {
         // اگر فیلد جستجو براساس شناسه انتخاب شده بود، فیلد عنوان خالی میشود
         viewModel.clearMovieTitle()
         prepareSearchIdField()
