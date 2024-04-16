@@ -2,9 +2,9 @@ name: Android Build
 
 on:
   pull_request:
-    branches: [ setup-cicd-github-actions ]
+    branches: [ feature/setup-cicd-github-actions ]
   push:
-    branches: [ setup-cicd-github-actions ]
+    branches: [ feature/setup-cicd-github-actions ]
 
 jobs:
   build:
