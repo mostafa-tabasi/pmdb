@@ -56,50 +56,52 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     buildFeatures {
         dataBinding true
         viewBinding true
         buildConfig true
     }
-
+    lint {
+        lintConfig = file("android_glide_lint.xml")
+    }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation "com.google.android.material:material:1.6.1"
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "com.google.android.material:material:1.11.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.annotation:annotation:1.4.0'
-    androidTestImplementation 'androidx.annotation:annotation:1.4.0'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    androidTestImplementation 'androidx.annotation:annotation:1.7.1'
     implementation "com.google.android.play:core-ktx:1.8.1"
 
-    def lifecycle_version = '2.4.1'
+    def lifecycle_version = '2.7.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.3"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
     implementation 'com.google.android:flexbox:2.0.1'
 
     // Import the BoM for the Firebase platform
-    implementation platform("com.google.firebase:firebase-bom:28.4.1")
+    implementation platform("com.google.firebase:firebase-bom:32.8.1")
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // coroutine
-    def coroutine_version = '1.6.0'
+    def coroutine_version = '1.7.3'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
@@ -108,7 +110,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // database
-    def room_version = '2.4.2'
+    def room_version = '2.6.1'
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     // optional - Kotlin Extensions and Coroutines support for Room
@@ -118,10 +120,10 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.11.0"
 
     // parser
-    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.google.code.gson:gson:2.10.1"
 
     //Retrofit
-    def retrofit_version = '2.9.0'
+    def retrofit_version = '2.10.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
@@ -139,7 +141,7 @@ dependencies {
     implementation 'com.github.rubensousa:gravitysnaphelper:2.2.2'
 
     // Settings preferences
-    implementation "androidx.preference:preference-ktx:1.2.0"
+    implementation "androidx.preference:preference-ktx:1.2.1"
 
     // sdp - ssp
     def dimen_version = '1.0.6'

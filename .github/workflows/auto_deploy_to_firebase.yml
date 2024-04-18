@@ -1,8 +1,6 @@
 name: Auto Deploy to Firebase
 
 on:
-  pull_request:
-    branches: [ develop ]
   push:
     branches: [ develop ]
 
