@@ -65,38 +65,6 @@ class ArchiveViewModel @Inject constructor(dataManager: DataManager) :
         ).toLiveData(pageSize = 50)
       }
     }
-
-    /*
-    movies = Transformations.switchMap(filter,
-      object : Function<ArchiveFilterModel, LiveData<PagedList<MovieEntity>>> {
-        override fun apply(input: ArchiveFilterModel?): LiveData<PagedList<MovieEntity>> {
-          if (input == null) return dataManager.allMoviesAndTvSeriesByDate()
-            .toLiveData(pageSize = 50)
-
-          return when (input.type) {
-            MediaFilterType.MOVIES -> dataManager.filterMovies(
-              input.title,
-              input.fromYear,
-              input.toYear,
-              input.director
-            ).toLiveData(pageSize = 50)
-            MediaFilterType.SERIES -> dataManager.filterTvSeries(
-              input.title,
-              input.fromYear,
-              input.toYear,
-              input.director
-            ).toLiveData(pageSize = 50)
-            MediaFilterType.BOTH -> dataManager.filterAllArchive(
-              input.title,
-              input.fromYear,
-              input.toYear,
-              input.director
-            ).toLiveData(pageSize = 50)
-          }
-        }
-      })
-    */
-
     filter.value!!.type = MediaFilterType.BOTH
   }
 
