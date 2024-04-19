@@ -11,18 +11,6 @@ class AppPreferencesHelper @Inject constructor(
   @ApplicationContext private val context: Context,
 ) : PreferencesHelper {
 
-  override var currentUserId: String?
-    get() = mPrefs.getString(context.getString(R.string.key_current_user_id), null)
-    set(value) {
-      mPrefs.edit().putString(context.getString(R.string.key_current_user_id), value).apply()
-    }
-
-  override var accessToken: String?
-    get() = mPrefs.getString(context.getString(R.string.key_access_token), null)
-    set(value) {
-      mPrefs.edit().putString(context.getString(R.string.key_access_token), value).apply()
-    }
-
   override var isRecentMoviesEnable: Boolean
     get() = mPrefs.getBoolean(context.getString(R.string.key_recently_added_movies), true)
     set(value) {

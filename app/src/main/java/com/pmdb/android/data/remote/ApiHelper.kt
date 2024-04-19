@@ -6,8 +6,6 @@ import retrofit2.Response
 
 interface ApiHelper {
 
-  fun getApiHeader(): ApiHeader
-
   /**
    * جستجوی فیلم براساس عنوان
    *
