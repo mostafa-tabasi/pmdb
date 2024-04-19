@@ -8,7 +8,6 @@ import com.pmdb.android.data.local.prefs.PreferencesHelper
 import com.pmdb.android.data.model.api.MatchedMovie
 import com.pmdb.android.data.model.api.MatchedMovieList
 import com.pmdb.android.data.model.db.MovieEntity
-import com.pmdb.android.data.remote.ApiHeader
 import com.pmdb.android.data.remote.ApiHelper
 import com.pmdb.android.data.resource.ResourceHelper
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,20 +24,6 @@ class AppDataManager @Inject constructor(
   private val resourceHelper: ResourceHelper,
   private val gson: Gson
 ) : DataManager {
-
-  override var currentUserId: String?
-    get() = preferencesHelper.currentUserId
-    set(value) {
-      preferencesHelper.currentUserId = value
-      getApiHeader().protectedApiHeader.userId = value!!
-    }
-
-  override var accessToken: String?
-    get() = preferencesHelper.accessToken
-    set(accessToken) {
-      preferencesHelper.accessToken = accessToken
-      getApiHeader().protectedApiHeader.accessToken = accessToken
-    }
 
   override var isRecentMoviesEnable: Boolean
     get() = preferencesHelper.isRecentMoviesEnable
@@ -93,8 +78,6 @@ class AppDataManager @Inject constructor(
     set(value) {
       preferencesHelper.appTheme = value
     }
-
-  override fun getApiHeader(): ApiHeader = apiHelper.getApiHeader()
 
   override suspend fun findMovieByTitle(title: String): Response<MatchedMovieList> =
     apiHelper.findMovieByTitle(title)

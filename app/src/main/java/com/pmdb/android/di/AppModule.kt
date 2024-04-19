@@ -16,7 +16,6 @@ import com.pmdb.android.data.local.db.AppDbHelper
 import com.pmdb.android.data.local.db.DbHelper
 import com.pmdb.android.data.local.prefs.AppPreferencesHelper
 import com.pmdb.android.data.local.prefs.PreferencesHelper
-import com.pmdb.android.data.remote.ApiHeader.ProtectedApiHeader
 import com.pmdb.android.data.remote.ApiHelper
 import com.pmdb.android.data.remote.AppApiHelper
 import com.pmdb.android.data.remote.OmdbApiClient
@@ -116,17 +115,6 @@ object AppModule {
   @Singleton
   fun providePreferencesHelper(appPreferencesHelper: AppPreferencesHelper): PreferencesHelper =
     appPreferencesHelper
-
-  @Provides
-  @Singleton
-  fun provideProtectedApiHeader(
-    @ApiInfo apiKey: String,
-    preferencesHelper: PreferencesHelper
-  ): ProtectedApiHeader = ProtectedApiHeader(
-    apiKey,
-    preferencesHelper.currentUserId,
-    preferencesHelper.accessToken
-  )
 
   @Provides
   fun provideArchiveAdapter() = TilesArchiveAdapter()

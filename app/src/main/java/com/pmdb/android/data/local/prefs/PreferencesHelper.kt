@@ -2,9 +2,6 @@ package com.pmdb.android.data.local.prefs
 
 interface PreferencesHelper {
 
-  var currentUserId: String?
-  var accessToken: String?
-
   // نمایش لیست فیلم های اخیرا اضافه شده فعال است یا خیر
   var isRecentMoviesEnable: Boolean
 
