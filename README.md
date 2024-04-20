@@ -1,6 +1,6 @@
 # PMDb (Pocket Movie Database)
 
-This project is an Android application written in Kotlin using modern Android development libraries for learning purposes.
+This project is an Android application written in Kotlin using modern Android development libraries and leverages GitHub Actions for a fully automated CI/CD pipeline for learning purposes.
 
 Features:
 - **MVVM architecture with LiveData** for managing UI state changes.
