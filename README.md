@@ -12,3 +12,10 @@ Features:
 - [**Glide**](https://github.com/bumptech/glide) for efficient image loading and caching.
 - [**Retrofit**](https://github.com/square/retrofit) for network communication and API interactions.
 - [**Github Actions**](https://github.com/features/actions) for CI/CD
+
+##
+![screenshot](https://github.com/mostafa-tabasi/pmdb/blob/master/screenshots/Screenshot_1.png)
+![screenshot](https://github.com/mostafa-tabasi/pmdb/blob/master/screenshots/Screenshot_2.png)
+![screenshot](https://github.com/mostafa-tabasi/pmdb/blob/master/screenshots/Screenshot_3.png)
+![screenshot](https://github.com/mostafa-tabasi/pmdb/blob/master/screenshots/Screenshot_4.png)
+![screenshot](https://github.com/mostafa-tabasi/pmdb/blob/master/screenshots/Screenshot_5.png)
